@@ -1,57 +1,56 @@
 ; da65 V2.19 - Git 03d824e13
-; Created:    2024-07-21 03:41:26
+; Created:    2024-07-21 16:50:49
 ; Input file: dkjrm.nes
 ; Page:       1
 
 
-.setcpu "6502"
+        .setcpu "6502"
 
 L0002           := $0002
+APU_STATUS      := $4015
 
 .segment        "CODE": absolute
 
-        .byte   $4E,$45,$53,$1A,$01,$01,$01,$00
-        .byte   $00,$00
-LC00A:  .byte   $00,$00,$00,$00,$00,$00,$22,$F3
-        .byte   $1E,$F3,$16,$F4,$2C,$F2,$97,$F1
-        .byte   $20,$8C,$04,$00
-LC01E:  .byte   $20,$A4,$04,$00,$20,$77,$07,$01
-        .byte   $20,$B7
-LC028:  .byte   $07,$01,$20,$AF,$02,$00,$00,$0C
-        .byte   $12,$12
-LC032:  .byte   $15,$09,$17,$1A,$30,$16,$00,$02
-        .byte   $03,$03
-LC03C:  .byte   $04,$01,$05,$05,$09,$04,$00,$22
-LC044:  .byte   $33,$44,$44,$11,$66,$66,$23
-LC04B:  .byte   $03,$00,$02,$03,$04,$04,$01,$06
-        .byte   $06,$00,$85,$86,$85,$86,$87,$85
-        .byte   $86,$00,$20,$20,$21,$21,$20,$21
+        .byte   $22,$F3,$1E,$F3,$16,$F4,$2C,$F2
+        .byte   $97,$F1
+LC00A:  .byte   $20,$8C,$04,$00,$20,$A4,$04,$00
+        .byte   $20,$77,$07,$01,$20,$B7,$07,$01
+        .byte   $20,$AF,$02,$00
+LC01E:  .byte   $00,$0C,$12,$12,$15,$09,$17,$1A
+        .byte   $30,$16
+LC028:  .byte   $00,$02,$03,$03,$04,$01,$05,$05
+        .byte   $09,$04
+LC032:  .byte   $00,$22,$33,$44,$44,$11,$66,$66
+        .byte   $23,$03
+LC03C:  .byte   $00,$02,$03,$04,$04,$01,$06,$06
+LC044:  .byte   $00,$85,$86,$85,$86,$87,$85
+LC04B:  .byte   $86,$00,$20,$20,$21,$21,$20,$21
         .byte   $21,$21,$00,$20,$21,$21,$21,$00
-        .byte   $20,$21,$21,$00,$20,$20
-LC071:  .byte   $21,$20,$21,$21,$00,$20,$21,$21
-        .byte   $00,$20,$20,$21,$21,$20,$21,$21
-        .byte   $00,$00,$78,$D8,$18,$1A,$7A,$38
+        .byte   $20,$21,$21,$00,$20,$20,$21,$20
+        .byte   $21,$21,$00,$20,$21,$21,$00,$20
+        .byte   $20,$21,$21,$20,$21,$21
+LC071:  .byte   $00,$00,$78,$D8,$18,$1A,$7A,$38
         .byte   $3A,$7A,$00,$DA,$38,$3A,$7A,$00
-        .byte   $D8,$38,$7A,$00,$78,$D8,$1A
-LC098:  .byte   $7A
-LC099:  .byte   $3A,$7A,$00,$DA,$3A,$7A,$00,$78
-        .byte   $D8,$18,$1A,$7A,$3A,$7A,$00,$00
-        .byte   $02,$12,$1A,$19,$01,$22,$21,$29
-        .byte   $00,$01,$22,$21,$29
-LC0B6:  .byte   $00,$02,$12,$19,$00,$02
-LC0BC:  .byte   $12,$19,$01,$21,$29,$00
-LC0C2:  .byte   $01,$21,$29,$00,$02,$12,$1A,$19
-        .byte   $01
-LC0CB:  .byte   $21,$29,$00,$00,$01,$0A
-LC0D1:  .byte   $0F,$13,$1A,$1E,$97,$F7,$F7,$97
-        .byte   $F7,$97,$08,$04,$03,$06,$03,$07
-        .byte   $00,$01,$02,$01,$02,$03,$01,$02
-        .byte   $03,$09
-LC0EB:  .byte   $0A,$0A,$09,$0A,$09,$00,$02
-LC0F2:  .byte   $00,$03,$03,$05,$04,$02,$07
-LC0F9:  .byte   $06,$05,$01,$F6,$F4,$F2,$F2,$F8
-        .byte   $EE,$EE,$05,$07,$09,$09,$03,$0D
-        .byte   $0D,$21,$55,$47,$C5,$00,$21,$53
+        .byte   $D8,$38,$7A,$00,$78,$D8,$1A,$7A
+        .byte   $3A,$7A,$00,$DA,$3A,$7A,$00,$78
+        .byte   $D8,$18,$1A,$7A,$3A,$7A,$00
+LC098:  .byte   $00
+LC099:  .byte   $02,$12,$1A,$19,$01,$22,$21,$29
+        .byte   $00,$01,$22,$21,$29,$00,$02,$12
+        .byte   $19,$00,$02,$12,$19,$01,$21,$29
+        .byte   $00,$01,$21,$29,$00
+LC0B6:  .byte   $02,$12,$1A,$19,$01,$21
+LC0BC:  .byte   $29,$00,$00,$01,$0A,$0F
+LC0C2:  .byte   $13,$1A,$1E,$97,$F7,$F7,$97,$F7
+        .byte   $97
+LC0CB:  .byte   $08,$04,$03,$06,$03,$07
+LC0D1:  .byte   $00,$01,$02,$01,$02,$03,$01,$02
+        .byte   $03,$09,$0A,$0A,$09,$0A,$09,$00
+        .byte   $02,$00,$03,$03,$05,$04,$02,$07
+        .byte   $06,$05
+LC0EB:  .byte   $01,$F6,$F4,$F2,$F2,$F8,$EE
+LC0F2:  .byte   $EE,$05,$07,$09,$09,$03,$0D
+LC0F9:  .byte   $0D,$21,$55,$47,$C5,$00,$21,$53
         .byte   $49,$C5,$00,$21,$51,$4B,$C5,$00
         .byte   $21,$51,$4B,$C5,$00,$21,$57,$45
         .byte   $C5,$00,$21,$4D,$4F,$C5,$00,$21
@@ -62,36 +61,36 @@ LC0F9:  .byte   $06,$05,$01,$F6,$F4,$F2,$F2,$F8
         .byte   $97,$82,$C3,$C2,$20,$98,$44,$C5
         .byte   $20,$F7,$45,$C5,$21,$57,$45,$C5
         .byte   $00,$20,$F7,$82,$C3,$C2,$20,$F8
-        .byte   $44,$C5,$21,$57,$45
-LC166:  .byte   $C5,$00,$20,$76,$A9,$24,$00,$20
-        .byte   $B6,$05,$C4,$24,$C4
-LC173:  .byte   $24
-LC174:  .byte   $C4,$00,$00,$00,$05
-LC179:  .byte   $0A
-LC17A:  .byte   $0F
-LC17B:  .byte   $14,$19,$1E,$23,$3E,$50,$5E,$63
-        .byte   $06,$BF,$B0,$C7,$1F,$C7,$01,$08
-        .byte   $10,$00,$08,$30,$03,$0A,$50,$FF
-        .byte   $00,$08,$10
-LC196:  .byte   $FF
-LC197:  .byte   $02,$04,$E0,$01,$04,$F0,$FF,$08
-        .byte   $08,$0F,$0A,$02,$02,$05,$05,$B2
-        .byte   $C1,$B2,$C1,$A6,$C1,$AA,$C1,$B2
-        .byte   $C1,$B2,$C1,$AE,$C1,$AE,$C1
-LC1B6:  .byte   $03,$00,$11,$10,$0E,$00,$1B,$10
-        .byte   $03,$00
-LC1C0:  .byte   $1D
-LC1C1:  .byte   $10,$09,$00,$17,$10,$00,$05,$01
-        .byte   $00,$01,$05,$02,$00,$00,$05,$21
-        .byte   $82,$21,$86,$21,$8A,$21,$95,$21
+        .byte   $44,$C5,$21,$57,$45,$C5,$00,$20
+        .byte   $76,$A9,$24,$00,$20,$B6,$05,$C4
+        .byte   $24,$C4,$24,$C4,$00
+LC166:  .byte   $00,$00,$05,$0A,$0F,$14,$19,$1E
+        .byte   $23,$3E,$50,$5E,$63
+LC173:  .byte   $06
+LC174:  .byte   $BF,$B0,$C7,$1F,$C7
+LC179:  .byte   $01
+LC17A:  .byte   $08
+LC17B:  .byte   $10,$00,$08,$30,$03,$0A,$50,$FF
+        .byte   $00,$08,$10,$FF,$02,$04,$E0,$01
+        .byte   $04,$F0,$FF,$08,$08,$0F,$0A,$02
+        .byte   $02,$05,$05
+LC196:  .byte   $B2
+LC197:  .byte   $C1,$B2,$C1,$A6,$C1,$AA,$C1,$B2
+        .byte   $C1,$B2,$C1,$AE,$C1,$AE,$C1,$03
+        .byte   $00,$11,$10,$0E,$00,$1B,$10,$03
+        .byte   $00,$1D,$10,$09,$00,$17,$10
+LC1B6:  .byte   $00,$05,$01,$00,$01,$05,$02,$00
+        .byte   $00,$05
+LC1C0:  .byte   $21
+LC1C1:  .byte   $82,$21,$86,$21,$8A,$21,$95,$21
         .byte   $99,$21,$9D,$22,$02,$22,$06,$22
-        .byte   $0A,$22,$15
-LC1E4:  .byte   $22
-LC1E5:  .byte   $19,$22,$1D,$22,$82
-LC1EA:  .byte   $22
-LC1EB:  .byte   $86,$22,$8A,$22,$95,$22,$99,$22
-        .byte   $9D,$23,$28,$2D,$32,$37,$3C,$F0
-        .byte   $C1,$09,$C2,$22,$C2,$46,$24,$24
+        .byte   $0A,$22,$15,$22,$19,$22,$1D,$22
+        .byte   $82,$22,$86,$22,$8A,$22,$95,$22
+        .byte   $99,$22,$9D
+LC1E4:  .byte   $23
+LC1E5:  .byte   $28,$2D,$32,$37,$3C
+LC1EA:  .byte   $F0
+LC1EB:  .byte   $C1,$09,$C2,$22,$C2,$46,$24,$24
         .byte   $24,$2D,$24,$2E,$2F,$30,$31,$32
         .byte   $33,$34,$35,$36,$37,$38,$39,$3A
         .byte   $3B,$3C,$24,$24,$24,$3D,$46,$24
@@ -100,66 +99,66 @@ LC1EB:  .byte   $86,$22,$8A,$22,$95,$22,$99,$22
         .byte   $4D,$4E,$4F,$24,$24,$24,$3F,$84
         .byte   $95,$24,$91,$92,$93,$94,$42,$43
         .byte   $9A,$24,$96,$97,$98,$99,$46,$47
-LC243:  .byte   $9F,$24,$9B
-LC246:  .byte   $9C,$9D,$9E
-LC249:  .byte   $4A,$4B,$90
-LC24C:  .byte   $24,$F8,$A0
-LC24F:  .byte   $A1,$A2
-LC251:  .byte   $4E,$4F
-LC253:  .byte   $20,$22
-LC255:  .byte   $21
-LC256:  .byte   $20,$22,$20,$CD,$82,$03,$4E,$03
-        .byte   $82,$89,$9A,$83,$94,$8B,$9C,$10
-        .byte   $60,$30,$60,$50,$60,$A8,$60,$C8
+        .byte   $9F,$24,$9B,$9C,$9D,$9E,$4A,$4B
+        .byte   $90,$24,$F8,$A0,$A1,$A2,$4E,$4F
+LC243:  .byte   $20,$22,$21
+LC246:  .byte   $20,$22,$20
+LC249:  .byte   $CD,$82,$03
+LC24C:  .byte   $4E,$03,$82
+LC24F:  .byte   $89,$9A
+LC251:  .byte   $83,$94
+LC253:  .byte   $8B,$9C
+LC255:  .byte   $10
+LC256:  .byte   $60,$30,$60,$50,$60,$A8,$60,$C8
         .byte   $60,$E8,$60,$10,$80,$30,$80,$50
-        .byte   $80,$A8,$80
-LC279:  .byte   $C8,$80
-LC27B:  .byte   $E8
-LC27C:  .byte   $80
-LC27D:  .byte   $10,$A0,$30,$A0,$50,$A0,$A8,$A0
-        .byte   $C8,$A0,$E8,$A0,$62,$73,$00,$01
-        .byte   $25,$01,$49,$2B,$0A,$01
-LC293:  .byte   $28
-LC294:  .byte   $20,$01,$26,$2A,$01
-LC299:  .byte   $29,$40,$01,$27,$41,$49,$2C,$4A
-        .byte   $01,$2A
-LC2A3:  .byte   $40,$F7,$C5,$F8,$A0,$F9,$B7
-LC2AA:  .byte   $AF,$A7,$9F,$97
-LC2AE:  .byte   $8F,$87
-LC2B0:  .byte   $7F,$77,$6F
-LC2B3:  .byte   $CC,$BC,$AC,$9C,$8C,$7C,$6C,$BC
-        .byte   $AC
-LC2BC:  .byte   $9C,$8C,$BC,$CC,$37
-LC2C1:  .byte   $47,$57,$BC,$BC
-LC2C5:  .byte   $BC,$CC,$CC,$BC,$CC,$CC,$FF
-LC2CC:  .byte   $CC,$BC,$CC,$CC
-LC2D0:  .byte   $FF,$BC,$BC,$CC,$FF,$BC,$BC,$CC
-LC2D8:  .byte   $CC,$CC,$CC,$FF,$CC,$CC,$CC,$FF
-        .byte   $BC
-LC2E1:  .byte   $BC,$BC,$CC,$CC,$CC
-LC2E6:  .byte   $CC,$FF,$17,$2F
-LC2EA:  .byte   $3F,$3F,$17,$47,$47,$57,$FF
-LC2F1:  .byte   $2F,$47,$47,$57
-LC2F5:  .byte   $FF,$2F,$47,$57,$FF,$17,$2F,$3F
-        .byte   $17,$47,$57,$FF,$2F,$47,$57,$FF
-        .byte   $17,$2F,$3F,$3F,$17,$47,$57,$FF
-        .byte   $12,$21,$12
-LC310:  .byte   $12,$2A,$17,$12,$24,$24,$19,$24
-        .byte   $24,$24,$24,$24,$24,$24,$24,$24
-LC320:  .byte   $01
-LC321:  .byte   $02,$03,$04,$05,$06,$07,$08,$09
-        .byte   $01,$02,$03,$04,$05,$06,$07,$2C
-        .byte   $C3,$30,$C3,$34,$C3,$38,$C3,$3C
+        .byte   $80,$A8,$80,$C8,$80,$E8,$80,$10
+        .byte   $A0,$30,$A0,$50,$A0,$A8,$A0,$C8
+        .byte   $A0,$E8,$A0
+LC279:  .byte   $62,$73
+LC27B:  .byte   $00
+LC27C:  .byte   $01
+LC27D:  .byte   $25,$01,$49,$2B,$0A,$01,$28,$20
+        .byte   $01,$26,$2A,$01,$29,$40,$01,$27
+        .byte   $41,$49,$2C,$4A,$01,$2A
+LC293:  .byte   $40
+LC294:  .byte   $F7,$C5,$F8,$A0,$F9
+LC299:  .byte   $B7,$AF,$A7,$9F,$97,$8F,$87,$7F
+        .byte   $77,$6F
+LC2A3:  .byte   $CC,$BC,$AC,$9C,$8C,$7C,$6C
+LC2AA:  .byte   $BC,$AC,$9C,$8C
+LC2AE:  .byte   $BC,$CC
+LC2B0:  .byte   $37,$47,$57
+LC2B3:  .byte   $BC,$BC,$BC,$CC,$CC,$BC,$CC,$CC
+        .byte   $FF
+LC2BC:  .byte   $CC,$BC,$CC,$CC,$FF
+LC2C1:  .byte   $BC,$BC,$CC,$FF
+LC2C5:  .byte   $BC,$BC,$CC,$CC,$CC,$CC,$FF
+LC2CC:  .byte   $CC,$CC,$CC,$FF
+LC2D0:  .byte   $BC,$BC,$BC,$CC,$CC,$CC,$CC,$FF
+LC2D8:  .byte   $17,$2F,$3F,$3F,$17,$47,$47,$57
+        .byte   $FF
+LC2E1:  .byte   $2F,$47,$47,$57,$FF
+LC2E6:  .byte   $2F,$47,$57,$FF
+LC2EA:  .byte   $17,$2F,$3F,$17,$47,$57,$FF
+LC2F1:  .byte   $2F,$47,$57,$FF
+LC2F5:  .byte   $17,$2F,$3F,$3F,$17,$47,$57,$FF
+        .byte   $12,$21,$12,$12,$2A,$17,$12,$24
+        .byte   $24,$19,$24,$24,$24,$24,$24,$24
+        .byte   $24,$24,$24
+LC310:  .byte   $01,$02,$03,$04,$05,$06,$07,$08
+        .byte   $09,$01,$02,$03,$04,$05,$06,$07
+LC320:  .byte   $2C
+LC321:  .byte   $C3,$30,$C3,$34,$C3,$38,$C3,$3C
         .byte   $C3,$40,$C3,$00,$C0,$28,$D0,$3C
-        .byte   $C4,$4C,$D0
-LC344:  .byte   $64
-LC345:  .byte   $C4,$74,$D0,$8C,$C4
-LC34A:  .byte   $9C
-LC34B:  .byte   $D0,$B4,$C4,$C4,$D0
+        .byte   $C4,$4C,$D0,$64,$C4,$74,$D0,$8C
+        .byte   $C4,$9C,$D0,$B4,$C4,$C4,$D0,$D8
+        .byte   $C0,$FF,$D0
+LC344:  .byte   $56
+LC345:  .byte   $C3,$77,$C3,$7C,$C3
+LC34A:  .byte   $81
+LC34B:  .byte   $C3,$B2,$C3,$B7,$C3
 LC350:  .byte   $D8
-LC351:  .byte   $C0,$FF,$D0,$56,$C3,$77,$C3,$7C
-        .byte   $C3,$81,$C3,$B2,$C3,$B7,$C3,$D8
-        .byte   $C3,$01,$C4,$0E,$C4,$00,$D0,$24
+LC351:  .byte   $C3,$01,$C4,$0E,$C4,$00,$D0,$24
         .byte   $D0,$3D,$D0,$4B,$D0,$64,$D0,$74
         .byte   $D0,$8C,$D0,$9C,$D0,$B5,$D0,$C3
         .byte   $D0,$DC,$D0,$FF,$D0,$70,$80,$8D
@@ -182,38 +181,30 @@ LC351:  .byte   $C0,$FF,$D0,$56,$C3,$77,$C3,$7C
         .byte   $50,$B0,$50,$A8,$48,$FF,$48,$77
         .byte   $81,$87,$82,$77,$A1,$87,$A0,$FF
         .byte   $40,$38,$40,$D8,$F0,$38,$F0,$D8
-        .byte   $40,$38
-LC41B:  .byte   $F0
-LC41C:  .byte   $38,$FF
-        php
-LC41F:  bvs     LC429
-LC421:  cld
-        bpl     LC494
-        sed
-        bvs     LC41F
-        bvs     LC421
-LC429:  cld
-        .byte   $FF
-        ora     ($3C,x)
-        cpy     $78
+        .byte   $40,$38,$F0,$38,$FF,$08,$70,$08
+        .byte   $D8,$10,$70,$F8,$70,$F8,$70,$F8
+        .byte   $D8,$FF
+LC41B:  .byte   $01
+LC41C:  .byte   $3C,$C4
+        sei
         cld
         lda     #$10
         sta     $2000
         ldx     #$FF
         txs
-LC438:  lda     $2002
+LC428:  lda     $2002
         and     #$80
-        beq     LC438
+        beq     LC428
         ldy     #$07
         sty     $01
         ldy     #$00
         sty     $00
         lda     #$00
-LC449:  sta     ($00),y
+LC439:  sta     ($00),y
         dey
-        bne     LC449
+        bne     LC439
         dec     $01
-        bpl     LC449
+        bpl     LC439
         jsr     LC47B
         lda     #$97
         sta     $ED
@@ -227,34 +218,31 @@ LC449:  sta     ($00),y
         sta     $2006
         lda     $2007
         ldy     #$00
-LC470:  lda     $2007
-LC475           := * + 2
+LC460:  lda     $2007
         sta     $0700,y
         iny
         cpy     #$80
-        bne     LC470
-LC47B:  lda     $2002
+        bne     LC460
+        lda     $2002
         lda     $10
         eor     #$80
         jsr     LC553
-        jsr     LF4D2
+LC475:  jsr     LF4D2
         jmp     LC475
 
-LC48C           := * + 1
-        lda     #$10
+LC47B:  lda     #$10
         jsr     LC553
         lda     #$06
-LC494           := * + 2
         jsr     LC723
         jsr     LF221
         lda     #$FF
         ldy     #$00
-        sta     $0200,y
+LC48C:  sta     $0200,y
         dey
-        beq     LC4A5
+        beq     LC495
         jmp     LC48C
 
-LC4A5:  lda     #$00
+LC495:  lda     #$00
         sta     $4011
         jsr     LC6F9
         lda     #$24
@@ -284,28 +272,28 @@ LC4A5:  lda     #$00
         sta     $0331
         inc     $040E
         lda     $05B0
-        bne     LC4EE
+        bne     LC4DE
         lda     #$05
         sta     $05B0
-LC4EE:  dec     $05B0
+LC4DE:  dec     $05B0
         lda     $11
         eor     #$18
         sta     $2001
         jsr     LFA5C
         jsr     LF4F3
         lda     $49
-        bne     LC545
+        bne     LC535
         lda     $48
-        beq     LC54E
+        beq     LC53E
         lda     $4B
-        bne     LC53F
+        bne     LC52F
         ldx     #$00
         lda     $041F
-        beq     LC517
+        beq     LC507
         jsr     LC911
         jmp     LC541
 
-LC517:  lda     $0210
+LC507:  lda     $0210
         sta     $0101
         lda     $0213
         sta     $0100
@@ -320,44 +308,41 @@ LC517:  lda     $0210
         jsr     LDD9D
         jmp     LC541
 
-LC53F:
-LC541           := * + 2
-        jsr     LCB94
+LC52F:  jsr     LCB94
         jmp     LC541
 
-LC545:  jsr     LC559
+LC535:  jsr     LC559
         jsr     LF48D
         jmp     LC541
 
-LC54E:  jsr     LC656
-LC553           := * + 2
-        jsr     LF135
+LC53E:  jsr     LC656
+LC541:  jsr     LF135
         lda     $2002
         lda     $10
-LC559:  eor     #$80
+        eor     #$80
         jsr     LC553
         pla
         sta     $00
         pla
         rti
 
-        sta     $2000
+LC553:  sta     $2000
         sta     $10
         rts
 
-        lda     $06A2
-        bne     LC571
-        sta     $4015
-LC571:  lda     $05B4
-        bne     LC584
+LC559:  lda     $06A2
+        bne     LC561
+        sta     APU_STATUS
+LC561:  lda     $05B4
+        bne     LC574
         lda     #$80
         sta     $FD
         lda     #$04
         sta     $05B4
         lda     #$0F
-        sta     $4015
-LC584:  lda     $AE
-        bne     LC5B3
+        sta     APU_STATUS
+LC574:  lda     $AE
+        bne     LC5A3
         jsr     LC71F
         lda     #$44
         sta     $00
@@ -378,50 +363,49 @@ LC584:  lda     $AE
         sta     $3C
         rts
 
-LC5B3:  lda     $15
+LC5A3:  lda     $15
         and     #$20
-        bne     LC5D3
+        bne     LC5C3
         lda     $15
         and     #$10
-        bne     LC5F4
+        bne     LC5E4
         lda     #$00
         sta     $94
         lda     $3C
-        bne     LC5D2
+        bne     LC5C2
         lda     #$01
         sta     $4C
         lda     #$00
         sta     $EF
         jmp     LC609
 
-LC5D2:  rts
+LC5C2:  rts
 
-LC5D3:  lda     #$20
+LC5C3:  lda     #$20
         sta     $3C
         lda     $94
-        bne     LC5F3
+        bne     LC5E3
         lda     $0200
         clc
         adc     #$10
         cmp     #$C7
-LC5E4           := * + 1
-        bne     LC5E7
+        bne     LC5D7
         lda     #$97
-LC5E7:  sta     $0200
+LC5D7:  sta     $0200
         sta     $ED
         inc     $94
         lda     #$01
         sta     $97
         rts
 
-LC5F3:  rts
+LC5E3:  rts
 
-LC5F4:  sta     $0418
+LC5E4:  sta     $0418
         ldx     #$0F
         lda     #$00
-LC5FB:  sta     $24,x
+LC5EB:  sta     $24,x
         dex
-        bne     LC5FB
+        bne     LC5EB
         lda     $ED
         lsr     a
         lsr     a
@@ -429,14 +413,14 @@ LC5FB:  sta     $24,x
         lsr     a
         sec
         sbc     #$09
-LC609:  sta     $EF
+        sta     $EF
         cmp     #$02
-        bne     LC619
+        bne     LC609
         lda     #$01
         sta     $041F
         lda     #$02
         sta     $0403
-LC619:  jsr     LE2CC
+LC609:  jsr     LE2CC
         lda     #$0F
         sta     $18
         lda     #$13
@@ -451,153 +435,148 @@ LC619:  jsr     LE2CC
         sta     $94
         sta     $04FC
         lda     $041F
-        beq     LC642
+        beq     LC632
         lda     #$02
-        bne     LC644
-LC642:  lda     #$01
-LC644:  sta     $4A
+        bne     LC634
+LC632:  lda     #$01
+LC634:  sta     $4A
         lda     #$00
         sta     $FC
         lda     $4C
-        bne     LC65C
+        bne     LC64C
         lda     #$75
         sta     $39
         lda     #$01
         sta     $FD
-LC656:  lda     #$0F
-        sta     $4015
+        lda     #$0F
+        sta     APU_STATUS
         rts
 
-LC65C:  dec     $05B4
+LC64C:  dec     $05B4
         lda     #$6F
         sta     $39
         jmp     LC6EC
 
-        jsr     LF48D
+LC656:  jsr     LF48D
         lda     $39
         cmp     #$84
-        beq     LC68F
+        beq     LC67F
         cmp     #$6D
-        bcs     LC699
+        bcs     LC689
         ldx     $0412
-        beq     LC67B
+        beq     LC66B
         jmp     LDCCB
 
-LC67B:  lda     $39
+LC66B:  lda     $39
         cmp     #$68
-        bne     LC68E
+        bne     LC67E
         jsr     LC729
         lda     #$01
         sta     $48
         sta     $C0
         lda     #$00
         sta     $39
-LC68E:  rts
+LC67E:  rts
 
-LC68F:  lda     #$00
+LC67F:  lda     #$00
         sta     $39
         jmp     LC8E2
 
         dec     $39
         rts
 
-LC699:  cmp     #$AF
-        beq     LC6BB
+LC689:  cmp     #$AF
+        beq     LC6AB
         cmp     #$74
-        beq     LC6C8
+        beq     LC6B8
         cmp     #$6F
-        beq     LC6D9
+        beq     LC6C9
         cmp     #$6E
-        beq     LC6DE
+        beq     LC6CE
         cmp     #$6D
-        bne     LC6BA
+        bne     LC6AA
         lda     $4A
         cmp     #$02
-        bpl     LC6B8
+        bpl     LC6A8
         lda     #$01
         sta     $0412
-LC6B8:  dec     $39
-LC6BA:  rts
+LC6A8:  dec     $39
+LC6AA:  rts
 
-LC6BB:  lda     $4A
+LC6AB:  lda     $4A
         cmp     #$01
-        bne     LC6C7
+        bne     LC6B7
         lda     #$10
         sta     $FD
         dec     $39
-LC6C7:  rts
+LC6B7:  rts
 
-LC6C8:  dec     $39
+LC6B8:  dec     $39
         lda     $05C7
         ora     $05C8
-        bne     LC6D8
+        bne     LC6C8
         jsr     LC6EC
-LC6D7           := * + 2
         jsr     LC6F9
-LC6D8:  rts
+LC6C8:  rts
 
-LC6D9:  dec     $39
+LC6C9:  dec     $39
         jmp     LC6F9
 
-LC6DE:  jsr     LC707
+LC6CE:  jsr     LC707
         lda     $4A
         cmp     #$02
-        bpl     LC6F2
-        dec     $39
+        bpl     LC6E2
+LC6D7:  dec     $39
         lda     $4C
-LC6EC           := * + 1
-        beq     LC6F1
-LC6ED:  lda     #$6D
+        beq     LC6E1
+LC6DD:  lda     #$6D
         sta     $39
-LC6F1:  rts
+LC6E1:  rts
 
-LC6F2:  cmp     #$02
-        beq     LC6ED
+LC6E2:  cmp     #$02
+        beq     LC6DD
         jsr     LE259
-LC6F9:  jmp     LC6D7
+        jmp     LC6D7
 
-        lda     #$00
+LC6EC:  lda     #$00
         sta     $04
         lda     #$FF
         sta     $03
         lda     #$0F
-LC707           := * + 1
         jmp     LD6D2
 
-        lda     #$24
+LC6F9:  lda     #$24
         sta     $00
         lda     #$01
         sta     $01
         jsr     LC71F
         jmp     LF197
 
-        jsr     LC71F
+LC707:  jsr     LC71F
         ldy     $4A
         dey
         tya
         asl     a
-LC71F:  sta     $08
+        sta     $08
         tay
-LC723           := * + 1
         lda     LC293,y
         sta     $00
-LC729           := * + 2
         lda     LC294,y
         sta     $01
         jmp     LF218
 
-        lda     $11
+LC71F:  lda     $11
         and     #$E7
-        sta     $2001
+LC723:  sta     $2001
         sta     $11
         rts
 
-        lda     #$00
+LC729:  lda     #$00
         ldy     #$53
-LC73D:  sta     $00,y
+LC72D:  sta     $00,y
         iny
         cpy     #$E9
-        bne     LC73D
+        bne     LC72D
         lda     #$01
         sta     $5F
         sta     $60
@@ -630,58 +609,54 @@ LC73D:  sta     $00,y
         jsr     LC814
         lda     $4A
         cmp     #$01
-        bne     LC7A4
+        bne     LC794
         jsr     LC83F
         jsr     LC79B
         jsr     LDC0D
         jsr     LE170
         lda     #$00
-LC797:  sta     $0513
-LC79B           := * + 1
+        sta     $0513
         sta     $0518
         sta     $05D3
         sta     $05D4
         rts
 
-LC7A4:  jmp     LC797
+LC794:  jmp     LC797
 
-        lda     #$FF
+LC797:  lda     #$FF
         sta     $79
-        lda     #$08
+LC79B:  lda     #$08
         sta     $3C
         jsr     LE72C
         jsr     LE6C9
         jsr     LE387
         lda     $4A
         cmp     #$03
-        bmi     LC7C5
+        bmi     LC7B5
         lda     #$05
         sta     $EC
-LC7C3           := * + 1
         jsr     LE825
-LC7C5:  lda     #$02
+LC7B5:  lda     #$02
         sta     $FC
         lda     $4A
         cmp     #$01
-        bne     LC7D3
+        bne     LC7C3
         lda     #$10
         sta     $FC
-LC7D3:  lda     $0416
-        bne     LC7DF
+LC7C3:  lda     $0416
+        bne     LC7CF
         lda     $0402
         cmp     #$0A
-        bne     LC7EC
-LC7DF:  lda     #$00
+        bne     LC7DC
+LC7CF:  lda     #$00
         sta     $0416
         sta     $EC
         sta     $0402
         jmp     LC8E2
 
-LC7EC:  lda     #$22
+LC7DC:  lda     #$22
         sta     $B7
-LC7F1           := * + 1
         lda     #$C8
-LC7F3           := * + 1
         sta     $B6
         lda     #$B0
         sta     $C3
@@ -691,27 +666,27 @@ LC7F3           := * + 1
         sta     $DA
         rts
 
-        ldx     #$00
-LC803:  lda     LC179,x
+LC7F1:  ldx     #$00
+LC7F3:  lda     LC179,x
         cmp     #$FF
-        beq     LC81F
+        beq     LC80F
         sta     L0002
         lda     LC17A,x
         sta     $03
         lda     LC17B,x
-LC814:  sta     $04
+        sta     $04
         jsr     LD6D0
         inx
         inx
         inx
         jmp     LC7F3
 
-LC81F:  inx
+LC80F:  inx
         dey
-        bne     LC803
+        bne     LC7F3
         rts
 
-        lda     LC173,y
+LC814:  lda     LC173,y
         sta     $00
         lda     LC174,y
         sta     $01
@@ -719,19 +694,19 @@ LC81F:  inx
         sta     L0002
         lda     $5F,x
         cmp     #$01
-        beq     LC843
+        beq     LC833
         lda     $0233
         cmp     #$80
-        bcs     LC843
-LC83F:  lda     #$D8
+        bcs     LC833
+        lda     #$D8
         sta     $00
-LC843:  jsr     LD69F
+LC833:  jsr     LD69F
         lda     $4A
         cmp     #$02
-        bpl     LC871
+        bpl     LC861
         txa
-        beq     LC871
-        lda     #$D8
+        beq     LC861
+LC83F:  lda     #$D8
         sta     $00
         lda     #$BF
         sta     $01
@@ -739,85 +714,83 @@ LC843:  jsr     LD69F
         sta     L0002
         lda     $5F,x
         cmp     #$01
-        beq     LC86C
+        beq     LC85C
         lda     $0213
         cmp     #$80
-LC866:  bcc     LC86C
+        bcc     LC85C
         lda     #$06
         sta     $00
-LC86C:  ldx     #$01
+LC85C:  ldx     #$01
         jsr     LD69F
-LC871:  lda     #$FF
+LC861:  lda     #$FF
         sta     $DD,x
         rts
 
-        lda     $4C
-        beq     LC882
+LC866:  lda     $4C
+        beq     LC872
         lda     $06A2
-        bne     LC882
-        sta     $4015
-LC882:  lda     $15
+        bne     LC872
+        sta     APU_STATUS
+LC872:  lda     $15
         and     #$20
-        beq     LC88B
+        beq     LC87B
         jmp     LC8E2
 
-LC88B:  lda     $EB
-        bne     LC8EB
+LC87B:  lda     $EB
+        bne     LC8DB
         lda     $EE
-        beq     LC899
+        beq     LC889
         txa
-        bne     LC898
+        bne     LC888
         dec     $EE
-LC898:  rts
+LC888:  rts
 
-LC899:  lda     $5F,x
+LC889:  lda     $5F,x
         cmp     #$05
-        beq     LC8E8
+        beq     LC8D8
         cmp     #$04
-        beq     LC8C8
+        beq     LC8B8
         lda     $5F,x
         cmp     #$03
-        beq     LC8C8
+        beq     LC8B8
         lda     $4C
-        beq     LC8B3
+        beq     LC8A3
         jsr     LE26B
         jmp     LC8BB
 
-LC8B3:  lda     $C0
-        bne     LC8D7
+LC8A3:  lda     $C0
+        bne     LC8C7
         lda     $E5
         ora     $E6
-LC8BB:  beq     LC8C5
+        beq     LC8B5
         lda     #$00
         sta     $51
         sta     $52
-        beq     LC8CB
-LC8C5:  jsr     LCA37
-LC8C8:  jsr     LE1D7
-LC8CB:  jsr     LCA86
+        beq     LC8BB
+LC8B5:  jsr     LCA37
+LC8B8:  jsr     LE1D7
+LC8BB:  jsr     LCA86
         jsr     LCBD7
         jsr     LCC9E
         jsr     LD82F
-LC8D7:  txa
+LC8C7:  txa
         pha
-LC8DB           := * + 2
         jsr     LCA99
         jsr     LF48D
         pla
         tax
-LC8E2           := * + 1
         lda     $51,x
         sta     $53,x
         jmp     LC8DB
 
-LC8E8:  jsr     LCAF7
-LC8EB:  txa
-        bne     LC8F1
+LC8D8:  jsr     LCAF7
+LC8DB:  txa
+        bne     LC8E1
         jsr     LC995
-LC8F1:  rts
+LC8E1:  rts
 
-        lda     $49
-        bne     LC8F1
+LC8E2:  lda     $49
+        bne     LC8E1
         lda     $10
         and     #$FE
         sta     $2000
@@ -831,16 +804,16 @@ LC8F1:  rts
         sta     $4C
         sta     $4E
         sta     $AE
-LC911:  sta     $EB
+        sta     $EB
         sta     $EE
         sta     $041F
         sta     $0402
         jsr     LC6F9
         jmp     LC6EC
 
-        lda     $15
+LC911:  lda     $15
         and     #$20
-        beq     LC936
+        beq     LC926
         lda     #$00
         sta     $EC
         sta     $FC
@@ -848,39 +821,39 @@ LC911:  sta     $EB
         jsr     LE2B4
         jmp     LC8E2
 
-LC936:  lda     $EB
-        bne     LC99F
+LC926:  lda     $EB
+        bne     LC98F
         lda     $EE
-        beq     LC941
+        beq     LC931
         dec     $EE
         rts
 
-LC941:  ldx     #$00
+LC931:  ldx     #$00
         lda     $EC
         cmp     #$03
-        beq     LC99C
+        beq     LC98C
         cmp     #$30
-        beq     LC9A2
+        beq     LC992
         cmp     #$20
-        beq     LC98F
+        beq     LC97F
         lda     $5F
         cmp     #$05
-        beq     LC986
+        beq     LC976
         cmp     #$04
-        beq     LC973
+        beq     LC963
         cmp     #$03
-        beq     LC973
+        beq     LC963
         lda     $AF
-        beq     LC96A
-LC963:  lda     #$00
+        beq     LC95A
+        lda     #$00
         sta     $51
         jmp     LC963
 
-LC96A:  lda     $EC
+LC95A:  lda     $EC
         cmp     #$03
-        beq     LC973
+        beq     LC963
         jsr     LCA37
-LC973:  jsr     LCA86
+LC963:  jsr     LCA86
         jsr     LCBD7
         jsr     LCC9E
         jsr     LCA99
@@ -888,48 +861,47 @@ LC973:  jsr     LCA86
         sta     $53
         jmp     LC98C
 
-LC986:  lda     $EC
+LC976:  lda     $EC
         cmp     #$20
-        beq     LC98F
-LC98C:  jsr     LCAF7
-LC98F:  txa
+        beq     LC97F
+        jsr     LCAF7
+LC97F:  txa
         pha
         jsr     LE928
-LC995           := * + 1
         jsr     LE876
         jsr     LE984
         pla
         tax
-LC99C:  jsr     LF48D
-LC99F:  jmp     LC995
+LC98C:  jsr     LF48D
+LC98F:  jmp     LC995
 
-LC9A2:  jmp     LE9C0
+LC992:  jmp     LE9C0
 
-        lda     $15
+LC995:  lda     $15
         and     #$10
-        beq     LCA11
+        beq     LCA01
         lda     $4C
-        beq     LC9B8
+        beq     LC9A8
         lda     #$00
         sta     $4E
         sta     $4C
         jmp     LC5E4
 
-LC9B8:  lda     $15
+LC9A8:  lda     $15
         cmp     $0418
-        beq     LCA14
+        beq     LCA04
         sta     $0418
         lda     $EB
-        beq     LC9FC
+        beq     LC9EC
         lda     $EE
-        bne     LC9FB
+        bne     LC9EB
         lda     #$00
         sta     $EB
         lda     $0E
         sta     $FC
         lda     $4A
         cmp     #$01
-        bne     LC9E9
+        bne     LC9D9
         lda     #$01
         sta     $00
         lda     #$3F
@@ -938,40 +910,40 @@ LC9B8:  lda     $15
         sta     L0002
         lda     #$C3
         jsr     LF2AA
-LC9E9:  lda     $10
+LC9D9:  lda     $10
         and     #$FE
         sta     $10
         sta     $2000
         lda     $11
         and     #$EF
         sta     $11
-LC9F8:  jmp     LC9F8
+        jmp     LC9F8
 
-LC9FB:  rts
+LC9EB:  rts
 
-LC9FC:  lda     #$01
+LC9EC:  lda     #$01
         sta     $EB
         lda     $FC
         sta     $0E
         lda     #$00
         sta     $FC
-        lda     #$40
+LC9F8:  lda     #$40
         sta     $EE
         lda     #$40
         sta     $FD
         rts
 
-LCA11:  sta     $0418
-LCA14:  lda     $EE
-        beq     LCA1B
+LCA01:  sta     $0418
+LCA04:  lda     $EE
+        beq     LCA0B
         dec     $EE
         rts
 
-LCA1B:  lda     $EB
-        bne     LCA20
+LCA0B:  lda     $EB
+        bne     LCA10
         rts
 
-LCA20:  lda     $10
+LCA10:  lda     $10
         ora     #$01
         sta     $10
         sta     $2000
@@ -980,166 +952,163 @@ LCA20:  lda     $10
         sta     $11
         lda     $4A
         cmp     #$01
-        bne     LCA46
+        bne     LCA36
         lda     #$01
-LCA37:  sta     $00
+        sta     $00
         lda     #$3F
         sta     $01
         lda     #$FD
         sta     L0002
         lda     #$C2
-LCA43:  jsr     LF2AA
-LCA46:  rts
+        jsr     LF2AA
+LCA36:  rts
 
-        ldy     #$00
+LCA37:  ldy     #$00
         txa
-        bne     LCA51
+        bne     LCA41
         lda     $15
         jmp     LCA43
 
-LCA51:  lda     $17
-        and     #$0F
-        beq     LCA6B
+LCA41:  lda     $17
+LCA43:  and     #$0F
+        beq     LCA5B
         cmp     #$08
-        beq     LCA6A
+        beq     LCA5A
         cmp     #$04
-        beq     LCA69
+        beq     LCA59
         cmp     #$02
-        beq     LCA68
+        beq     LCA58
         cmp     #$01
-        bne     LCA6B
+        bne     LCA5B
         iny
-LCA68:  iny
-LCA69:  iny
-LCA6A:  iny
-LCA6B:  sty     $51,x
+LCA58:  iny
+LCA59:  iny
+LCA5A:  iny
+LCA5B:  sty     $51,x
         lda     $05CE,x
-        bne     LCA7D
+        bne     LCA6D
         lda     $51,x
         cmp     $53,x
-        beq     LCA7D
+        beq     LCA6D
         lda     #$01
         sta     $05CE,x
-LCA7D:  lda     $5F,x
+LCA6D:  lda     $5F,x
         cmp     #$02
-        beq     LCA95
+        beq     LCA85
         txa
-        bne     LCA8B
-LCA86:  lda     $15
+        bne     LCA7B
+        lda     $15
         jmp     LCA7D
 
-LCA8B:  lda     $17
-        and     #$80
-        beq     LCA95
+LCA7B:  lda     $17
+LCA7D:  and     #$80
+        beq     LCA85
         lda     #$03
         sta     $5F,x
-LCA95:  rts
+LCA85:  rts
 
-        lda     $5B,x
-LCA99           := * + 1
-        beq     LCAA8
+LCA86:  lda     $5B,x
+        beq     LCA98
         jsr     LD6BA
         lda     #$08
         sta     L0002
         jsr     LD6A3
         lda     #$00
         sta     $5B,x
-LCAA8:  rts
+LCA98:  rts
 
-        lda     $4A
+LCA99:  lda     $4A
         cmp     #$03
-        beq     LCAD7
+        beq     LCAC7
         lda     $C0
-        beq     LCACA
+        beq     LCABA
         lda     $0402
         cmp     #$0A
-        beq     LCAD6
+        beq     LCAC6
         jsr     LDECB
-        beq     LCACA
+        beq     LCABA
         lda     #$00
         sta     $C0
         lda     $4A
         cmp     #$01
-        bne     LCAD6
+        bne     LCAC6
         rts
 
-LCACA:  lda     $4A
+LCABA:  lda     $4A
         cmp     #$02
-        beq     LCAD6
+        beq     LCAC6
         jsr     LD4F4
         jsr     LDFEE
-LCAD6:  rts
+LCAC6:  rts
 
-LCAD7:  txa
+LCAC7:  txa
         pha
         jsr     LE7FC
         lda     $AF
-        bne     LCAE3
+        bne     LCAD3
         jsr     LF006
-LCAE3:  jsr     LE353
+LCAD3:  jsr     LE353
         jsr     LE674
         jsr     LE3A5
         jsr     LE928
         jsr     LEA39
         jsr     LE2DE
         lda     $EC
-LCAF7:  cmp     #$08
-        beq     LCAFE
+        cmp     #$08
+        beq     LCAEE
         jsr     LEFF7
-LCAFE:  jsr     LE715
+LCAEE:  jsr     LE715
         jsr     LD34F
         pla
         tax
         rts
 
-        lda     #$00
+LCAF7:  lda     #$00
         sta     $FC
         lda     $57,x
-        bne     LCB24
+        bne     LCB14
         lda     $59,x
-        beq     LCB19
+        beq     LCB09
         jsr     LD2BC
-LCB17           := * + 1
         jmp     LCB17
 
-LCB19:  jsr     LD562
-        beq     LCB21
+LCB09:  jsr     LD562
+        beq     LCB11
         jmp     LCB26
 
-LCB21:  jmp     LD292
+LCB11:  jmp     LD292
 
-LCB24:  dec     $57,x
-LCB26:  rts
+LCB14:  dec     $57,x
+        rts
 
-        lda     #$03
+LCB17:  lda     #$03
         ldy     $EC
         cpy     #$08
-        bne     LCB31
+        bne     LCB21
         lda     #$01
-LCB31:  sta     $57,x
+LCB21:  sta     $57,x
         dec     $59,x
         rts
 
-        lda     $4A
+LCB26:  lda     $4A
         cmp     #$01
-        bne     LCB4E
+        bne     LCB3E
         lda     #$32
         sta     $79
         ldy     #$00
-LCB44           := * + 2
         jsr     LC814
         lda     #$01
         sta     $5F,x
         ldy     #$10
         jmp     LCB89
 
-LCB4E:  lda     $EC
+LCB3E:  lda     $EC
         cmp     #$08
-        bne     LCB7D
-        jsr     LE387
+        bne     LCB6D
+LCB44:  jsr     LE387
         lda     $0402
         cmp     #$0A
-        bmi     LCB70
+        bmi     LCB60
         jsr     LE2B4
         lda     #$10
         sta     $FD
@@ -1150,43 +1119,40 @@ LCB4E:  lda     $EC
         sta     $EC
         rts
 
-LCB70:  lda     #$05
-LCB73           := * + 1
+LCB60:  lda     #$05
         sta     $EC
         jsr     LC707
         jsr     LC7C3
         jmp     LCB73
 
-LCB7D:  lda     #$16
+LCB6D:  lda     #$16
         sta     $EC
         sta     $DB
-        ldy     #$04
+LCB73:  ldy     #$04
         ldx     #$00
-LCB89           := * + 2
         jsr     LC814
         jsr     LE825
         ldx     #$00
         lda     #$FF
         sta     $79
-LCB94           := * + 1
         lda     #$01
         sta     $5F
         ldy     #$02
-        sty     $FC
+LCB89:  sty     $FC
         lda     #$32
         sta     $57,x
         lda     #$24
         sta     $59,x
         rts
 
-        lda     $4A
+LCB94:  lda     $4A
         cmp     #$01
-        beq     LCBAF
+        beq     LCB9F
         cmp     #$02
-        bpl     LCBD3
+        bpl     LCBC3
         rts
 
-LCBAF:  ldx     #$00
+LCB9F:  ldx     #$00
         jsr     LE1C1
         lda     #$00
         sta     $03F2
@@ -1197,89 +1163,85 @@ LCBAF:  ldx     #$00
         sta     $040D
         ldx     #$01
         jsr     LE1C1
-LCBCC           := * + 1
         lda     $4C
-        beq     LCBDC
+        beq     LCBCC
         lda     #$90
-        bne     LCBDE
-LCBD3:  beq     LCBDA
+        bne     LCBCE
+LCBC3:  beq     LCBCA
         dec     $4A
-LCBD7:  jmp     LCBCC
+        jmp     LCBCC
 
-LCBDA:  inc     $4A
-LCBDC:  lda     #$7A
-LCBDE:  sta     $39
+LCBCA:  inc     $4A
+LCBCC:  lda     #$7A
+LCBCE:  sta     $39
         lda     #$00
         sta     $48
         sta     $4B
         rts
 
-        lda     $5F,x
+LCBD7:  lda     $5F,x
         cmp     $61,x
-        bne     LCBEE
+        bne     LCBDE
         rts
 
-LCBEE:  lda     #$00
+LCBDE:  lda     #$00
         sta     $55,x
         sta     $75
         lda     $5F,x
         cmp     #$01
-        beq     LCC12
+        beq     LCC02
         cmp     #$02
-        beq     LCC20
+        beq     LCC10
         cmp     #$03
-        beq     LCC36
+        beq     LCC26
         cmp     #$04
-        beq     LCC3C
+        beq     LCC2C
         lda     $61,x
         cmp     #$04
-        bne     LCC52
+        bne     LCC42
         jsr     LD242
         jmp     LCC3E
 
-LCC12:  lda     #$00
+LCC02:  lda     #$00
         sta     $6F,x
         sta     L0002
         sta     $69,x
         sta     $67,x
         sta     $39,x
-        beq     LCC52
-LCC20:  lda     #$01
+        beq     LCC42
+LCC10:  lda     #$01
         sta     $6B,x
         sta     $76,x
         jsr     LE74A
         lda     $4A
         cmp     #$03
-        bne     LCC33
+        bne     LCC23
         lda     #$00
         sta     $63,x
-LCC33:  jmp     LCC42
+LCC23:  jmp     LCC42
 
-LCC36:  jsr     LCC47
+LCC26:  jsr     LCC47
         jmp     LCC42
 
-LCC3C:
-LCC3E           := * + 2
-        jsr     LDA5E
+LCC2C:  jsr     LDA5E
         lda     $0210,y
-LCC42:  sta     $71,x
+        sta     $71,x
         lda     #$01
-LCC47           := * + 1
         sta     $09
         lda     #$00
         sta     $6B,x
-        beq     LCC52
-        lda     #$01
+        beq     LCC42
+LCC3E:  lda     #$01
         sta     $FF
-LCC52:  lda     $5F,x
+LCC42:  lda     $5F,x
         sta     $61,x
         rts
 
-        txa
+LCC47:  txa
         asl     a
         tay
         lda     #$00
-LCC5C:  sta     $7C,y
+        sta     $7C,y
         lda     #$40
         sta     $FF
         jsr     LDA5E
@@ -1287,85 +1249,83 @@ LCC5C:  sta     $7C,y
         sta     $71,x
         rts
 
-        tya
+LCC5C:  tya
         pha
         jsr     LCC75
         jsr     LD9A7
         txa
-LCC75:  pha
+        pha
         ldx     #$03
-LCC78:  lda     $88,x
+LCC68:  lda     $88,x
         sta     $05FC,x
         dex
-        bpl     LCC78
+        bpl     LCC68
         pla
         tax
         pla
         tay
         rts
 
-        jsr     LD6BA
+LCC75:  jsr     LD6BA
         lda     $5F,x
         cmp     #$04
-        bmi     LCC90
+        bmi     LCC80
         lda     #$01
-LCC90:  sec
+LCC80:  sec
         sbc     #$01
         asl     a
         asl     a
         clc
         ldy     $63,x
-        bne     LCC9C
+        bne     LCC8C
         adc     #$02
-LCC9C:  ldy     $6B,x
-LCC9E:  cpy     #$02
-        bne     LCCA4
+LCC8C:  ldy     $6B,x
+        cpy     #$02
+        bne     LCC94
         adc     #$07
-LCCA4:  tay
+LCC94:  tay
         lda     LC196,y
         sta     L0002
         lda     LC197,y
         rts
 
-        lda     #$FF
+LCC9E:  lda     #$FF
         sta     $0414,x
         jsr     LCC5C
         lda     $5F,x
         cmp     #$01
-        beq     LCCC7
+        beq     LCCB7
         cmp     #$02
-        beq     LCCCD
+        beq     LCCBD
         cmp     #$03
-        beq     LCCD3
-LCCC6           := * + 2
+        beq     LCCC3
         jmp     LCE3D
 
-LCCC7:  jsr     LCCC7
+LCCB7:  jsr     LCCC7
         jmp     LCCC6
 
-LCCCD:  jsr     LCCE2
+LCCBD:  jsr     LCCE2
         jmp     LCCC6
 
-LCCD3:  jsr     LCDC6
-        rts
+LCCC3:  jsr     LCDC6
+LCCC6:  rts
 
-        jsr     LD556
-        bne     LCCE6
+LCCC7:  jsr     LD556
+        bne     LCCD6
         jsr     LD562
-        bne     LCCE9
-LCCE2           := * + 1
+        bne     LCCD9
         lda     #$04
         sta     $5F,x
         rts
 
-LCCE6:  jmp     LCE1E
+LCCD6:  jmp     LCE1E
 
-LCCE9:  jsr     LDC1F
+LCCD9:  jsr     LDC1F
         jsr     LD10B
         jmp     LCE85
 
-        jsr     LD55E
-        beq     LCD09
+LCCE2:  jsr     LD55E
+        beq     LCCF9
         jsr     LDA5E
         lda     $8D
         sec
@@ -1374,8 +1334,8 @@ LCCE9:  jsr     LDC1F
         adc     #$01
         adc     $0210,y
         sta     $0210,y
-LCD09:  lda     $76,x
-        beq     LCD19
+LCCF9:  lda     $76,x
+        beq     LCD09
         lda     $73,x
         sta     $00
         jsr     LD158
@@ -1383,154 +1343,152 @@ LCD09:  lda     $76,x
         sta     $76,x
         rts
 
-LCD19:  jsr     LD10B
+LCD09:  jsr     LD10B
         jsr     LD562
-        beq     LCD2B
+        beq     LCD1B
         lda     $51,x
         cmp     #$02
-        bne     LCD2B
+        bne     LCD1B
         eor     #$02
         sta     $51,x
-LCD2B:  inc     $99
+LCD1B:  inc     $99
         jsr     LD556
-        bne     LCD35
+        bne     LCD25
         jmp     LCDC1
 
-LCD35:  lda     $4A
+LCD25:  lda     $4A
         cmp     #$03
-        beq     LCD41
+        beq     LCD31
         cmp     #$01
-        beq     LCD56
-        bne     LCD73
-LCD41:  lda     $EC
+        beq     LCD46
+        bne     LCD63
+LCD31:  lda     $EC
         cmp     #$06
-        beq     LCD56
+        beq     LCD46
         lda     $BE
-        bne     LCD56
+        bne     LCD46
         lda     $93
-        bne     LCD56
+        bne     LCD46
         lda     $51,x
         cmp     #$03
-        bmi     LCD56
+        bmi     LCD46
         rts
 
-LCD56:  lda     $0419
+LCD46:  lda     $0419
         cmp     #$07
-        bmi     LCD5F
+        bmi     LCD4F
         eor     #$01
-LCD5F:  and     #$01
-        beq     LCD66
+LCD4F:  and     #$01
+        beq     LCD56
         jsr     LD44A
-LCD66:  lda     $4C
-        bne     LCD73
+LCD56:  lda     $4C
+        bne     LCD63
         jsr     LCFE2
         lda     $05CE,x
-        bne     LCD73
+        bne     LCD63
         rts
 
-LCD73:  lda     $6B,x
+LCD63:  lda     $6B,x
         cmp     #$01
-        beq     LCDCE
+        beq     LCDBE
         jsr     LD55A
         sta     $DC
         cmp     #$11
-        bne     LCD85
+        bne     LCD75
         jmp     LD0AF
 
-LCD85:  lda     $51,x
+LCD75:  lda     $51,x
         cmp     #$02
-        bmi     LCDCD
+        bmi     LCDBD
         lda     #$0F
         jsr     LD63C
-        beq     LCDCD
+        beq     LCDBD
         lda     $51,x
         cmp     #$02
-        beq     LCDA9
+        beq     LCD99
         cmp     #$03
-        beq     LCDBA
+        beq     LCDAA
         lda     #$01
         sta     $63,x
         lda     $DC
         cmp     #$01
-        beq     LCDCA
+        beq     LCDBA
         jmp     LCDB7
 
-LCDA9:  lda     $DC
+LCD99:  lda     $DC
         cmp     #$01
-        beq     LCDB3
+        beq     LCDA3
         lda     #$00
-        beq     LCDB5
-LCDB3:  lda     #$01
-LCDB5:  sta     $63,x
-LCDB7:  jmp     LD13F
+        beq     LCDA5
+LCDA3:  lda     #$01
+LCDA5:  sta     $63,x
+        jmp     LD13F
 
-LCDBA:  lda     #$00
+LCDAA:  lda     #$00
         sta     $63,x
         lda     $DC
-LCDC1           := * + 1
         cmp     #$01
-        beq     LCDC7
-LCDC6           := * + 2
+        beq     LCDB7
         jmp     LCDBA
 
-LCDC7:  jmp     LD273
+LCDB7:  jmp     LD273
 
-LCDCA:  jmp     LD13F
+LCDBA:  jmp     LD13F
 
-LCDCD:  rts
+LCDBD:  rts
 
-LCDCE:  jmp     LCF21
+LCDBE:  jmp     LCF21
 
-        lda     #$04
+LCDC1:  lda     #$04
         sta     $5F,x
         rts
 
-        jsr     LD995
-        bne     LCDE0
+LCDC6:  jsr     LD995
+        bne     LCDD0
         jsr     LD556
-        bne     LCE09
-LCDE0:  lda     $05C1,x
-        beq     LCDE8
+        bne     LCDF9
+LCDD0:  lda     $05C1,x
+        beq     LCDD8
         dec     $05C1,x
-LCDE8:  txa
+LCDD8:  txa
         asl     a
         tay
         lda     $7C,y
         cmp     #$03
-        bcc     LCDF7
+        bcc     LCDE7
         jsr     LD562
-        bne     LCE21
-LCDF7:  jsr     LD55E
-        bne     LCE24
+        bne     LCE11
+LCDE7:  jsr     LD55E
+        bne     LCE14
         jsr     LDA5E
         lda     $0210,y
         cmp     #$D8
-        bcs     LCE29
+        bcs     LCE19
         jmp     LD0CA
 
-LCE09:  jsr     LCE1E
+LCDF9:  jsr     LCE1E
         lda     $4A
         cmp     #$01
-        bne     LCE20
+        bne     LCE10
         jsr     LCC5C
         jsr     LD995
-        beq     LCE20
+        beq     LCE10
         lda     $63,x
         eor     #$01
-LCE1E:  sta     $63,x
-LCE20:  rts
+        sta     $63,x
+LCE10:  rts
 
-LCE21:  jmp     LD117
+LCE11:  jmp     LD117
 
-LCE24:  lda     #$04
+LCE14:  lda     #$04
         sta     $5F,x
         rts
 
-LCE29:  lda     #$05
+LCE19:  lda     #$05
         sta     $5F,x
         rts
 
-        lda     $8C
+LCE1E:  lda     $8C
         sec
         sbc     #$10
         sta     $73,x
@@ -1538,35 +1496,35 @@ LCE29:  lda     #$05
         sta     $5F,x
         lda     $8C
         cmp     #$14
-LCE3D:  beq     LCE48
+        beq     LCE38
         cmp     #$EC
-        bne     LCE4C
+        bne     LCE3C
         lda     #$01
         sta     $63,x
         rts
 
-LCE48:  lda     #$00
+LCE38:  lda     #$00
         sta     $63,x
-LCE4C:  rts
+LCE3C:  rts
 
-        jsr     LD562
-        beq     LCE5A
+LCE3D:  jsr     LD562
+        beq     LCE4A
         jsr     LD117
         lda     #$10
         sta     $FF
         rts
 
-LCE5A:  jsr     LDA5E
+LCE4A:  jsr     LDA5E
         lda     $0210,y
         cmp     #$D8
-        bcc     LCE6D
+        bcc     LCE5D
         lda     #$10
         sta     $FF
         lda     #$05
         sta     $5F,x
         rts
 
-LCE6D:  jsr     LDA5E
+LCE5D:  jsr     LDA5E
         lda     $0213,y
         sta     $00
         lda     $0210,y
@@ -1574,103 +1532,98 @@ LCE6D:  jsr     LDA5E
         adc     $78
         sta     $01
         lda     $0211,y
-LCE80:  pha
+        pha
         lda     $0212,y
-LCE85           := * + 1
         cmp     #$40
-        bmi     LCE8F
+        bmi     LCE7F
         pla
         sec
         sbc     #$06
         jmp     LCE80
 
-LCE8F:  pla
-        sta     L0002
+LCE7F:  pla
+LCE80:  sta     L0002
         jmp     LD6A3
 
-        jsr     LDA5E
+LCE85:  jsr     LDA5E
         lda     $0210,y
         sta     $01
         lda     $51,x
-LCEA0           := * + 1
         cmp     #$03
-        beq     LCEAD
+        beq     LCE9D
         cmp     #$04
-        bne     LCECB
+        bne     LCEBB
         jsr     LCEBC
         jmp     LCEA0
 
-LCEAD:  jsr     LCEDA
-        sta     $00
+LCE9D:  jsr     LCEDA
+LCEA0:  sta     $00
         and     #$02
         pha
         cmp     $67,x
-        beq     LCEBC
+        beq     LCEAC
         jsr     LCEF8
-LCEBC:  pla
+LCEAC:  pla
         sta     $67,x
         lda     $6F,x
         sta     L0002
         lda     $0210,y
         sta     $01
         jsr     LD6A3
-LCECB:  rts
+LCEBB:  rts
 
-        lda     #$01
+LCEBC:  lda     #$01
         sta     $63,x
         lda     $75
         cmp     #$04
-        beq     LCEE3
+        beq     LCED3
         lda     $55,x
         clc
-LCEDA           := * + 1
         adc     #$A0
         sta     $55,x
         lda     $0213,y
         adc     #$00
         rts
 
-LCEE3:  lda     $0213,y
+LCED3:  lda     $0213,y
         sec
         sbc     #$02
         rts
 
-        lda     #$00
+LCEDA:  lda     #$00
         sta     $63,x
         lda     $75
         cmp     #$03
-        beq     LCF01
+        beq     LCEF1
         lda     $55,x
         sec
-LCEF8           := * + 1
         sbc     #$A0
         sta     $55,x
         lda     $0213,y
         sbc     #$00
         rts
 
-LCF01:  lda     $0213,y
+LCEF1:  lda     $0213,y
         clc
         adc     #$02
         rts
 
-        tya
+LCEF8:  tya
         pha
         lda     $6F,x
-        beq     LCF1D
+        beq     LCF0D
         cmp     #$10
-        bpl     LCF16
+        bpl     LCF06
         ldy     $69,x
-        beq     LCF1D
-LCF16:  sec
+        beq     LCF0D
+LCF06:  sec
         sbc     #$08
         ldy     #$01
-        bne     LCF22
-LCF1D:  clc
+        bne     LCF12
+LCF0D:  clc
         adc     #$08
-LCF21           := * + 1
         ldy     #$00
-LCF22:  sty     $69,x
+LCF12:  sty     $69,x
         sta     $6F,x
         lda     $63,x
         sta     $65,x
@@ -1680,53 +1633,49 @@ LCF22:  sty     $69,x
         tay
         rts
 
-        txa
+LCF21:  txa
         pha
         jsr     LDA5E
-LCF37           := * + 1
         lda     $51,x
-        beq     LCF47
-LCF3A:  cmp     #$03
-        bmi     LCF44
+        beq     LCF37
+        cmp     #$03
+        bmi     LCF34
         jsr     LCFB5
         jmp     LCF37
 
-LCF44:  jsr     LCF3A
-LCF47:  pla
+LCF34:  jsr     LCF3A
+LCF37:  pla
         tax
         rts
 
-        lda     $51,x
+LCF3A:  lda     $51,x
         cmp     #$01
-        bne     LCF56
+        bne     LCF46
         jsr     LCF80
         jmp     LCF65
 
-LCF56:  lda     $4A
+LCF46:  lda     $4A
         cmp     #$01
-        bne     LCF72
+        bne     LCF62
         lda     $0210,y
         cmp     #$AF
-        bcc     LCF72
-LCF65           := * + 2
+        bcc     LCF62
         jsr     LD7F0
         cmp     #$02
-        bne     LCF72
+        bne     LCF62
         lda     $8D
         sec
         sbc     #$11
         jmp     LCF65
 
-LCF72:  jsr     LCF97
-        sta     $01
+LCF62:  jsr     LCF97
+LCF65:  sta     $01
         and     #$01
-        beq     LCF7F
+        beq     LCF6F
         lda     #$28
-        bne     LCF81
-LCF7F:
-LCF80           := * + 1
-        lda     #$30
-LCF81:  sta     L0002
+        bne     LCF71
+LCF6F:  lda     #$30
+LCF71:  sta     L0002
         lda     $0213,y
         sta     $00
         jsr     LD6A3
@@ -1734,13 +1683,12 @@ LCF81:  sta     L0002
         sta     $6B,x
         rts
 
-        lda     $99
+LCF80:  lda     $99
         and     #$0A
-        bne     LCF9A
-LCF97           := * + 1
+        bne     LCF8A
         lda     #$20
         sta     $FF
-LCF9A:  lda     $55,x
+LCF8A:  lda     $55,x
         sec
         sbc     #$A0
         sta     $55,x
@@ -1748,16 +1696,16 @@ LCF9A:  lda     $55,x
         sbc     #$00
         rts
 
-        lda     $75
+LCF97:  lda     $75
         cmp     #$02
-        bne     LCFB4
+        bne     LCFA4
         sec
         lda     $0210,y
         sbc     #$01
         rts
 
-LCFB4:  clc
-LCFB5:  lda     $55,x
+LCFA4:  clc
+        lda     $55,x
         adc     #$50
         sta     $55,x
         lda     #$20
@@ -1766,103 +1714,99 @@ LCFB5:  lda     $55,x
         adc     #$01
         rts
 
-        jsr     LD03D
-        beq     LCFCB
+LCFB5:  jsr     LD03D
+        beq     LCFBB
         rts
 
-LCFCB:  lda     #$0B
+LCFBB:  lda     #$0B
         jsr     LD63C
-        bne     LCFD3
+        bne     LCFC3
         rts
 
-LCFD3:  lda     $51,x
+LCFC3:  lda     $51,x
         cmp     #$04
-        bne     LCFE1
+        bne     LCFD1
         lda     $63,x
-        beq     LCFE5
+        beq     LCFD5
         lda     #$00
-        beq     LCFEA
-LCFE1:
-LCFE2           := * + 1
-        lda     $63,x
-        beq     LCFE8
-LCFE5:  jmp     LD164
+        beq     LCFDA
+LCFD1:  lda     $63,x
+        beq     LCFD8
+LCFD5:  jmp     LD164
 
-LCFE8:  lda     #$01
-LCFEA:  sta     $63,x
+LCFD8:  lda     #$01
+LCFDA:  sta     $63,x
         jsr     LD13F
         jmp     LD0C5
 
-        lda     $05CE,x
-        beq     LD04C
+LCFE2:  lda     $05CE,x
+        beq     LD03C
         lda     $39,x
-        bne     LD01B
+        bne     LD00B
         lda     $51,x
         cmp     #$03
-        bmi     LD04C
+        bmi     LD03C
         lda     $63,x
         sta     $05CA,x
-        beq     LD00C
+        beq     LCFFC
         lda     #$28
-        bne     LD00E
-LD00C:  lda     #$2E
-LD00E:  sta     $05CC,x
+        bne     LCFFE
+LCFFC:  lda     #$2E
+LCFFE:  sta     $05CC,x
         lda     $51,x
         sta     $05CE,x
         lda     #$30
         sta     $39,x
         rts
 
-LD01B:  lda     $6B,x
+LD00B:  lda     $6B,x
         cmp     #$01
-        bne     LD02B
+        bne     LD01B
         lda     $05CE,x
         sta     $51,x
         jsr     LD03D
-        bne     LD03D
-LD02B:  lda     $63,x
+        bne     LD02D
+LD01B:  lda     $63,x
         cmp     $05CA,x
-        bne     LD047
+        bne     LD037
         jsr     LDA5E
         lda     $0211,y
         cmp     $05CC,x
-        bne     LD047
-LD03D:  lda     #$00
+        bne     LD037
+LD02D:  lda     #$00
         sta     $05CE,x
         sta     $39,x
         jmp     LE74A
 
-LD047:  lda     $05CE,x
+LD037:  lda     $05CE,x
         sta     $51,x
-LD04C:  rts
+LD03C:  rts
 
-        txa
+LD03D:  txa
         pha
         lda     $88
         pha
         lda     $8A
         pha
-LD056           := * + 1
         stx     $0A
         lda     $51,x
         cmp     #$03
-        beq     LD063
+        beq     LD053
         jsr     LD07B
         jmp     LD056
 
-LD063:  jsr     LD093
-        bne     LD07C
+LD053:  jsr     LD093
+LD056:  bne     LD06C
         jsr     LD55E
-        bne     LD07C
+        bne     LD06C
         dec     $8B
         lda     $0A
         eor     #$01
         tax
         jsr     LCC75
         jsr     LD9AF
-LD07B           := * + 1
         inc     $8B
-LD07C:  dec     $8B
+LD06C:  dec     $8B
         sta     $0F
         pla
         sta     $8A
@@ -1873,12 +1817,12 @@ LD07C:  dec     $8B
         lda     $0F
         rts
 
-        lda     $8A
+LD07B:  lda     $8A
         sec
         sbc     $88
         clc
         adc     $8A
-LD093:  bcs     LD0A0
+        bcs     LD090
         ldx     $8A
         sta     $8A
         stx     $88
@@ -1886,17 +1830,17 @@ LD093:  bcs     LD0A0
         lda     #$00
         rts
 
-LD0A0:  lda     #$01
+LD090:  lda     #$01
         rts
 
-        lda     $8A
+LD093:  lda     $8A
         sec
         sbc     $88
         sta     $8A
         lda     $88
         sec
         sbc     $8A
-LD0AF:  bcc     LD0BC
+        bcc     LD0AC
         ldx     $88
         sta     $88
         stx     $8A
@@ -1904,39 +1848,36 @@ LD0AF:  bcc     LD0BC
         lda     #$00
         rts
 
-LD0BC:  lda     #$01
+LD0AC:  lda     #$01
         rts
 
-        lda     $51,x
-        bne     LD0C4
+LD0AF:  lda     $51,x
+        bne     LD0B4
         rts
 
-LD0C4:
-LD0C5           := * + 1
-        lda     #$0B
+LD0B4:  lda     #$0B
         jsr     LD63C
-LD0CA           := * + 1
-        beq     LD0D9
+        beq     LD0C9
         lda     $51,x
         sec
         sbc     #$03
         sta     $63,x
         jsr     LD13F
-        lda     #$20
+LD0C5:  lda     #$20
         sta     $FF
-LD0D9:  rts
+LD0C9:  rts
 
-        jsr     LDA5E
+LD0CA:  jsr     LDA5E
         lda     $0210,y
         sta     $01
         jsr     LD65F
         lda     $51,x
         cmp     #$03
-        bpl     LD0F1
+        bpl     LD0E1
         lda     $0213,y
         jmp     LD102
 
-LD0F1:  clc
+LD0E1:  clc
         lda     $55,x
         adc     $7A,x
         sta     $55,x
@@ -1945,126 +1886,119 @@ LD0F1:  clc
         sta     $00
         lda     $51,x
         cmp     #$03
-LD102           := * + 1
-        beq     LD10C
+        beq     LD0FC
         lda     $0213,y
         clc
         adc     $00
-LD10B           := * + 2
         jmp     LD102
 
-LD10C:  lda     $0213,y
+LD0FC:  lda     $0213,y
         sec
         sbc     $00
-        sta     $00
+LD102:  sta     $00
         lda     #$18
-LD117           := * + 1
         sta     L0002
         jmp     LD6A3
 
-        jsr     LD55E
-        beq     LD124
+LD10B:  jsr     LD55E
+        beq     LD114
         lda     $53,x
         sta     $51,x
-LD124:  sta     $75
+LD114:  sta     $75
         rts
 
-LD128           := * + 1
-        jsr     LD128
-        bne     LD133
+LD117:  jsr     LD128
+        bne     LD123
         jsr     LD242
         lda     #$01
-        bne     LD135
-LD133:  lda     #$05
-LD135:  sta     $5F,x
+        bne     LD125
+LD123:  lda     #$05
+LD125:  sta     $5F,x
         rts
 
-        jsr     LDA5E
+LD128:  jsr     LDA5E
         lda     $0210,y
-LD13F           := * + 1
         cmp     $71,x
-        bcc     LD149
+        bcc     LD139
         sec
         sbc     $71,x
         cmp     $79
-        bcs     LD14C
-LD149:  lda     #$00
+        bcs     LD13C
+LD139:  lda     #$00
         rts
 
-LD14C:  lda     #$01
+LD13C:  lda     #$01
         rts
 
-        jsr     LD6BA
-LD153           := * + 1
+LD13F:  jsr     LD6BA
         ldy     $6B,x
         cpy     #$02
-LD156:  bne     LD166
-LD158:  ldy     $63,x
-        beq     LD161
+        bne     LD156
+        ldy     $63,x
+        beq     LD151
         lda     $6D
         jmp     LD153
 
-LD161:  lda     $6E
-        sec
-LD164:  sbc     #$10
-LD166:  sta     $00
-        lda     #$28
+LD151:  lda     $6E
+LD153:  sec
+        sbc     #$10
+LD156:  sta     $00
+LD158:  lda     #$28
         sta     L0002
         jsr     LD6A3
         lda     #$01
         sta     $6B,x
         rts
 
-        txa
+LD164:  txa
         pha
         jsr     LD6BA
-LD17A           := * + 1
         ldy     $63,x
-        beq     LD185
+        beq     LD175
         sec
         sbc     #$0C
         sta     $00
         jmp     LD17A
 
-LD185:  clc
+LD175:  clc
         adc     #$0C
         sta     $00
-        lda     $4A
+LD17A:  lda     $4A
         cmp     #$02
-        bne     LD1C8
+        bne     LD1B8
         lda     $51
         cmp     #$03
-        bne     LD199
+        bne     LD189
         jmp     LD23F
 
-LD199:  lda     #$01
+LD189:  lda     #$01
         sta     $63
         lda     $0210
         cmp     #$20
-        bcc     LD1C8
+        bcc     LD1B8
         lda     $0210
         and     #$0F
         cmp     #$08
-LD1AB:  bpl     LD1B8
+        bpl     LD1A8
         lda     $0210
         and     #$F0
         sec
         sbc     #$04
         jmp     LD1AB
 
-LD1B8:  lda     $0210
-        sta     $01
+LD1A8:  lda     $0210
+LD1AB:  sta     $01
         lda     #$02
         sta     $FE
         lda     #$94
         sta     $4B
         jmp     LD231
 
-LD1C8:  cmp     #$03
-        bne     LD23F
+LD1B8:  cmp     #$03
+        bne     LD22F
         lda     $0213
         cmp     $05F3
-        bne     LD23F
+        bne     LD22F
         jsr     LE5F8
         ldx     #$00
         ldy     #$00
@@ -2073,7 +2007,7 @@ LD1C8:  cmp     #$03
         sta     $02D0
         sta     $05F5
         lda     $BE
-        beq     LD23F
+        beq     LD22F
         ldy     #$08
         lda     $A3
         sta     $A7
@@ -2082,24 +2016,24 @@ LD1C8:  cmp     #$03
         lda     $A5
         sta     $A9
         lda     $B4
-        beq     LD211
+        beq     LD201
         lda     $B4
         clc
         adc     $04FB
-        bcs     LD206
+        bcs     LD1F6
         sta     $04FB
-LD206:  lda     #$01
+LD1F6:  lda     #$01
         sta     $50
         sta     $B0
         ldy     #$18
-LD20E:  jsr     LE6D3
-LD211:  jsr     LE6DE
+        jsr     LE6D3
+LD201:  jsr     LE6DE
         sty     $EC
         cpy     #$08
-        beq     LD21E
+        beq     LD20E
         cpy     #$18
-        bne     LD23C
-LD21E:  lda     #$00
+        bne     LD22C
+LD20E:  lda     #$00
         ldx     #$00
         sta     $33
         lda     #$04
@@ -2108,28 +2042,27 @@ LD21E:  lda     #$00
         jsr     LD6BA
         lda     #$18
         sta     L0002
-LD231:  lda     $63
+        lda     $63
         eor     #$01
         jsr     LD6A7
         lda     #$00
         sta     $57
-LD23C:  pla
+LD22C:  pla
         tax
         rts
 
-LD23F:  lda     #$38
-LD242           := * + 1
-        sta     L0002
+LD22F:  lda     #$38
+LD231:  sta     L0002
         jsr     LD6A3
         jsr     LE32D
         lda     #$02
         sta     $6B,x
         sta     $5F,x
-        pla
+LD23F:  pla
         tax
         rts
 
-        lda     $8D
+LD242:  lda     $8D
         sec
         sbc     #$11
         sta     $01
@@ -2144,24 +2077,23 @@ LD242           := * + 1
         sta     $78
         lda     #$FF
         ldy     $4A
-LD273           := * + 1
         cpy     #$01
-        bne     LD278
+        bne     LD268
         lda     #$32
-LD278:  sta     $79
+LD268:  sta     $79
         lda     #$A0
         sta     $7A,x
         lda     #$10
         sta     $FF
         rts
 
-        jsr     LDA5E
+LD273:  jsr     LDA5E
         lda     $0210,y
         sta     $01
         sta     $71,x
         lda     $0213,y
         sta     $00
-LD292:  lda     #$18
+        lda     #$18
         sta     L0002
         jsr     LD6A3
         lda     #$00
@@ -2170,10 +2102,10 @@ LD292:  lda     #$18
         sta     $5F,x
         rts
 
-        jsr     LDA5E
+LD292:  jsr     LDA5E
         lda     $0210,y
         cmp     #$D8
-        bcs     LD2C5
+        bcs     LD2B5
         clc
         adc     #$02
         sta     $01
@@ -2182,27 +2114,27 @@ LD292:  lda     #$18
         lda     $0213,y
         sta     $00
         lda     #$40
-LD2BC:  sta     L0002
+        sta     L0002
         lda     #$00
         sta     $09
         jmp     LD6A7
 
-LD2C5:  lda     $08
+LD2B5:  lda     $08
         sta     $FF
         jmp     LCB26
 
-        lda     $4A
+LD2BC:  lda     $4A
         cmp     #$03
-        bne     LD322
+        bne     LD312
         lda     #$F8
         sta     $02D8
         sta     $02DC
         lda     $EC
         cmp     #$08
-        bne     LD322
+        bne     LD312
         lda     $0211
         cmp     #$F8
-        beq     LD307
+        beq     LD2F7
         lda     #$C7
         sta     $01
         lda     $0213
@@ -2212,30 +2144,30 @@ LD2C5:  lda     $08
         jsr     LD69F
         ldy     #$C0
         lda     $AF
-        bne     LD2FF
+        bne     LD2EF
         ldy     #$70
-LD2FF:  sty     $59
+LD2EF:  sty     $59
         sty     $0420
         jsr     LE912
-LD307:  lda     $59
+LD2F7:  lda     $59
         cmp     #$01
-        bne     LD321
+        bne     LD311
         lda     $0402
         cmp     #$0A
-        beq     LD321
+        beq     LD311
         jsr     LC6F9
         jsr     LE387
         lda     #$18
         jsr     LF22A
         ldx     #$00
-LD321:  rts
+LD311:  rts
 
-LD322:  lda     $59,x
+LD312:  lda     $59,x
         cmp     #$24
-        bne     LD32C
+        bne     LD31C
         lda     #$02
         sta     $FF
-LD32C:  jsr     LDA5E
+LD31C:  jsr     LDA5E
         lda     $0210,y
         sta     $01
         lda     $0213,y
@@ -2243,33 +2175,33 @@ LD32C:  jsr     LDA5E
         ldy     #$40
         lda     $59,x
         and     #$02
-        bne     LD343
+        bne     LD333
         ldy     #$48
-LD343:  sty     L0002
+LD333:  sty     L0002
         jsr     LD69F
         lda     #$20
         sta     $39,x
         jsr     LDA5E
-LD34F:  lda     $0210,y
+        lda     $0210,y
         cmp     #$D8
-        bcs     LD35A
+        bcs     LD34A
         lda     #$10
-        bne     LD35C
-LD35A:  lda     #$00
-LD35C:  sta     $08
-LD35E:  rts
-
-        lda     $5F
-        cmp     #$02
-        beq     LD366
+        bne     LD34C
+LD34A:  lda     #$00
+LD34C:  sta     $08
         rts
 
-LD366:  txa
+LD34F:  lda     $5F
+        cmp     #$02
+        beq     LD356
+        rts
+
+LD356:  txa
         pha
         ldx     #$00
         sta     $E7
         ldy     #$02
-        tya
+LD35E:  tya
         pha
         txa
         pha
@@ -2277,40 +2209,40 @@ LD366:  txa
         sta     $00
         lda     $C3,x
         cmp     #$40
-        beq     LD39D
+        beq     LD38D
         sta     $01
         lda     #$8E
         sta     L0002
         lda     #$C1
         sta     $03
         jsr     LD9AF
-        beq     LD39D
+        beq     LD38D
         lda     $53
-        beq     LD39D
+        beq     LD38D
         cmp     $51
-        bne     LD39D
+        bne     LD38D
         cmp     #$01
-        bne     LD39D
+        bne     LD38D
         jsr     LD3A2
         jsr     LD3C1
-LD39D:  pla
+LD38D:  pla
         tax
         pla
         tay
         dey
-LD3A2:  beq     LD3AF
+        beq     LD39F
         lda     $0D
         cmp     #$02
-        beq     LD3AF
+        beq     LD39F
         inx
         inx
         jmp     LD35E
 
-LD3AF:  pla
+LD39F:  pla
         tax
         rts
 
-        pha
+LD3A2:  pha
         txa
         pha
         tya
@@ -2318,16 +2250,15 @@ LD3AF:  pla
         lda     #$6D
         ldx     #$01
         clc
-LD3BC:  ldy     #$02
-LD3BE:  sta     $D1,x
-LD3C1           := * + 1
+LD3AC:  ldy     #$02
+LD3AE:  sta     $D1,x
         adc     #$01
         inx
         dey
-        bne     LD3BE
+        bne     LD3AE
         inx
         cpx     #$0A
-        bne     LD3BC
+        bne     LD3AC
         pla
         tay
         pla
@@ -2335,7 +2266,7 @@ LD3C1           := * + 1
         pla
         rts
 
-        lda     #$33
+LD3C1:  lda     #$33
         sta     $D1
         lda     #$24
         sta     $D4
@@ -2355,16 +2286,16 @@ LD3C1           := * + 1
         sbc     #$08
         sta     $C3,x
         cmp     #$60
-        beq     LD409
+        beq     LD3F9
         cmp     #$68
-        beq     LD430
+        beq     LD420
         cmp     #$B0
-        bne     LD43A
-        beq     LD403
-LD403:  lda     #$66
+        bne     LD42A
+        beq     LD3F3
+LD3F3:  lda     #$66
         sta     $D7
-        bne     LD43A
-LD409:  sta     $AF
+        bne     LD42A
+LD3F9:  sta     $AF
         lda     #$1F
         sta     $32
         jsr     LE72C
@@ -2382,39 +2313,39 @@ LD409:  sta     $AF
         inc     $95
         lda     #$04
         sta     $FE
-        bne     LD43A
-LD430:  lda     #$6A
+        bne     LD42A
+LD420:  lda     #$6A
         sta     $D2
         sta     $D8
         lda     #$6F
         sta     $D5
-LD43A:  lda     $C3
+LD42A:  lda     $C3
         cmp     #$60
-        beq     LD448
+        beq     LD438
         lda     #$F7
         sta     $D5
         lda     #$89
-        bne     LD44E
-LD448:  lda     #$81
-LD44A:  sta     $D5
+        bne     LD43E
+LD438:  lda     #$81
+        sta     $D5
         lda     #$82
-LD44E:  sta     $D6
+LD43E:  sta     $D6
         lda     #$D1
         sta     L0002
         lda     #$00
         jsr     LF2AA
         rts
 
-        lda     $4A
+LD44A:  lda     $4A
         cmp     #$01
-        bne     LD469
+        bne     LD459
         lda     $DF,x
-        bne     LD46A
+        bne     LD45A
         lda     $03F2,x
-        beq     LD46A
-LD469:  rts
+        beq     LD45A
+LD459:  rts
 
-LD46A:  txa
+LD45A:  txa
         pha
         lda     $0419
         sec
@@ -2422,9 +2353,9 @@ LD46A:  txa
         lsr     a
         tay
         ldx     #$03
-LD476:  lda     $03E0,y
+LD466:  lda     $03E0,y
         cmp     #$FF
-        beq     LD49A
+        beq     LD48A
         tya
         asl     a
         tay
@@ -2437,26 +2368,26 @@ LD476:  lda     $03E0,y
         lda     #$C1
         sta     $03
         jsr     LD9AF
-        bne     LD4A6
+        bne     LD496
         tya
         lsr     a
         tay
-LD49A:  iny
+LD48A:  iny
         iny
         iny
         iny
         iny
         iny
         dex
-        bne     LD476
+        bne     LD466
         pla
         tax
-LD4A5:  rts
+LD495:  rts
 
-LD4A6:  pla
+LD496:  pla
         tax
         lda     $0330
-        bne     LD4A5
+        bne     LD495
         lda     LC1C0,y
         sta     $A1
         sta     $05D3,x
@@ -2474,7 +2405,7 @@ LD4A6:  pla
         lda     LC253,x
         sta     $A0
         lda     $03F2,x
-        bne     LD4F0
+        bne     LD4E0
         lda     $A0
         sec
         sbc     #$07
@@ -2491,8 +2422,7 @@ LD4A6:  pla
         pla
         tax
         lda     #$00
-LD4F0:  sta     $040C,x
-LD4F4           := * + 1
+LD4E0:  sta     $040C,x
         lda     #$05
         sta     $3D,x
         lda     #$00
@@ -2501,27 +2431,26 @@ LD4F4           := * + 1
         sta     $03FC,x
         jmp     LEE5E
 
-        lda     $040C,x
-        bne     LD50A
-LD509:  rts
+LD4F4:  lda     $040C,x
+        bne     LD4FA
+LD4F9:  rts
 
-LD50A:  lda     $3D,x
-        bne     LD509
+LD4FA:  lda     $3D,x
+        bne     LD4F9
         lda     $0330
-        bne     LD509
+        bne     LD4F9
         lda     $E3,x
         cmp     #$87
-        bcc     LD521
-LD51A           := * + 1
-        beq     LD527
+        bcc     LD511
+        beq     LD517
         jsr     LDB2D
         jmp     LD51A
 
-LD521:  jsr     LDADF
+LD511:  jsr     LDADF
         jmp     LD51A
 
-LD527:  jsr     LDB6B
-        jsr     LDBBF
+LD517:  jsr     LDB6B
+LD51A:  jsr     LDBBF
         txa
         pha
         sta     $05
@@ -2530,39 +2459,39 @@ LD527:  jsr     LDB6B
         tay
         ldx     #$00
         lda     $03F4,y
-        bne     LD55E
+        bne     LD54E
         iny
-LD53C:  lda     $051E,x
+LD52C:  lda     $051E,x
         cmp     $03F4,y
-        bne     LD55E
+        bne     LD54E
         iny
         inx
         cpx     #$03
-        bne     LD53C
+        bne     LD52C
         ldx     $05
         lda     $03F2,x
         cmp     $0521
-        bne     LD55E
+        bne     LD54E
         sta     $E5,x
-LD556:  txa
+        txa
         eor     #$01
         tax
-LD55A:  lda     #$05
+        lda     #$05
         sta     $5F,x
-LD55E:  pla
+LD54E:  pla
         tax
         lda     #$00
-LD562:  sta     $040C,x
+        sta     $040C,x
         rts
 
-        lda     #$00
-        beq     LD574
-        lda     #$01
-        bne     LD574
-        lda     #$02
-        bne     LD574
-        lda     #$03
-LD574:  sta     $0F
+LD556:  lda     #$00
+        beq     LD564
+LD55A:  lda     #$01
+        bne     LD564
+LD55E:  lda     #$02
+        bne     LD564
+LD562:  lda     #$03
+LD564:  sta     $0F
         txa
         pha
         tya
@@ -2577,25 +2506,24 @@ LD574:  sta     $0F
         pha
         lda     $0F
         cmp     #$01
-        beq     LD5BC
+        beq     LD5AC
         cmp     #$02
-        beq     LD5F3
+        beq     LD5E3
         cmp     #$03
-        bne     LD597
+        bne     LD587
         jmp     LD5F8
 
-LD597:  cmp     #$04
-LD59A           := * + 1
-        bne     LD59E
+LD587:  cmp     #$04
+        bne     LD58E
         jmp     LD615
 
-LD59E:  jsr     LD59A
+LD58E:  jsr     LD59A
         ldx     $8C
         stx     $6D
         stx     $6E
         jmp     LD615
 
-        lda     $4A
+LD59A:  lda     $4A
         sec
         sbc     #$01
         asl     a
@@ -2605,7 +2533,7 @@ LD59E:  jsr     LD59A
         lda     LC34B,y
         jmp     LD9B3
 
-LD5BC:  lda     $88
+LD5AC:  lda     $88
         pha
         clc
         adc     #$10
@@ -2625,20 +2553,20 @@ LD5BC:  lda     $88
         ldx     $8C
         stx     $6E
         cmp     #$00
-        beq     LD5E9
+        beq     LD5D9
         lda     $0D
         ora     #$10
         sta     $0D
-LD5E9:  pla
+LD5D9:  pla
         sta     $8A
         lda     $0D
         sta     $0F
         jmp     LD615
 
-LD5F3:  lda     $4A
+LD5E3:  lda     $4A
         sec
         sbc     #$01
-LD5F8:  asl     a
+        asl     a
         tay
         lda     LC350,y
         sta     L0002
@@ -2646,14 +2574,13 @@ LD5F8:  asl     a
         jsr     LD9B3
         jmp     LD615
 
-        jsr     LD62A
+LD5F8:  jsr     LD62A
         lda     $89
         pha
         lda     $8B
         pha
         clc
         adc     #$01
-LD615           := * + 1
         sta     $89
         adc     #$01
         sta     $8B
@@ -2663,10 +2590,10 @@ LD615           := * + 1
         pla
         sta     $89
         lda     $0F
-        sta     $0F
+LD615:  sta     $0F
         pla
         sta     $03
-LD62A:  pla
+        pla
         sta     L0002
         pla
         sta     $01
@@ -2679,8 +2606,8 @@ LD62A:  pla
         lda     $0F
         rts
 
-        lda     $4A
-LD63C:  sec
+LD62A:  lda     $4A
+        sec
         sbc     #$01
         asl     a
         tay
@@ -2690,43 +2617,43 @@ LD63C:  sec
         sta     $03
         rts
 
-        sta     $0530
+LD63C:  sta     $0530
         lda     $53,x
         cmp     $51,x
-        bne     LD663
+        bne     LD653
         dec     $0531,x
         lda     $0531,x
         cmp     #$FF
-        beq     LD663
-LD65F:  cmp     #$00
-        bne     LD66C
-LD663:  lda     $0530
+        beq     LD653
+        cmp     #$00
+        bne     LD65C
+LD653:  lda     $0530
         sta     $0531,x
         lda     #$01
         rts
 
-LD66C:  lda     #$00
+LD65C:  lda     #$00
         rts
 
-        stx     $0F
+LD65F:  stx     $0F
         txa
         asl     a
         tax
         lda     $7C,x
-        bne     LD684
+        bne     LD674
         sta     $81,x
         lda     #$08
         sta     $80,x
         lda     #$F0
         sta     $7D,x
-        bne     LD690
-LD684:  lda     $80,x
+        bne     LD680
+LD674:  lda     $80,x
         adc     #$10
         sta     $80,x
         lda     $81,x
         adc     #$00
         sta     $81,x
-LD690:  lda     $7D,x
+LD680:  lda     $7D,x
         sec
         sbc     $84,x
         sta     $7D,x
@@ -2734,48 +2661,44 @@ LD690:  lda     $7D,x
         sbc     $85,x
         sta     $01
         clc
-LD69F           := * + 1
         lda     $7D,x
         adc     $80,x
-LD6A3           := * + 1
         sta     $7D,x
         lda     $01
-LD6A7           := * + 1
         adc     $81,x
         sta     $01
         inc     $7C,x
         ldx     $0F
         rts
 
-        lda     #$00
-        beq     LD6B7
-        lda     $63,x
+LD69F:  lda     #$00
+        beq     LD6A7
+LD6A3:  lda     $63,x
         eor     #$01
-LD6B7:  pha
+LD6A7:  pha
         lda     #$24
-LD6BA:  sta     $03
+        sta     $03
         lda     #$10
         cpx     #$00
-        beq     LD6C4
+        beq     LD6B4
         lda     #$30
-LD6C4:  sta     $04
+LD6B4:  sta     $04
         pla
         jmp     LD6D2
 
-LD6CC           := * + 2
-        jsr     LDA5E
+LD6BA:  jsr     LDA5E
         lda     $0210,y
-LD6D0:  sta     $01
-LD6D2:  lda     $0213,y
+        sta     $01
+        lda     $0213,y
         sta     $00
         rts
 
         lda     #$00
-        beq     LD6E2
-        lda     #$01
-        bne     LD6E2
-        lda     #$04
-LD6E2:  pha
+        beq     LD6D2
+LD6CC:  lda     #$01
+        bne     LD6D2
+LD6D0:  lda     #$04
+LD6D2:  pha
         sta     $0F
         txa
         pha
@@ -2799,7 +2722,7 @@ LD6E2:  pha
         sta     $05
         lda     $0F
         cmp     #$04
-        beq     LD73E
+        beq     LD72E
         lda     #$0F
         and     $03
         sta     $07
@@ -2812,34 +2735,32 @@ LD6E2:  pha
         tax
         lda     #$00
         clc
-LD71A:  adc     $07
+LD70A:  adc     $07
         dex
-        bne     LD71A
+        bne     LD70A
         sta     $08
         lda     $0F
-        bne     LD72B
+        bne     LD71B
         jsr     LD75C
-LD728:  jmp     LD728
+        jmp     LD728
 
-LD72B:  cmp     #$01
-        beq     LD735
-LD731           := * + 2
+LD71B:  cmp     #$01
+        beq     LD725
         jsr     LD7D1
         jmp     LD731
 
-LD735:  jsr     LD79D
-        jsr     LD777
+LD725:  jsr     LD79D
+LD728:  jsr     LD777
         jmp     LD731
 
-LD73E:  jsr     LD74C
-        pla
+LD72E:  jsr     LD74C
+LD731:  pla
         sta     $09
         pla
         sta     $08
         pla
         sta     $07
         pla
-LD74C           := * + 1
         sta     $06
         pla
         sta     $05
@@ -2854,25 +2775,25 @@ LD74C           := * + 1
         pla
         rts
 
-LD75C:  lda     L0002
+LD74C:  lda     L0002
         ldx     $03
         ldy     #$02
-LD762:  sta     ($04),y
+LD752:  sta     ($04),y
         iny
         iny
         iny
         iny
         dex
-        bne     LD762
+        bne     LD752
         rts
 
-        lda     L0002
+LD75C:  lda     L0002
         ldx     $08
         ldy     #$01
-LD772:  sta     ($04),y
+LD762:  sta     ($04),y
         clc
         adc     #$01
-LD777:  iny
+        iny
         pha
         lda     ($04),y
         and     #$3F
@@ -2882,14 +2803,14 @@ LD777:  iny
         iny
         iny
         dex
-        bne     LD772
+        bne     LD762
         rts
 
-        ldy     #$00
-LD789:  ldx     $06
+LD777:  ldy     #$00
+LD779:  ldx     $06
         lda     $01
         sta     $09
-LD78F:  lda     $09
+LD77F:  lda     $09
         sta     ($04),y
         clc
         adc     #$08
@@ -2898,26 +2819,26 @@ LD78F:  lda     $09
         iny
         iny
         lda     $00
-LD79D:  sta     ($04),y
+        sta     ($04),y
         iny
         dex
-        bne     LD78F
+        bne     LD77F
         clc
         adc     #$08
         sta     $00
         dec     $07
-        bne     LD789
+        bne     LD779
         rts
 
-        ldy     #$01
+LD79D:  ldy     #$01
         sty     $0A
         lda     $08
         sec
         sbc     $06
-LD7B6:  tay
+LD7A6:  tay
         sta     $0B
         ldx     $06
-LD7BB:  tya
+LD7AB:  tya
         pha
         clc
         tya
@@ -2932,45 +2853,45 @@ LD7BB:  tya
         iny
         iny
         iny
-LD7D1:  sty     $0A
+        sty     $0A
         pla
         tay
         iny
         dex
-        bne     LD7BB
+        bne     LD7AB
         lda     $0B
         sec
         sbc     $06
-        bpl     LD7B6
+        bpl     LD7A6
         rts
 
-        ldy     #$00
-LD7E3:  ldx     $06
+LD7D1:  ldy     #$00
+LD7D3:  ldx     $06
         lda     $01
         sta     $09
         lda     #$FF
-LD7EB:  sta     ($04),y
+LD7DB:  sta     ($04),y
         iny
         iny
         iny
-LD7F0:  iny
+        iny
         dex
-        bne     LD7EB
+        bne     LD7DB
         lda     $00
         clc
         adc     #$08
         sta     $00
         dec     $07
-        bne     LD7E3
+        bne     LD7D3
         rts
 
-        tya
+LD7F0:  tya
         pha
         ldy     #$00
         stx     $0C
-LD806:  lda     #$00
+LD7F6:  lda     #$00
         sta     $0D
-LD80A:  jsr     LCC5C
+LD7FA:  jsr     LCC5C
         lda     #$00
         sta     $00
         sta     $01
@@ -2979,56 +2900,55 @@ LD80A:  jsr     LCC5C
         lda     LC321,y
         sta     $03
         jsr     LD9AF
-        beq     LD824
+        beq     LD814
         inc     $0D
-LD824:  lda     $0D
+LD814:  lda     $0D
         cmp     #$02
-        beq     LD838
+        beq     LD828
         txa
         eor     #$01
         tax
-LD82F           := * + 1
         cpx     $0C
-        bne     LD80A
+        bne     LD7FA
         iny
         iny
         cpy     #$0C
-        bne     LD806
-LD838:  ldx     $0C
+        bne     LD7F6
+LD828:  ldx     $0C
         pla
         tay
         lda     $0D
         rts
 
-        jsr     LCC5C
+LD82F:  jsr     LCC5C
         lda     $5F
         cmp     #$05
-        beq     LD85C
+        beq     LD84C
         lda     $60
         cmp     #$05
-        beq     LD85C
+        beq     LD84C
         stx     $0A
         jsr     LD995
-        bne     LD85D
+        bne     LD84D
         lda     #$00
         sta     $05C0
         ldx     $0A
-LD85C:  rts
+LD84C:  rts
 
-LD85D:  ldx     $0A
+LD84D:  ldx     $0A
         jsr     LDA5E
         lda     $5F,x
         cmp     #$01
-        beq     LD8B4
+        beq     LD8A4
         cmp     #$02
-        beq     LD88A
+        beq     LD87A
         cmp     #$03
-        beq     LD8D5
+        beq     LD8C5
         lda     $0211,y
         cmp     #$2E
-        beq     LD889
+        beq     LD879
         cmp     #$28
-        beq     LD889
+        beq     LD879
         lda     #$03
         sta     $5F,x
         ldy     $63,x
@@ -3037,12 +2957,12 @@ LD85D:  ldx     $0A
         iny
         sty     $51,x
         jsr     LD908
-LD889:  rts
+LD879:  rts
 
-LD88A:  lda     $6B,x
-        beq     LD8B3
+LD87A:  lda     $6B,x
+        beq     LD8A3
         cmp     #$02
-        beq     LD8B3
+        beq     LD8A3
         lda     $0213,y
         sta     $00
         lda     $0101
@@ -3052,35 +2972,35 @@ LD88A:  lda     $6B,x
         tax
         lda     $5F,x
         cmp     #$01
-        bne     LD8AE
+        bne     LD89E
         lda     $89
         cmp     $8F
-        bne     LD8AE
+        bne     LD89E
         inc     $01
-LD8AE:  ldx     $0A
+LD89E:  ldx     $0A
         jsr     LD158
-LD8B3:  rts
+LD8A3:  rts
 
-LD8B4:  lda     $0211,y
+LD8A4:  lda     $0211,y
         cmp     #$50
-        beq     LD8D4
+        beq     LD8C4
         lda     $0100
         sta     $00
         lda     $0210,y
         sta     $01
-LD8C5:  lda     $0211,y
+        lda     $0211,y
         ldy     $63,x
-        bne     LD8CF
+        bne     LD8BF
         sec
         sbc     #$06
-LD8CF:  sta     L0002
+LD8BF:  sta     L0002
         jsr     LD6A3
-LD8D4:  rts
+LD8C4:  rts
 
-LD8D5:  lda     $05C0
-        bne     LD932
+LD8C5:  lda     $05C0
+        bne     LD922
         lda     $05C1,x
-        bne     LD925
+        bne     LD915
         lda     #$03
         sta     $05C1,x
         txa
@@ -3088,135 +3008,130 @@ LD8D5:  lda     $05C0
         tax
         lda     $5F,x
         cmp     #$03
-        beq     LD926
+        beq     LD916
         cmp     #$02
-        bne     LD8FE
+        bne     LD8EE
         lda     $6B,x
         cmp     #$02
-        beq     LD8FE
+        beq     LD8EE
         jsr     LD95B
         jmp     LD8C5
 
-LD8FE:  ldx     $0A
+LD8EE:  ldx     $0A
         jsr     LDA5E
         lda     $021B,y
         sta     $00
-LD908:  tya
+        tya
         eor     #$20
         tay
         lda     $021B,y
         ldy     #$03
         cmp     $00
-        bcs     LD916
+        bcs     LD906
         iny
-LD916:  sty     $51,x
-        txa
+LD906:  sty     $51,x
+LD908:  txa
         asl     a
         tay
         lda     $7C,y
         cmp     #$1A
-        bmi     LD925
+        bmi     LD915
         jsr     LCC47
-LD925:  rts
+LD915:  rts
 
-LD926:  jsr     LD980
-        beq     LD8FE
-LD92B:  ldx     $0A
+LD916:  jsr     LD980
+        beq     LD8EE
+LD91B:  ldx     $0A
         lda     #$04
         sta     $5F,x
         rts
 
-LD932:  lda     $0A
+LD922:  lda     $0A
         eor     #$01
         tax
         jsr     LDA5E
         lda     $6B,x
         cmp     #$02
-        beq     LD92B
+        beq     LD91B
         lda     $5F,x
         cmp     #$04
-        beq     LD92B
+        beq     LD91B
         lda     $05C0
         cmp     #$02
-        bpl     LD95C
+        bpl     LD94C
         lda     $0210,y
         sec
-LD952           := * + 1
         sbc     #$04
         cmp     #$59
-        bcs     LD962
+        bcs     LD952
         lda     #$59
-LD95B           := * + 2
         jmp     LD952
 
-LD95C:  lda     $0210,y
+LD94C:  lda     $0210,y
         clc
         adc     #$04
-LD962:  sta     $01
+LD952:  sta     $01
         lda     $0213,y
         jsr     LD156
         rts
 
-        ldx     #$01
+LD95B:  ldx     #$01
         lda     $89
         cmp     $8D
-LD971:  bcs     LD97C
+        bcs     LD96C
         inx
         lda     $8B
         sec
         sbc     $8D
         jmp     LD971
 
-LD97C:  lda     $8F
+LD96C:  lda     $8F
         sec
-LD980           := * + 1
         sbc     $89
-        cmp     #$20
-        bmi     LD989
-        beq     LD989
+LD971:  cmp     #$20
+        bmi     LD979
+        beq     LD979
         ldx     #$00
-LD989:  stx     $05C0
+LD979:  stx     $05C0
         txa
         ldx     $0A
         rts
 
-        lda     $89
+LD980:  lda     $89
         cmp     $8D
-LD995           := * + 1
-        bcc     LD9A2
+        bcc     LD992
         sec
         sbc     $8F
-        beq     LD99F
+        beq     LD98F
         cmp     #$FD
-        bmi     LD9A2
-LD99F:  lda     #$01
+        bmi     LD992
+LD98F:  lda     #$01
         rts
 
-LD9A2:  lda     #$00
+LD992:  lda     #$00
         rts
 
-        txa
+LD995:  txa
         pha
-LD9A7:  eor     #$01
+        eor     #$01
         tax
         jsr     LCC75
         sta     $03
-LD9AF:  jsr     LD9AF
+        jsr     LD9AF
         pla
-LD9B3:  tax
-LD9B5           := * + 1
+        tax
         lda     $0F
         rts
 
-        sta     $03
+LD9A7:  sta     $03
         lda     #$00
-        beq     LD9C7
+        beq     LD9B7
         sta     $00
-        lda     #$01
-        bne     LD9C7
-        sta     $03
-        lda     #$02
-LD9C7:  sta     $0F
+LD9AF:  lda     #$01
+        bne     LD9B7
+LD9B3:  sta     $03
+LD9B5:  lda     #$02
+LD9B7:  sta     $0F
         txa
         pha
         tya
@@ -3225,19 +3140,19 @@ LD9C7:  sta     $0F
         sty     $0419
         lda     $0F
         cmp     #$02
-        beq     LD9EB
+        beq     LD9DB
         cmp     #$01
-        beq     LD9E2
+        beq     LD9D2
         jsr     LDA0C
         jmp     LDA05
 
-LD9E2:  jsr     LDA0C
+LD9D2:  jsr     LDA0C
         jsr     LDA2A
         jmp     LDA03
 
-LD9EB:  lda     (L0002),y
+LD9DB:  lda     (L0002),y
         cmp     #$FF
-        beq     LDA0E
+        beq     LD9FE
         sta     $8C
         iny
         lda     (L0002),y
@@ -3249,32 +3164,29 @@ LD9EB:  lda     (L0002),y
         lda     (L0002),y
         sta     $8F
         iny
-LDA03:
-LDA05           := * + 2
         inc     $0419
         jsr     LDA2A
-        beq     LD9EB
-LDA0C           := * + 1
+        beq     LD9DB
         jmp     LDA03
 
-LDA0E:  lda     #$00
+LD9FE:  lda     #$00
         sta     $0419
-        sta     $0F
-        pla
+LDA03:  sta     $0F
+LDA05:  pla
         tay
-LDA17:  pla
+        pla
         tax
         lda     $0F
         rts
 
-        ldx     #$00
+LDA0C:  ldx     #$00
         lda     $0F
-        beq     LDA24
+        beq     LDA14
         ldx     #$04
-LDA24:  jsr     LDA17
-        lda     (L0002),y
+LDA14:  jsr     LDA17
+LDA17:  lda     (L0002),y
         clc
-LDA2A:  adc     $00
+        adc     $00
         sta     $88,x
         inx
         iny
@@ -3286,52 +3198,51 @@ LDA2A:  adc     $00
         iny
         rts
 
-        lda     $88
+LDA2A:  lda     $88
         cmp     $8C
-        bcc     LDA4B
-        beq     LDA51
+        bcc     LDA3B
+        beq     LDA41
         cmp     $8E
-        bcc     LDA51
-        beq     LDA51
+        bcc     LDA41
+        beq     LDA41
         lda     #$00
         rts
 
-LDA4B:  lda     $8A
+LDA3B:  lda     $8A
         cmp     $8C
-        bcc     LDA6B
-LDA51:  lda     $89
+        bcc     LDA5B
+LDA41:  lda     $89
         cmp     $8D
-        bcc     LDA62
-        beq     LDA68
+        bcc     LDA52
+        beq     LDA58
         cmp     $8F
-        bcc     LDA68
-LDA5E           := * + 1
-        beq     LDA68
+        bcc     LDA58
+        beq     LDA58
         lda     #$00
         rts
 
-LDA62:  lda     $8B
+LDA52:  lda     $8B
         cmp     $8D
-LDA66:  bcc     LDA6B
-LDA68:  lda     #$01
+        bcc     LDA5B
+LDA58:  lda     #$01
         rts
 
-LDA6B:  lda     #$00
+LDA5B:  lda     #$00
         rts
 
-        ldy     #$00
+LDA5E:  ldy     #$00
         txa
-        beq     LDA75
+        beq     LDA65
         ldy     #$20
-LDA75:  rts
+LDA65:  rts
 
-        txa
+LDA66:  txa
         pha
         asl     a
         asl     a
         tax
         tay
-LDA7C:  lda     $2A,y
+LDA6C:  lda     $2A,y
         and     #$F0
         lsr     a
         lsr     a
@@ -3341,20 +3252,19 @@ LDA7C:  lda     $2A,y
         lda     $2A,y
         and     #$0F
         inx
-LDA90           := * + 2
         sta     $03F4,x
         inx
         iny
         cpy     #$02
-        bmi     LDA7C
-        beq     LDA9D
+        bmi     LDA6C
+        beq     LDA8D
         cpy     #$06
-        bmi     LDA7C
-LDA9D:  pla
+        bmi     LDA6C
+LDA8D:  pla
         tax
         rts
 
-        txa
+LDA90:  txa
         pha
         asl     a
         asl     a
@@ -3365,7 +3275,7 @@ LDA9D:  pla
         sta     $29
         sta     $2C
         sta     $2D
-LDAB0:  lda     $03F4,y
+LDAA0:  lda     $03F4,y
         asl     a
         asl     a
         asl     a
@@ -3375,48 +3285,48 @@ LDAB0:  lda     $03F4,y
         and     #$0F
         ora     $05
         sta     $2A,x
-LDAC2:  iny
+        iny
         iny
         inx
         cpx     #$02
-        bmi     LDAB0
-        beq     LDACF
+        bmi     LDAA0
+        beq     LDABF
         cpx     #$06
-        bmi     LDAB0
-LDACF:  pla
+        bmi     LDAA0
+LDABF:  pla
         tax
         rts
 
-        txa
+LDAC2:  txa
         asl     a
         asl     a
         tay
         iny
         iny
         iny
-LDAD9:  clc
+LDAC9:  clc
         lda     #$01
         adc     $03F4,y
-LDADF:  sta     $03F4,y
+        sta     $03F4,y
         cmp     #$0A
-        bmi     LDAEE
+        bmi     LDADE
         lda     #$00
         sta     $03F4,y
         dey
-        bpl     LDAD9
-LDAEE:  rts
+        bpl     LDAC9
+LDADE:  rts
 
-        txa
+LDADF:  txa
         pha
         jsr     LDA90
         lda     #$00
         sta     $05
         ldy     $03F2,x
         cpy     #$85
-        beq     LDB03
+        beq     LDAF3
         lda     #$FF
         sta     $05
-LDB03:  txa
+LDAF3:  txa
         asl     a
         asl     a
         tay
@@ -3427,43 +3337,42 @@ LDB03:  txa
         txa
         tay
         iny
-LDB15           := * + 1
         sty     $01
         lda     $E3,x
         cmp     #$85
-        bne     LDB22
+        bne     LDB12
         jsr     LF322
         jmp     LDB15
 
-LDB22:  jsr     LF31E
-        pla
+LDB12:  jsr     LF31E
+LDB15:  pla
         tax
         jsr     LDA66
         txa
         asl     a
         asl     a
-LDB2D:  tay
+        tay
         lda     $28,y
-        bne     LDB37
+        bne     LDB27
         lda     #$85
-        bne     LDB39
-LDB37:  lda     #$86
-LDB39:  sta     $03F2,x
+        bne     LDB29
+LDB27:  lda     #$86
+LDB29:  sta     $03F2,x
         rts
 
-        jsr     LDA90
+LDB2D:  jsr     LDA90
         txa
         asl     a
-LDB42:  asl     a
+        asl     a
         tay
-LDB44:  lda     #$00
+LDB34:  lda     #$00
         sta     $03F4,y
         iny
         cpy     #$04
-        beq     LDB52
+        beq     LDB42
         cpy     #$08
-        bne     LDB44
-LDB52:  lda     $03FC,x
+        bne     LDB34
+LDB42:  lda     $03FC,x
         sta     $00
         txa
         tay
@@ -3474,11 +3383,11 @@ LDB52:  lda     $03FC,x
         asl     a
         tay
         lda     $2A,y
-        bne     LDB6D
+        bne     LDB5D
         lda     $2B,y
         cmp     $03FC,x
-LDB6B:  bcc     LDB7A
-LDB6D:  txa
+        bcc     LDB6A
+LDB5D:  txa
         pha
         jsr     LF31E
         pla
@@ -3486,15 +3395,14 @@ LDB6D:  txa
         jsr     LDAC2
         jmp     LDB42
 
-LDB7A:  rts
+LDB6A:  rts
 
-        txa
+LDB6B:  txa
         stx     $09
         asl     a
         asl     a
         tay
         lda     $03F4,y
-LDB85           := * + 1
         sta     $05
         lda     $03F5,y
         sta     $06
@@ -3502,9 +3410,9 @@ LDB85           := * + 1
         sta     $07
         lda     $03F7,y
         sta     $08
-LDB95:  ldx     $09
+LDB85:  ldx     $09
         dec     $03FC,x
-        beq     LDBC2
+        beq     LDBB2
         txa
         asl     a
         asl     a
@@ -3514,30 +3422,29 @@ LDB95:  ldx     $09
         iny
         clc
         ldx     #$03
-LDBA6:  lda     $03F4,y
+LDB96:  lda     $03F4,y
         adc     $05,x
         sta     $03F4,y
         lda     #$F6
         adc     $03F4,y
-        bcc     LDBBC
+        bcc     LDBAC
         sta     $03F4,y
         cpx     #$00
-        beq     LDBC5
-LDBBC:  dey
+        beq     LDBB5
+LDBAC:  dey
         dex
-LDBBF           := * + 1
-        bpl     LDBA6
-        bmi     LDB95
-LDBC2:  ldx     $09
+        bpl     LDB96
+        bmi     LDB85
+LDBB2:  ldx     $09
         rts
 
-LDBC5:  ldx     $09
+LDBB5:  ldx     $09
         lda     #$FF
         sta     $05D1,x
         jmp     LDB85
 
-        jsr     LDC0D
-        lda     LC251,x
+LDBBF:  jsr     LDC0D
+LDBC2:  lda     LC251,x
         sta     $A0
         lda     #$20
         sta     $A1
@@ -3549,35 +3456,33 @@ LDBC5:  ldx     $09
         jsr     LEE5E
         lda     #$00
         sta     $040A,x
-LDBEA:  lda     $03F4,y
+LDBDA:  lda     $03F4,y
         sta     $05
-        bne     LDC05
+        bne     LDBF5
         lda     $040A,x
-        bne     LDC05
+        bne     LDBF5
         iny
         cpy     #$04
-        beq     LDBFF
+        beq     LDBEF
         cpy     #$08
-        bne     LDBEA
-LDBFF:  dey
+        bne     LDBDA
+LDBEF:  dey
         lda     #$24
         jsr     LEE5E
-LDC05:  lda     $05
+LDBF5:  lda     $05
         inc     $A0
         jsr     LEE5E
-LDC0D           := * + 1
         lda     #$01
         sta     $040A,x
         iny
         cpy     #$04
-        bmi     LDBEA
-        beq     LDC1C
+        bmi     LDBDA
+        beq     LDC0C
         cpy     #$08
-        bmi     LDBEA
-LDC1C:  rts
+        bmi     LDBDA
+LDC0C:  rts
 
-LDC1F           := * + 2
-        lda     LC251,x
+LDC0D:  lda     LC251,x
         sta     $00
         lda     #$20
         sta     $01
@@ -3586,33 +3491,33 @@ LDC1F           := * + 2
         lda     #$C3
         jmp     LF2AA
 
-        lda     $0330
-        beq     LDC35
+LDC1F:  lda     $0330
+        beq     LDC25
         rts
 
-LDC35:  ldy     #$00
+LDC25:  ldy     #$00
         lda     $8C
-        beq     LDC5A
+        beq     LDC4A
         iny
         cmp     #$3D
-        beq     LDC5A
+        beq     LDC4A
         iny
         cmp     #$64
-        beq     LDC5A
+        beq     LDC4A
         iny
         cmp     #$8C
-        beq     LDC5A
+        beq     LDC4A
         iny
         cmp     #$B5
-        beq     LDC5A
+        beq     LDC4A
         iny
         cmp     #$DC
-        beq     LDC5A
+        beq     LDC4A
         lda     #$FF
         sta     $0414,x
         rts
 
-LDC5A:  tya
+LDC4A:  tya
         sta     $0414,x
         lda     #$20
         sta     $A1
@@ -3620,21 +3525,21 @@ LDC5A:  tya
         sta     $A0
         lda     $0513,y
         sta     $0C
-        beq     LDCD6
+        beq     LDCC6
         lda     $DF,x
-        bne     LDC8C
+        bne     LDC7C
         lda     $03F2,x
-        beq     LDC8C
+        beq     LDC7C
         lda     $040C,x
-        bne     LDC8C
+        bne     LDC7C
         lda     $DD,x
-        bne     LDC8C
+        bne     LDC7C
         lda     $0C
         sta     $E3,x
         sta     $DF,x
         sta     $05D3,x
         jsr     LEE5E
-LDC8C:  txa
+LDC7C:  txa
         pha
         lda     $0513,y
         sta     $0A
@@ -3646,110 +3551,109 @@ LDC8C:  txa
         jsr     LEE5E
         sty     $0B
         ldy     #$00
-LDCA5:  lda     $0513,y
-        beq     LDCAF
+LDC95:  lda     $0513,y
+        beq     LDC9F
         iny
         cpy     #$06
-        bne     LDCA5
-LDCAF:  txa
+        bne     LDC95
+LDC9F:  txa
         eor     #$01
         tax
         tya
         cmp     $0414,x
-        bne     LDCBC
+        bne     LDCAC
         iny
-        bne     LDCA5
-LDCBC:  lda     #$23
+        bne     LDC95
+LDCAC:  lda     #$23
         sta     $A1
         lda     LC1E4,y
         sta     $A0
         lda     $0A
         sta     $0513,y
-LDCCB           := * + 1
         jsr     LEE5E
         lda     #$00
         ldy     $0B
         sta     $0513,y
         pla
         tax
-LDCD6:  lda     #$00
+LDCC6:  lda     #$00
         sta     $DD,x
         rts
 
-        lda     $0412
-        bne     LDCE1
+LDCCB:  lda     $0412
+        bne     LDCD1
         rts
 
-LDCE1:  cmp     #$01
-        beq     LDCF4
+LDCD1:  cmp     #$01
+        beq     LDCE4
         cmp     #$02
-        beq     LDD0E
+        beq     LDCFE
         jsr     LDD4E
-        beq     LDCF3
+        beq     LDCE3
         lda     #$00
         sta     $0412
-LDCF3:  rts
+LDCE3:  rts
 
-LDCF4:  jsr     LDE3D
+LDCE4:  jsr     LDE3D
         lda     #$00
         tax
-LDCFA:  sta     $0500,x
+LDCEA:  sta     $0500,x
         inx
         cpx     #$12
-        bmi     LDCFA
+        bmi     LDCEA
         sta     $0413
         lda     #$01
         sta     $0512
-LDD0A:  asl     $0412
+        asl     $0412
         rts
 
-LDD0E:  jsr     LDD0A
+LDCFE:  jsr     LDD0A
         lda     $0512
-        bne     LDD19
-LDD16:  asl     $0412
-LDD19:  rts
+        bne     LDD09
+        asl     $0412
+LDD09:  rts
 
-        ldx     #$00
-LDD1C:  lda     $18,x
+LDD0A:  ldx     #$00
+LDD0C:  lda     $18,x
         and     #$1F
         cmp     #$12
-        bmi     LDD25
+        bmi     LDD15
         lsr     a
-LDD25:  tay
-LDD26:  lda     $0500,y
-        beq     LDD35
+LDD15:  tay
+LDD16:  lda     $0500,y
+        beq     LDD25
         iny
         cpy     #$12
-        bmi     LDD26
+        bmi     LDD16
         ldy     #$00
         jmp     LDD16
 
-LDD35:  lda     $0512
+LDD25:  lda     $0512
         sta     $0500,y
         inx
         cpx     #$02
-        bmi     LDD1C
+        bmi     LDD0C
         inc     $0512
         lda     $0512
         cmp     #$0A
-        bmi     LDD5D
+        bmi     LDD4D
         lda     $4C
-        beq     LDD58
-LDD4E:  lda     #$03
+        beq     LDD48
+        lda     #$03
         sta     $0500
         lda     #$06
         sta     $0508
-LDD58:  lda     #$00
+LDD48:  lda     #$00
         sta     $0512
-LDD5D:  rts
+LDD4D:  rts
 
-        lda     $0413
+LDD4E:  lda     $0413
         clc
         adc     #$06
         sta     $00
         ldx     $0413
         ldy     #$00
-LDD6B:  txa
+LDD5B:  txa
         asl     a
         tax
         lda     LC1C0,x
@@ -3769,32 +3673,32 @@ LDD6B:  txa
         iny
         inx
         cpx     $00
-        bmi     LDD6B
+        bmi     LDD5B
         lda     #$00
         sta     $0349
         lda     $00
         sta     $0413
         lda     #$25
-LDD9D:  sta     $0330
+        sta     $0330
         lda     $0413
         cmp     #$12
-        bmi     LDDAA
-LDDA7:  lda     #$01
+        bmi     LDD9A
+        lda     #$01
         rts
 
-LDDAA:  lda     #$00
+LDD9A:  lda     #$00
         rts
 
-        txa
+LDD9D:  txa
         pha
         ldx     #$00
         ldy     #$00
         stx     $0A
         stx     $0B
-        lda     $03E0,y
-        beq     LDE20
+LDDA7:  lda     $03E0,y
+        beq     LDE10
         lda     $41,x
-        bne     LDDD6
+        bne     LDDC6
         txa
         pha
         lda     $18
@@ -3808,27 +3712,27 @@ LDDAA:  lda     #$00
         tax
         jmp     LDE10
 
-LDDD6:  cmp     #$01
-        bne     LDDE6
+LDDC6:  cmp     #$01
+        bne     LDDD6
         lda     #$00
         sta     $03E0,y
         lda     #$02
         sta     $0B
         jmp     LDE10
 
-LDDE6:  cmp     #$11
-        bcs     LDE20
+LDDD6:  cmp     #$11
+        bcs     LDE10
         lda     $05B0
         cmp     #$02
-LDDEF:  bne     LDE20
+        bne     LDE10
         lda     $41,x
         and     #$01
-        bne     LDDFD
+        bne     LDDED
         lda     $0500,y
         jmp     LDDEF
 
-LDDFD:  lda     #$24
-        sta     $0539
+LDDED:  lda     #$24
+LDDEF:  sta     $0539
         lda     #$11
         sta     $0538
         tya
@@ -3837,7 +3741,7 @@ LDDFD:  lda     #$24
         tay
         lda     LC1C0,y
         sta     $01
-LDE10:  lda     LC1C1,y
+        lda     LC1C1,y
         sta     $00
         lda     #$38
         sta     L0002
@@ -3845,37 +3749,34 @@ LDE10:  lda     LC1C1,y
         jsr     LF2AA
         pla
         tay
-LDE20:  iny
+LDE10:  iny
         inc     $0A
         lda     $0A
         cmp     #$03
-        bne     LDE43
-LDE2A           := * + 1
+        bne     LDE33
         lda     $0B
         cmp     #$01
-        bne     LDE34
+        bne     LDE24
         lda     #$80
         jmp     LDE2A
 
-LDE34:  cmp     #$02
-        bne     LDE3C
+LDE24:  cmp     #$02
+        bne     LDE2C
         lda     #$00
-        sta     $41,x
-LDE3C:
-LDE3D           := * + 1
-        lda     #$00
+LDE2A:  sta     $41,x
+LDE2C:  lda     #$00
         sta     $0A
         sta     $0B
         inx
-LDE43:  cpy     #$12
-        bpl     LDE4A
+LDE33:  cpy     #$12
+        bpl     LDE3A
         jmp     LDDA7
 
-LDE4A:  pla
+LDE3A:  pla
         tax
         rts
 
-        txa
+LDE3D:  txa
         pha
         lda     $18
         sta     $00
@@ -3888,31 +3789,30 @@ LDE4A:  pla
         ldx     #$00
         stx     $0513
         stx     $0514
-LDE68           := * + 1
         stx     $0515
         stx     $0516
         stx     $0517
         stx     $0518
-LDE73:  lda     $00,x
+LDE63:  lda     $00,x
         and     #$03
         tay
-LDE78:  lda     $0514,y
-        beq     LDE87
+LDE68:  lda     $0514,y
+        beq     LDE77
         iny
         cpy     #$04
-        bmi     LDE78
+        bmi     LDE68
         ldy     #$00
         jmp     LDE68
 
-LDE87:  txa
+LDE77:  txa
         clc
         adc     #$85
         sta     $0514,y
         inx
         cpx     #$04
-        bmi     LDE73
+        bmi     LDE63
         lda     $4C
-        beq     LDEAB
+        beq     LDE9B
         lda     #$87
         sta     $0514
         lda     #$86
@@ -3921,9 +3821,9 @@ LDE87:  txa
         sta     $0516
         lda     #$85
         sta     $0517
-LDEAB:  ldx     #$00
+LDE9B:  ldx     #$00
         ldy     #$00
-LDEAF:  lda     #$23
+LDE9F:  lda     #$23
         sta     $0331,y
         lda     LC1E5,x
         sta     $0332,y
@@ -3936,9 +3836,8 @@ LDEAF:  lda     #$23
         iny
         iny
         inx
-LDECB           := * + 1
         cpx     #$04
-        bmi     LDEAF
+        bmi     LDE9F
         lda     #$00
         sta     $0341
         lda     #$11
@@ -3947,30 +3846,30 @@ LDECB           := * + 1
         tax
         rts
 
-        ldx     $4A
+LDECB:  ldx     $4A
         lda     $37
-        bne     LDEEB
+        bne     LDEDB
         lda     #$A0
         sta     $37
         sta     $0522
         lda     #$00
         rts
 
-LDEEB:  cmp     #$0B
-        beq     LDEFD
+LDEDB:  cmp     #$0B
+        beq     LDEED
         cmp     #$0E
-        bne     LDF1C
+        bne     LDF0C
         cpx     #$03
-        beq     LDF15
+        beq     LDF05
         jsr     LDF47
         lda     #$00
         rts
 
-LDEFD:  lda     $4A
+LDEED:  lda     $4A
         cmp     #$01
-        bne     LDF15
+        bne     LDF05
         lda     $EF
-        beq     LDF15
+        beq     LDF05
         txa
         pha
         ldx     #$00
@@ -3979,12 +3878,12 @@ LDEFD:  lda     $4A
         jsr     LDBC2
         pla
         tax
-LDF15:  lda     #$00
+LDF05:  lda     #$00
         sta     $37
         lda     #$01
         rts
 
-LDF1C:  dex
+LDF0C:  dex
         lda     LC249,x
         sta     $00
         lda     LC243,x
@@ -3992,30 +3891,29 @@ LDF1C:  dex
         ldy     #$00
         lda     $37
         cmp     #$20
-        bpl     LDF41
+        bpl     LDF31
         iny
         iny
         cmp     #$10
-        bpl     LDF41
+        bpl     LDF31
         iny
         iny
         lda     LC24C,x
         sta     $00
         lda     LC246,x
         sta     $01
-LDF41:  cpy     $0522
-        beq     LDF54
-LDF47           := * + 1
+LDF31:  cpy     $0522
+        beq     LDF44
         sty     $0522
         lda     LC1EA,y
         sta     L0002
         lda     LC1EB,y
         jsr     LF2AA
-LDF54:  lda     #$00
+LDF44:  lda     #$00
         rts
 
-        cpx     #$02
-        bne     LDF7A
+LDF47:  cpx     #$02
+        bne     LDF6A
         lda     #$54
         sta     $051A
         lda     #$55
@@ -4023,7 +3921,6 @@ LDF54:  lda     #$00
         lda     #$56
         sta     $051C
         lda     #$57
-LDF6E           := * + 2
         sta     $051D
         lda     #$23
         sta     $00
@@ -4031,74 +3928,74 @@ LDF6E           := * + 2
         sta     $01
         jmp     LDFE0
 
-LDF7A:  ldx     #$00
+LDF6A:  ldx     #$00
         stx     $0F
-LDF7E:  lda     $EF
-        bne     LDF86
+LDF6E:  lda     $EF
+        bne     LDF76
         cpx     #$00
-        beq     LDF94
-LDF86:  lda     $18,x
+        beq     LDF84
+LDF76:  lda     $18,x
         and     #$0F
         cmp     #$0A
-        bmi     LDF94
-        jsr     LF4D2
+        bmi     LDF84
+LDF7E:  jsr     LF4D2
         jmp     LDF6E
 
-LDF94:  sta     $051E,x
+LDF84:  sta     $051E,x
         lda     $051E,x
-        bne     LDFAF
+        bne     LDF9F
         cpx     #$00
-        beq     LDFAB
+        beq     LDF9B
         cpx     #$01
-        bne     LDFAF
+        bne     LDF9F
         lda     $0F
-        beq     LDFAF
+        beq     LDF9F
         jmp     LDF7E
 
-LDFAB:  lda     #$24
+LDF9B:  lda     #$24
         sta     $0F
-LDFAF:  sta     $051B,x
+LDF9F:  sta     $051B,x
         inx
         cpx     #$03
-        bpl     LDFBA
+        bpl     LDFAA
         jmp     LDF6E
 
-LDFBA:  lda     #$85
+LDFAA:  lda     #$85
         sta     $051A
         sta     $0521
         lda     $EF
-        beq     LDFD4
+        beq     LDFC4
         lda     $18
         and     #$80
-        beq     LDFD4
+        beq     LDFC4
         lda     #$86
         sta     $0521
         inc     $051A
-LDFD4:  lda     $4C
-        beq     LDFE8
+LDFC4:  lda     $4C
+        beq     LDFD8
         lda     #$01
         sta     $051C
         sta     $051F
-LDFE0:  lda     #$08
+        lda     #$08
         sta     $051D
         sta     $0520
-LDFE8:  lda     #$6E
+LDFD8:  lda     #$6E
         sta     $00
         lda     #$20
-LDFEE:  sta     $01
-        lda     #$14
+        sta     $01
+LDFE0:  lda     #$14
         sta     $0519
         lda     #$19
         sta     L0002
         lda     #$05
         jmp     LF2AA
 
-        lda     $E5,x
-        bne     LE003
+LDFEE:  lda     $E5,x
+        bne     LDFF3
         rts
 
-LE003:  lda     $37
-        bne     LE013
+LDFF3:  lda     $37
+        bne     LE003
         lda     #$FF
         sta     $37
         lda     #$10
@@ -4106,29 +4003,29 @@ LE003:  lda     $37
         lda     #$00
         rts
 
-LE013:  cmp     #$50
-        bne     LE01A
-LE017:  jmp     LE0E4
+LE003:  cmp     #$50
+        bne     LE00A
+LE007:  jmp     LE0E4
 
-LE01A:  cmp     #$49
-        beq     LE017
+LE00A:  cmp     #$49
+        beq     LE007
         and     #$0F
-        beq     LE025
+        beq     LE015
         lda     #$00
         rts
 
-LE025:  lda     $0523
+LE015:  lda     $0523
         cmp     #$01
-        beq     LE02F
+        beq     LE01F
         jmp     LE09E
 
-LE02F:  txa
+LE01F:  txa
         pha
         lda     LC279,x
         sta     $00
         ldx     #$00
         ldy     #$00
-LE03A:  lda     #$20
+LE02A:  lda     #$20
         sta     $0331,y
         lda     LC27B,x
         clc
@@ -4146,12 +4043,12 @@ LE03A:  lda     #$20
         inx
         inx
         cpx     #$18
-        bmi     LE03A
+        bmi     LE02A
         ldx     #$85
         cpx     $0521
-        beq     LE067
+        beq     LE057
         inx
-LE067:  stx     $0354
+LE057:  stx     $0354
         lda     #$20
         sta     $0351
         pla
@@ -4163,32 +4060,32 @@ LE067:  stx     $0354
         lda     #$04
         sta     $0353
         ldx     #$00
-LE080:  lda     $051E,x
+LE070:  lda     $051E,x
         sta     $0355,x
         inx
         cpx     #$03
-        bmi     LE080
+        bmi     LE070
         ldx     $0356
         ldy     $0357
         lda     $0355
-        bne     LE0A1
+        bne     LE091
         stx     $0355
         sty     $0356
         lda     #$24
-LE09E:  sta     $0357
-LE0A1:  lda     #$00
+        sta     $0357
+LE091:  lda     #$00
         sta     $0358
         lda     #$27
         sta     $0330
         jmp     LE0D7
 
-        txa
+LE09E:  txa
         pha
         lda     LC279,x
         sta     $00
         ldx     #$00
         ldy     #$00
-LE0B9:  lda     #$20
+LE0A9:  lda     #$20
         sta     $0331,y
         lda     $00
         sta     $0332,y
@@ -4203,15 +4100,15 @@ LE0B9:  lda     #$20
         iny
         iny
         iny
-LE0D7:  iny
+        iny
         inx
         cpx     #$03
-        bmi     LE0B9
+        bmi     LE0A9
         lda     #$00
         sta     $033D
         lda     #$0C
-LE0E4:  sta     $0330
-        pla
+        sta     $0330
+LE0D7:  pla
         tax
         lda     $0523
         eor     #$11
@@ -4219,27 +4116,27 @@ LE0E4:  sta     $0330
         lda     #$00
         rts
 
-        lda     #$00
+LE0E4:  lda     #$00
         sta     $0D
         ldy     #$30
         txa
         pha
-        beq     LE104
+        beq     LE0F4
         lda     #$14
         sta     $0D
         ldy     #$B8
-LE104:  sty     $09
+LE0F4:  sty     $09
         lda     $05C7,x
         tay
         asl     a
         asl     a
         tax
-LE10D:  lda     $09
+LE0FD:  lda     $09
         clc
         adc     #$08
         sta     $09
         dey
-        bpl     LE10D
+        bpl     LE0FD
         txa
         clc
         adc     $0D
@@ -4259,13 +4156,13 @@ LE10D:  lda     $09
         sta     $E6
         lda     $05C7,x
         cmp     #$05
-        bpl     LE147
+        bpl     LE137
         lda     #$01
         sta     $0411
         sta     $4B
         rts
 
-LE147:  lda     #$B4
+LE137:  lda     #$B4
         sta     $39
         lda     #$00
         sta     $37
@@ -4282,39 +4179,36 @@ LE147:  lda     #$B4
         ldy     #$00
         txa
         pha
-        beq     LE16F
+        beq     LE15F
         ldy     #$14
-LE16F:
-LE170           := * + 1
-        ldx     #$05
+LE15F:  ldx     #$05
         lda     #$F7
-LE173:  sta     $0250,y
+LE163:  sta     $0250,y
         iny
         iny
         iny
         iny
         dex
-LE17B:  bne     LE173
+        bne     LE163
         pla
         tax
         rts
 
-        ldy     #$36
+LE170:  ldy     #$36
         lda     #$00
-LE184:  sta     $03E0,y
+LE174:  sta     $03E0,y
         dey
-        bpl     LE184
+        bpl     LE174
         rts
 
-        lda     $4A
+LE17B:  lda     $4A
         cmp     #$01
-        beq     LE192
+        beq     LE182
         rts
 
-LE192:  txa
+LE182:  txa
         pha
         jsr     LE1C1
-LE199           := * + 2
         lda     $0521
         sta     $03F2
         sta     $03F3
@@ -4324,80 +4218,80 @@ LE199           := * + 2
         tax
         inx
         stx     $0A
-        ldy     #$01
-LE1AB:  lda     LC1B6,x
+LE199:  ldy     #$01
+LE19B:  lda     LC1B6,x
         sta     $0526,y
         sta     $03F5,y
         sta     $03F9,y
         dex
         dey
-        bpl     LE1AB
+        bpl     LE19B
         lda     $0527
         cmp     $051F
-LE1C1:  bne     LE1CC
+        bne     LE1BC
         inc     $0A
         inc     $0A
         ldx     $0A
         jmp     LE199
 
-LE1CC:  pla
+LE1BC:  pla
         tax
         jmp     LDBC2
 
-        txa
+LE1C1:  txa
         asl     a
         asl     a
         tay
-LE1D5:  lda     #$00
-LE1D7:  sta     $03F4,y
+LE1C5:  lda     #$00
+        sta     $03F4,y
         iny
         cpy     #$04
-        beq     LE1E3
+        beq     LE1D3
         cpy     #$08
-        bne     LE1D5
-LE1E3:  sta     $03F2,x
+        bne     LE1C5
+LE1D3:  sta     $03F2,x
         rts
 
-        lda     $4C
-        beq     LE1EC
+LE1D7:  lda     $4C
+        beq     LE1DC
         rts
 
-LE1EC:  lda     $05D3,x
-        bne     LE1F2
+LE1DC:  lda     $05D3,x
+        bne     LE1E2
         rts
 
-LE1F2:  lda     $040C
+LE1E2:  lda     $040C
         ora     $040D
-        beq     LE1FB
+        beq     LE1EB
         rts
 
-LE1FB:  txa
+LE1EB:  txa
         asl     a
         tay
         lda     $15,y
         cmp     #$40
-        beq     LE209
+        beq     LE1F9
         sta     $0528,x
         rts
 
-LE209:  cmp     $0528,x
-        bne     LE20F
+LE1F9:  cmp     $0528,x
+        bne     LE1FF
         rts
 
-LE20F:  sta     $0528,x
+LE1FF:  sta     $0528,x
         lda     $0330
-        beq     LE21D
+        beq     LE20D
         lda     #$00
         sta     $0528,x
         rts
 
-LE21D:  jsr     LE1C1
+LE20D:  jsr     LE1C1
         lda     #$40
         sta     $FD
         lda     #$00
         sta     $05D3,x
         lda     $EF
-        beq     LE24A
+        beq     LE23A
         txa
         asl     a
         asl     a
@@ -4407,35 +4301,33 @@ LE21D:  jsr     LE1C1
         lda     $0527
         sta     $03F6,y
         lda     $0521
-LE242           := * + 2
         sta     $03F2,x
         lda     #$00
         sta     $DF,x
         jmp     LDBBF
 
-LE24A:  lda     #$00
+LE23A:  lda     #$00
         sta     $03F2,x
         jmp     LDC0D
 
-        txa
+LE242:  txa
         pha
         tya
         pha
         lda     $4C
-LE259           := * + 1
-        bne     LE264
+        bne     LE254
         lda     #$10
         sta     $01
         lda     LC41B,x
         jsr     LF17A
-LE264:  pla
+LE254:  pla
         tay
         pla
         tax
         rts
 
-        lda     #$30
-LE26B:  sta     $01
+LE259:  lda     #$30
+        sta     $01
         lda     #$F9
         jsr     LF17A
         lda     #$40
@@ -4443,8 +4335,8 @@ LE26B:  sta     $01
         lda     #$18
         jmp     LF17A
 
-        lda     $E8
-        bne     LE28E
+LE26B:  lda     $E8
+        bne     LE27E
         lda     #$01
         sta     $E8
         lda     #$00
@@ -4454,42 +4346,39 @@ LE26B:  sta     $01
         sta     $92
         rts
 
-LE28E:  lda     $91,x
-LE291           := * + 1
-        beq     LE2A6
+LE27E:  lda     $91,x
+        beq     LE296
         lda     $BA,x
         cmp     #$05
-        bne     LE29F
+        bne     LE28F
         lda     #$03
         sta     $5F,x
         jmp     LE291
 
-LE29F:  sta     $51,x
-        dec     $91,x
+LE28F:  sta     $51,x
+LE291:  dec     $91,x
         jmp     LE2B3
 
-LE2A6:  lda     $4E,x
+LE296:  lda     $4E,x
         tay
         lda     $0740,y
         cpx     #$00
-        beq     LE2B3
+        beq     LE2A3
         lda     $0760,y
-LE2B3:
-LE2B4           := * + 1
-        sta     $91,x
+LE2A3:  sta     $91,x
         lda     $0700,y
         cpx     #$00
-        beq     LE2BF
+        beq     LE2AF
         lda     $0720,y
-LE2BF:  sta     $BA,x
+LE2AF:  sta     $BA,x
         inc     $4E,x
-        rts
+LE2B3:  rts
 
-        lda     $EA
+LE2B4:  lda     $EA
         cmp     #$0A
-        bmi     LE2CC
+        bmi     LE2BC
         lda     #$09
-LE2CC:  sec
+LE2BC:  sec
         sbc     #$01
         asl     a
         tax
@@ -4499,8 +4388,8 @@ LE2CC:  sec
         sta     $04D8,x
         rts
 
-        lda     $EA
-LE2DE:  sec
+LE2CC:  lda     $EA
+        sec
         sbc     #$01
         asl     a
         tax
@@ -4510,104 +4399,97 @@ LE2DE:  sec
         sta     $23
         rts
 
-        lda     $BF
-        bne     LE2F3
-LE2F2:  rts
+LE2DE:  lda     $BF
+        bne     LE2E3
+LE2E2:  rts
 
-LE2F3:
-LE2F5           := * + 2
-        jsr     LE314
+LE2E3:  jsr     LE314
         lda     $0213
         cmp     $05F3
-        bne     LE2F2
+        bne     LE2E2
         lda     #$00
         sta     $0400
         lda     #$B8
-        sta     $0401
+LE2F5:  sta     $0401
         lda     $0210
         cmp     $0401
-        bcc     LE318
+        bcc     LE308
         lda     $0400
-LE314           := * + 1
         sta     $BC
         jmp     LEA7C
 
-LE318:  inc     $0400
+LE308:  inc     $0400
         lda     $0401
         sec
         sbc     #$08
         jmp     LE2F5
 
-LE324:  lda     $33
-        beq     LE338
+LE314:  lda     $33
+        beq     LE328
         cmp     #$2E
-        bmi     LE332
-LE32D           := * + 1
+        bmi     LE322
         lda     $05F5
         jmp     LE324
 
-LE332:  lda     #$F8
-        sta     $02D0
+LE322:  lda     #$F8
+LE324:  sta     $02D0
         rts
 
-LE338:  lda     #$3E
+LE328:  lda     #$3E
         sta     $33
         rts
 
-        lda     $0211
+LE32D:  lda     $0211
         cmp     #$94
-        bne     LE362
+        bne     LE352
         ldy     #$01
         lda     #$4B
-        cmp     $0214
-        bcs     LE354
+LE338:  cmp     $0214
+        bcs     LE344
         iny
         clc
         adc     #$10
-LE353           := * + 2
         jmp     LE338
 
-LE354:  sty     $EA
+LE344:  sty     $EA
         jsr     LE6C9
         lda     #$00
         sta     $26
         sta     $27
         jsr     LE2CC
-LE362:  rts
+LE352:  rts
 
-        lda     $0402
-        bne     LE369
+LE353:  lda     $0402
+        bne     LE359
         rts
 
-LE369:  lda     $35
-        bne     LE396
+LE359:  lda     $35
+        bne     LE386
         lda     #$10
         sta     $35
         lda     $0405
-        bne     LE37F
+        bne     LE36F
         jsr     LE387
         lda     #$01
         sta     $0405
         rts
 
-LE37F:  ldy     $0402
+LE36F:  ldy     $0402
         dey
         lda     LC299,y
-LE387           := * + 1
         sta     $02D8
         sta     $02DC
         lda     #$18
         sta     $02DF
         lda     #$00
         sta     $0405
-LE396:  rts
+LE386:  rts
 
-        lda     #$FF
+LE387:  lda     #$FF
         sta     $02D8
         sta     $02DC
         lda     #$5E
         sta     $02D9
-LE3A5           := * + 1
         sta     $02DD
         lda     #$03
         sta     $02DA
@@ -4616,455 +4498,437 @@ LE3A5           := * + 1
         sta     $02DB
         rts
 
-        lda     $02E0
+LE3A5:  lda     $02E0
         sta     $01
         lda     #$22
         sta     $03
         lda     #$E0
         sta     $04
         lda     $AF
-        bne     LE3E1
+        bne     LE3D1
         lda     $EC
         cmp     #$05
-        beq     LE415
+        beq     LE405
         cmp     #$16
-        beq     LE3DC
+        beq     LE3CC
         and     #$08
         cmp     #$08
-        beq     LE3E1
+        beq     LE3D1
         lda     $BE
-        bne     LE3E1
-        beq     LE400
-LE3DC:  jsr     LE4C5
-        bne     LE41B
-LE3E1:  lda     $040E
+        bne     LE3D1
+        beq     LE3F0
+LE3CC:  jsr     LE4C5
+        bne     LE40B
+LE3D1:  lda     $040E
         and     #$01
-        beq     LE400
+        beq     LE3F0
         lda     $B1
-        beq     LE3EF
+        beq     LE3DF
         jmp     LE481
 
-LE3EF:
-LE3F0           := * + 1
-        lda     $02E3
+LE3DF:  lda     $02E3
         clc
         adc     #$02
         sta     $02E3
         cmp     #$D0
-        bcc     LE400
+        bcc     LE3F0
         lda     #$01
-LE3FE:  sta     $B1
-LE400:  lda     $02E3
+        sta     $B1
+LE3F0:  lda     $02E3
         sta     $00
         lda     $040E
         and     #$10
-        beq     LE416
+        beq     LE406
         lda     #$6C
-        sta     L0002
+LE3FE:  sta     L0002
         lda     $B1
         jsr     LD6D2
-LE415:  rts
+LE405:  rts
 
-LE416:  lda     #$68
+LE406:  lda     #$68
         jmp     LE3FE
 
-LE41B:  ldx     $BD
+LE40B:  ldx     $BD
         ldy     $4D
         cmp     #$09
-        bne     LE428
+        bne     LE418
         lda     LC2D8,y
-        bne     LE453
-LE428:  cmp     #$0A
-        bne     LE431
-        lda     LC2E1,y
-        bne     LE453
-LE431:  cmp     #$0B
-        bne     LE43A
-        lda     LC2E6,y
-        bne     LE453
-LE43A:  cmp     #$0C
         bne     LE443
+LE418:  cmp     #$0A
+        bne     LE421
+        lda     LC2E1,y
+        bne     LE443
+LE421:  cmp     #$0B
+        bne     LE42A
+        lda     LC2E6,y
+        bne     LE443
+LE42A:  cmp     #$0C
+        bne     LE433
         lda     LC2EA,y
-        bne     LE453
-LE443:  cmp     #$0D
-        bne     LE44C
+        bne     LE443
+LE433:  cmp     #$0D
+        bne     LE43C
         lda     LC2F1,y
-        bne     LE453
-LE44C:  cmp     #$0E
-        bne     LE45E
+        bne     LE443
+LE43C:  cmp     #$0E
+        bne     LE44E
         lda     LC2F5,y
-LE453:  pha
+LE443:  pha
         lda     $B0
-        beq     LE45B
+        beq     LE44B
         pla
-        bne     LE46F
-LE45B:  pla
-        bne     LE469
-LE45E:  tay
+        bne     LE45F
+LE44B:  pla
+        bne     LE459
+LE44E:  tay
         dey
         lda     $B0
-        beq     LE466
-        bne     LE46F
-LE466:  lda     LC2B0,y
-LE469:  sta     $0470,x
+        beq     LE456
+        bne     LE45F
+LE456:  lda     LC2B0,y
+LE459:  sta     $0470,x
         sta     $02D4
-LE46F:  lda     #$03
+LE45F:  lda     #$03
         sta     $02D6
         lda     $02E3
         clc
         adc     #$04
         sta     $02D7
         ldy     $B0
-        bne     LE486
-LE481:  sta     $0460,x
+        bne     LE476
+        sta     $0460,x
         inc     $BD
-LE486:  lda     #$9C
+LE476:  lda     #$9C
         sta     $02D5
         lda     #$06
         sta     $EC
-        bne     LE415
-        lda     $02E3
+        bne     LE405
+LE481:  lda     $02E3
         sec
         sbc     #$02
         sta     $02E3
         lda     $EA
         cmp     #$09
-        bpl     LE4B2
+        bpl     LE4A2
         cmp     #$05
-        beq     LE4B2
+        beq     LE4A2
         lda     #$68
-LE4A6:  cmp     $02E3
-        bcc     LE4AF
+LE496:  cmp     $02E3
+        bcc     LE49F
         lda     #$00
         sta     $B1
-LE4AF:
-LE4B1           := * + 2
-        jmp     LE3F0
+LE49F:  jmp     LE3F0
 
-LE4B2:  lda     #$B8
-        bne     LE4A6
-        cmp     #$FF
-        beq     LE4C4
+LE4A2:  lda     #$B8
+        bne     LE496
+LE4A6:  cmp     #$FF
+        beq     LE4B4
         cmp     $02E3
-        bne     LE4CC
-LE4BF:  inc     $AD
-        lda     $EA
+        bne     LE4BC
+        inc     $AD
+LE4B1:  lda     $EA
         rts
 
-LE4C4:
-LE4C5           := * + 1
-        lda     #$01
+LE4B4:  lda     #$01
         sta     $BE
         lda     #$00
         sta     $AD
-LE4CC:  lda     #$00
+LE4BC:  lda     #$00
         rts
 
-        lda     #$F8
+LE4BF:  lda     #$F8
         sta     $0470,y
         rts
 
-        lda     $B0
-        bne     LE512
+LE4C5:  lda     $B0
+        bne     LE502
         ldy     $AD
         lda     $EA
         cmp     #$09
-        bcs     LE501
+        bcs     LE4F1
         lda     $AA
-        beq     LE4E8
+        beq     LE4D8
         jmp     LE56B
 
-LE4E8:  lda     $AB
-        beq     LE4EF
+LE4D8:  lda     $AB
+        beq     LE4DF
         jmp     LE585
 
-LE4EF:  lda     $AC
-        beq     LE4F6
+LE4DF:  lda     $AC
+        beq     LE4E6
         jmp     LE596
 
-LE4F6:  lda     #$01
+LE4E6:  lda     #$01
         sta     $93
         lda     #$00
         sta     $AD
         lda     #$00
         rts
 
-LE501:
-LE502           := * + 1
-        jmp     LE5C0
+LE4F1:  jmp     LE5C0
 
-LE504:  sec
+LE4F4:  sec
         sbc     #$09
         tax
         lda     LC0CB,x
         cmp     $BD
-        bne     LE51F
+        bne     LE50F
         jmp     LE5B9
 
-LE512:  lda     $EA
+LE502:  lda     $EA
         cmp     #$09
-        bpl     LE504
+        bpl     LE4F4
         lda     $A9
-        bne     LE51F
+        bne     LE50F
         jmp     LE5B9
 
-LE51F:  ldx     $BD
+LE50F:  ldx     $BD
         lda     $0470,x
         cmp     #$F8
-        bne     LE552
+        bne     LE542
         inc     $BD
         lda     $A7
-        beq     LE533
+        beq     LE523
         dec     $A7
         jmp     LE502
 
-LE533:  lda     $A8
-        bne     LE53C
-        beq     LE541
-LE539:  jmp     LE5BD
+LE523:  lda     $A8
+        bne     LE52C
+        beq     LE531
+LE529:  jmp     LE5BD
 
-LE53C:  dec     $A8
+LE52C:  dec     $A8
         jmp     LE502
 
-LE541:  lda     $A9
-        beq     LE539
+LE531:  lda     $A9
+        beq     LE529
         dec     $A9
         lda     $A9
         cmp     #$01
-        bne     LE54F
+        bne     LE53F
         sta     $93
-LE54F:  jmp     LE502
+LE53F:  jmp     LE502
 
-LE552:  lda     $A9
+LE542:  lda     $A9
         cmp     #$01
-        bne     LE55A
+        bne     LE54A
         sta     $93
-LE55A:  lda     $02E3
+LE54A:  lda     $02E3
         clc
         adc     #$04
         cmp     $0460,x
-        bne     LE5CD
+        bne     LE5BD
         txa
         asl     a
         asl     a
         tax
         lda     $DB
-LE56B:  bne     LE578
+        bne     LE568
         lda     $0290,x
         sta     $02D4
         lda     #$F8
         sta     $0290,x
-LE578:  jmp     LE4B1
+LE568:  jmp     LE4B1
 
-LE57C           := * + 1
-        lda     $02E3
+LE56B:  lda     $02E3
         cmp     LC2A3,y
-        bne     LE5CD
+        bne     LE5BD
         lda     #$01
-LE585:  pha
+        pha
         dec     $AA
-        beq     LE58E
-LE58A:  inc     $AD
-        pla
+        beq     LE57E
+LE57A:  inc     $AD
+LE57C:  pla
         rts
 
-LE58E:  lda     #$00
+LE57E:  lda     #$00
         sta     $AD
         jmp     LE57C
 
-LE596           := * + 1
-        lda     $02E3
+LE585:  lda     $02E3
         cmp     LC2AA,y
-        bne     LE5CD
+        bne     LE5BD
         lda     #$02
         pha
         dec     $AB
-        beq     LE58E
-        bne     LE58A
-        lda     $EA
+        beq     LE57E
+        bne     LE57A
+LE596:  lda     $EA
         cmp     #$05
-LE5AB           := * + 1
-        bne     LE5B8
+        bne     LE5A8
         lda     $A5
         cmp     #$01
-        beq     LE5B8
+        beq     LE5A8
         lda     LC2AE,y
         jmp     LE5AB
 
-LE5B8:
-LE5B9           := * + 1
-        lda     LC2A3,y
-LE5BD           := * + 2
-        cmp     $02E3
-        bne     LE5CD
-LE5C0:  lda     #$03
+LE5A8:  lda     LC2A3,y
+LE5AB:  cmp     $02E3
+        bne     LE5BD
+        lda     #$03
         pha
         dec     $AC
-        beq     LE58E
-        bne     LE58A
-        lda     #$01
+        beq     LE57E
+        bne     LE57A
+LE5B9:  lda     #$01
         sta     $BE
-LE5CD:  lda     #$00
+LE5BD:  lda     #$00
         rts
 
-        cmp     #$09
-        bne     LE5DA
+LE5C0:  cmp     #$09
+        bne     LE5CA
         lda     LC2B3,y
         jmp     LE4A6
 
-LE5DA:  cmp     #$0A
-        bne     LE5E4
+LE5CA:  cmp     #$0A
+        bne     LE5D4
         lda     LC2BC,y
         jmp     LE4A6
 
-LE5E4:  cmp     #$0B
-        bne     LE5EE
+LE5D4:  cmp     #$0B
+        bne     LE5DE
         lda     LC2C1,y
         jmp     LE4A6
 
-LE5EE:  cmp     #$0C
-        bne     LE5F8
+LE5DE:  cmp     #$0C
+        bne     LE5E8
         lda     LC2C5,y
         jmp     LE4A6
 
-LE5F8:  cmp     #$0D
-        bne     LE602
+LE5E8:  cmp     #$0D
+        bne     LE5F2
         lda     LC2CC,y
         jmp     LE4A6
 
-LE602:  lda     LC2D0,y
+LE5F2:  lda     LC2D0,y
         jmp     LE4A6
 
-        lda     $BF
-        bne     LE60D
+LE5F8:  lda     $BF
+        bne     LE5FD
         rts
 
-LE60D:  lda     #$04
+LE5FD:  lda     #$04
         sta     $FF
         sta     $05F2
         ldy     $4D
         dey
         lda     $EA
         cmp     #$09
-        bcc     LE623
+        bcc     LE613
         jmp     LE63D
 
-LE620:  inc     $B4
+LE610:  inc     $B4
         rts
 
-LE623:  lda     $A7
-        beq     LE62E
+LE613:  lda     $A7
+        beq     LE61E
         dec     $A7
         lda     $A7
         jmp     LE63D
 
-LE62E:  lda     $A8
-        beq     LE637
+LE61E:  lda     $A8
+        beq     LE627
         dec     $A8
         jmp     LE63D
 
-LE637:  lda     $A9
-        beq     LE649
+LE627:  lda     $A9
+        beq     LE639
         dec     $A9
-LE63D:  beq     LE649
+        beq     LE639
         lda     $A9
         cmp     #$01
-        bne     LE64D
+        bne     LE63D
         sta     $93
-        beq     LE64D
-LE649:  lda     #$FF
+        beq     LE63D
+LE639:  lda     #$FF
         sta     $BE
-LE64D:  jsr     LE65E
+LE63D:  jsr     LE65E
         lda     $EA
         cmp     #$09
-        bmi     LE664
+        bmi     LE654
         sec
         sbc     #$09
         tax
         lda     LC0CB,x
-LE65E           := * + 1
         cmp     $0410
-        bne     LE664
+        bne     LE654
         sta     $BE
-LE664:  lda     $05E0,y
+LE654:  lda     $05E0,y
         cmp     $BC
-        bne     LE620
+        bne     LE610
         jmp     LE4BF
 
-        pha
+LE65E:  pha
         lda     $B0
-        bne     LE675
+        bne     LE665
         pla
-LE674:  rts
+        rts
 
-LE675:  ldy     $0410
+LE665:  ldy     $0410
         inc     $0410
         lda     $0470,y
         cmp     #$F8
-        beq     LE675
+        beq     LE665
         pla
         rts
 
-        lda     $15
+LE674:  lda     $15
         cmp     #$40
-        beq     LE68E
+        beq     LE67E
         sta     $0417
         rts
 
-LE68E:  cmp     $0417
-        bne     LE694
+LE67E:  cmp     $0417
+        bne     LE684
         rts
 
-LE694:  sta     $0417
+LE684:  sta     $0417
         lda     $B0
-        bne     LE6A5
+        bne     LE695
         lda     $BF
-        bne     LE6A5
+        bne     LE695
         lda     $05F2
-        bne     LE6A5
+        bne     LE695
         rts
 
-LE6A5:  lda     $5F
+LE695:  lda     $5F
         cmp     #$04
-        bne     LE6AC
+        bne     LE69C
         rts
 
-LE6AC:  lda     $AF
-        beq     LE6B1
+LE69C:  lda     $AF
+        beq     LE6A1
         rts
 
-LE6B1:  lda     #$40
+LE6A1:  lda     #$40
         sta     $FD
         jsr     LE6BA
         lda     #$16
-LE6BA:  sta     $EC
+        sta     $EC
         lda     #$01
         sta     $5F
         ldy     #$04
         ldx     #$00
         jsr     LC814
-LE6C9           := * + 2
         jmp     LE825
 
-        jsr     LC71F
+LE6BA:  jsr     LC71F
         jsr     LEE97
         jsr     LEDD7
-LE6D3:  jsr     LE72C
+        jsr     LE72C
         jmp     LE6C9
 
-        lda     #$00
+LE6C9:  lda     #$00
         sta     $AD
-LE6DE           := * + 1
         sta     $BF
         sta     $B0
         sta     $DB
-        lda     #$00
+LE6D3:  lda     #$00
         sta     $B4
         sta     $98
         sta     $CF
         sta     $04D4
-        lda     #$00
-LE6F1           := * + 1
+LE6DE:  lda     #$00
         sta     $B5
         sta     $0410
         sta     $BD
@@ -5074,14 +4938,13 @@ LE6F1           := * + 1
         sta     $05F2
         rts
 
-        ldx     #$00
+LE6F1:  ldx     #$00
         ldy     #$00
-LE705:  lda     $0470,x
+LE6F5:  lda     $0470,x
         sta     $0290,y
         lda     $0460,x
         sta     $0293,y
         lda     #$9C
-LE715           := * + 2
         sta     $0291,y
         lda     #$03
         sta     $0292,y
@@ -5091,70 +4954,67 @@ LE715           := * + 2
         iny
         iny
         cpx     #$0D
-        bmi     LE705
+        bmi     LE6F5
         rts
 
-        lda     $DB
-        bne     LE72A
+LE715:  lda     $DB
+        bne     LE71A
         rts
 
-LE72A:  lda     $33
-LE72C:  bne     LE732
+LE71A:  lda     $33
+        bne     LE722
         lda     #$3E
         sta     $33
-LE732:  cmp     #$1F
-        bpl     LE739
+LE722:  cmp     #$1F
+        bpl     LE729
         jmp     LE6F1
 
-LE739:  jmp     LE73F
+LE729:  jmp     LE73F
 
-        ldx     #$1E
-LE73E:
-LE73F           := * + 1
-        lda     #$F7
+LE72C:  ldx     #$1E
+LE72E:  lda     #$F7
         sta     $05F5
         sta     $02D0
         sta     $02D4
-LE74A           := * + 1
         sta     $0460,x
         dex
-        bpl     LE73E
-        ldx     #$34
-LE751:  lda     #$F8
+        bpl     LE72E
+LE73F:  ldx     #$34
+LE741:  lda     #$F8
         sta     $028F,x
         dex
-        bne     LE751
+        bne     LE741
         rts
 
-        lda     $BF
-        bne     LE764
+LE74A:  lda     $BF
+        bne     LE754
         lda     $EC
         cmp     #$06
-        beq     LE765
-LE764:  rts
+        beq     LE755
+LE754:  rts
 
-LE765:  jsr     LD556
-        bne     LE76B
+LE755:  jsr     LD556
+        bne     LE75B
         rts
 
-LE76B:  lda     $8C
+LE75B:  lda     $8C
         sec
         sbc     #$10
         sta     $05F3
         lda     $02E3
         cmp     $8C
-        bcs     LE764
+        bcs     LE754
         lda     $02EB
         clc
         adc     #$08
         cmp     $8C
-        bcc     LE764
+        bcc     LE754
         txa
         pha
         lda     $B0
-        beq     LE7AC
+        beq     LE79C
         lda     $DB
-        beq     LE7A5
+        beq     LE795
         jsr     LE6F1
         lda     #$00
         sta     $DB
@@ -5164,36 +5024,36 @@ LE76B:  lda     $8C
         tax
         lda     $0290,x
         sta     $02D4
-LE7A0:  lda     #$F7
+        lda     #$F7
         sta     $0290,x
-LE7A5:  inc     $BD
+LE795:  inc     $BD
         ldx     $BD
         jmp     LE7A0
 
-LE7AC:  inc     $4D
+LE79C:  inc     $4D
         ldx     $4D
-        lda     $EA
+LE7A0:  lda     $EA
         cmp     #$08
-        bne     LE7D3
+        bne     LE7C3
         cpx     #$04
-        bmi     LE7D3
+        bmi     LE7C3
         lda     $A3
         cmp     #$03
-        bne     LE7C1
+        bne     LE7B1
         inx
-LE7C1:  cpx     #$04
-        bne     LE7C8
+LE7B1:  cpx     #$04
+        bne     LE7B8
         jsr     LE7F5
-LE7C8:  cpx     #$08
-        bmi     LE7D3
+LE7B8:  cpx     #$08
+        bmi     LE7C3
         lda     $A4
         cmp     #$03
-        bne     LE7D3
+        bne     LE7C3
         inx
-LE7D3:  cpx     #$08
-        bne     LE7DA
+LE7C3:  cpx     #$08
+        bne     LE7CA
         jsr     LE7F5
-LE7DA:  stx     $98
+LE7CA:  stx     $98
         lda     $02D4
         sta     $05F5
         lda     $02D7
@@ -5203,11 +5063,9 @@ LE7DA:  stx     $98
         lda     #$03
         sta     $02D2
         lda     #$F7
-LE7F5           := * + 1
         sta     $02D4
         lda     #$16
         sta     $BF
-LE7FC           := * + 1
         sta     $EC
         lda     #$00
         sta     $05F2
@@ -5215,24 +5073,23 @@ LE7FC           := * + 1
         tax
         rts
 
-        lda     #$01
+LE7F5:  lda     #$01
         eor     $B1
         sta     $B1
         rts
 
-        lda     $EC
+LE7FC:  lda     $EC
         cmp     #$05
-        beq     LE813
+        beq     LE803
         rts
 
-LE813:  lda     #$09
+LE803:  lda     #$09
         cmp     $EA
-        bpl     LE81B
+        bpl     LE80B
         sta     $EA
-LE81B:  inc     $0402
+LE80B:  inc     $0402
         jsr     LEC0F
         jsr     LEB15
-LE825           := * + 1
         jsr     LEC1B
         jsr     LE6BA
         lda     #$01
@@ -5240,7 +5097,7 @@ LE825           := * + 1
         lda     #$00
         sta     $04FB
         sta     $50
-        lda     #$03
+LE825:  lda     #$03
         sta     $02D6
         lda     #$5F
         sta     $01
@@ -5256,10 +5113,10 @@ LE825           := * + 1
         ldy     #$01
         lda     $EA
         cmp     #$05
-        bne     LE880
-LE858:  ldx     #$BA
+        bne     LE870
+LE848:  ldx     #$BA
         ldy     #$00
-LE85C:  stx     $00
+LE84C:  stx     $00
         sty     $B1
         jsr     LD6CC
         lda     #$10
@@ -5271,49 +5128,48 @@ LE85C:  stx     $00
         lda     #$F0
         sta     $04
         lda     #$22
-LE876           := * + 1
         sta     $03
         jsr     LD6CC
         lda     #$00
         sta     $040F
         rts
 
-LE880:  cmp     #$09
-        bpl     LE858
-        bne     LE85C
-        lda     $0420
-        bne     LE88C
+LE870:  cmp     #$09
+        bpl     LE848
+        bne     LE84C
+LE876:  lda     $0420
+        bne     LE87C
         rts
 
-LE88C:  jsr     LE72C
+LE87C:  jsr     LE72C
         lda     $50
-        beq     LE89B
+        beq     LE88B
         lda     #$00
         sta     $50
         lda     $AF
-        beq     LE90D
-LE89B:  lda     $AF
-        beq     LE8AA
+        beq     LE8FD
+LE88B:  lda     $AF
+        beq     LE89A
         lda     #$00
         sta     $0420
         sta     $0404
         sta     $AF
         rts
 
-LE8AA:  lda     $0404
-LE8AD:  bne     LE8D9
+LE89A:  lda     $0404
+        bne     LE8C9
         lda     #$40
         bit     $02F2
-        bne     LE8BE
+        bne     LE8AE
         lda     $02F3
         cmp     #$28
-        beq     LE8C5
-LE8BD:  rts
+        beq     LE8B5
+LE8AD:  rts
 
-LE8BE:  lda     $02F3
+LE8AE:  lda     $02F3
         cmp     #$20
-        bne     LE8BD
-LE8C5:  lda     #$68
+        bne     LE8AD
+LE8B5:  lda     #$68
         sta     $0240
         lda     #$F0
         sta     $0241
@@ -5321,19 +5177,18 @@ LE8C5:  lda     #$68
         sta     $0242
         lda     #$28
         sta     $0243
-LE8D9:  inc     $0240
+LE8C9:  inc     $0240
         lda     $0240
-LE8E0           := * + 1
         ldy     $0402
         dey
         cmp     LC299,y
-        beq     LE8EE
+        beq     LE8DE
         inc     $0404
         jmp     LE8AD
 
-LE8EE:  ldx     #$04
-        cpy     #$00
-        beq     LE8FC
+LE8DE:  ldx     #$04
+LE8E0:  cpy     #$00
+        beq     LE8EC
         inx
         inx
         inx
@@ -5341,17 +5196,17 @@ LE8EE:  ldx     #$04
         dey
         jmp     LE8E0
 
-LE8FC:  lda     $0240,y
+LE8EC:  lda     $0240,y
         sta     $0240,x
         iny
         inx
         cpy     #$04
-        bne     LE8FC
+        bne     LE8EC
         lda     #$F7
         sta     $0240
-LE90D:  lda     #$00
+LE8FD:  lda     #$00
         sta     $0420
-LE912:  sta     $0404
+        sta     $0404
         jsr     LE9E7
         lda     #$20
         sta     $EC
@@ -5359,36 +5214,35 @@ LE912:  sta     $0404
         sta     $04FC
         rts
 
-        lda     $50
-        beq     LE92A
+LE912:  lda     $50
+        beq     LE91A
         lda     $AF
-LE928:  beq     LE933
-LE92A:  lda     $AF
-        beq     LE933
+        beq     LE923
+LE91A:  lda     $AF
+        beq     LE923
         lda     #$02
         sta     $FD
         rts
 
-LE933:  lda     #$20
+LE923:  lda     #$20
         sta     $FD
         rts
 
-        lda     $EC
+LE928:  lda     $EC
         cmp     #$05
-        bcc     LE97E
+        bcc     LE96E
         lda     $040E
         and     #$01
-        beq     LE959
+        beq     LE949
         lda     $040F
-LE949           := * + 1
-        bne     LE97F
+        bne     LE96F
         inc     $02F3
         lda     $02F3
         cmp     #$30
-        bcc     LE959
+        bcc     LE949
         lda     #$01
         sta     $040F
-LE959:  lda     $02F3
+LE949:  lda     $02F3
         sta     $00
         lda     $02F0
         sta     $01
@@ -5399,48 +5253,47 @@ LE959:  lda     $02F3
         ldy     #$84
         lda     $040E
         and     #$10
-        beq     LE976
+        beq     LE966
         ldy     #$88
-LE976:  sty     L0002
+LE966:  sty     L0002
         lda     $040F
         jsr     LD6D2
-LE97E:  rts
+LE96E:  rts
 
-LE97F:  lda     $02F3
+LE96F:  lda     $02F3
         sec
-LE984           := * + 1
         sbc     #$01
         sta     $02F3
         cmp     #$10
-        bcs     LE991
+        bcs     LE981
         lda     #$00
         sta     $040F
-LE991:  jmp     LE949
+LE981:  jmp     LE949
 
-        lda     $EC
+LE984:  lda     $EC
         cmp     #$20
-        beq     LE99B
+        beq     LE98B
         rts
 
-LE99B:  lda     $04D5
-        beq     LE9C1
+LE98B:  lda     $04D5
+        beq     LE9B1
         lda     $31
-        bne     LE9C0
+        bne     LE9B0
         lda     #$02
         sta     $31
         ldx     #$00
         lda     $040E
         and     #$02
         cmp     #$02
-        bne     LE9B7
+        bne     LE9A7
         lda     #$08
         sta     $FF
-LE9B7:  jsr     LE242
+LE9A7:  jsr     LE242
         jsr     LE259
         dec     $04D5
-LE9C0:  rts
+LE9B0:  rts
 
-LE9C1:  lda     #$00
+LE9B1:  lda     #$00
         sta     $04FB
         lda     #$30
         sta     $EC
@@ -5448,139 +5301,136 @@ LE9C1:  lda     #$00
         sta     $04FA
         rts
 
-        lda     $EC
+LE9C0:  lda     $EC
         cmp     #$30
-        beq     LE9D7
+        beq     LE9C7
         rts
 
-LE9D7:  lda     $04FA
-        beq     LE9EE
+LE9C7:  lda     $04FA
+        beq     LE9DE
         cmp     #$01
-        bne     LE9EA
+        bne     LE9DA
         lda     $0402
         cmp     #$0A
-        beq     LE9F1
-LE9E7:  jsr     LC6F9
-LE9EA:  dec     $04FA
+        beq     LE9E1
+        jsr     LC6F9
+LE9DA:  dec     $04FA
         rts
 
-LE9EE:  jsr     LE259
-LE9F1:  jsr     LCB44
+LE9DE:  jsr     LE259
+LE9E1:  jsr     LCB44
         ldx     #$00
         rts
 
-        lda     $EC
+LE9E7:  lda     $EC
         cmp     #$08
-        beq     LE9FE
+        beq     LE9EE
         rts
 
-LE9FE:  lda     #$64
+LE9EE:  lda     #$64
         sta     $04D5
         jsr     LEA5B
         lda     $04D5
         cmp     #$0B
-        bmi     LEA39
-LEA0D:  lda     $EA
+        bmi     LEA29
+        lda     $EA
         cmp     #$09
-        bmi     LEA15
+        bmi     LEA05
         lda     #$09
-LEA15:  tax
+LEA05:  tax
         lda     $04FC
         sec
         sbc     LC01E,x
-        bcc     LEA3C
+LEA0D:  bcc     LEA2C
         sta     $04FC
         lda     $04D5
         sec
         sbc     #$05
         cmp     #$0B
-        bmi     LEA39
+        bmi     LEA29
         sta     $04D5
         lda     $04FC
         sec
         sbc     LC028,x
         jmp     LEA0D
 
-LEA39:  sta     $04D5
-LEA3C:  lda     $04D5
+LEA29:  sta     $04D5
+LEA2C:  lda     $04D5
         cmp     $A2
-        bpl     LEA45
+        bpl     LEA35
         lda     $A2
-LEA45:  sta     $04D5
+LEA35:  sta     $04D5
         rts
 
-        lda     $EC
+LEA39:  lda     $EC
         cmp     #$05
-        beq     LEA58
+        beq     LEA48
         cmp     #$06
-        beq     LEA58
+        beq     LEA48
         cmp     #$16
-        beq     LEA58
+        beq     LEA48
         rts
 
-LEA58:  lda     $34
-LEA5B           := * + 1
-        bne     LEA6A
-LEA5D           := * + 1
+LEA48:  lda     $34
+        bne     LEA5A
         lda     #$3E
         sta     $34
         lda     $04FC
         cmp     #$FE
-        beq     LEA6A
+        beq     LEA5A
         inc     $04FC
-LEA6A:  rts
+LEA5A:  rts
 
-        ldy     #$14
-        lda     $04FB
-        beq     LEA89
+LEA5B:  ldy     #$14
+LEA5D:  lda     $04FB
+        beq     LEA79
         dec     $04FB
         lda     $04D5
         sec
         sbc     #$0A
-LEA7C           := * + 1
         cmp     #$0B
-        bpl     LEA81
+        bpl     LEA71
         lda     #$0A
-LEA81:  sta     $04D5
+LEA71:  sta     $04D5
         ldy     #$0A
         jmp     LEA5D
 
-LEA89:  sty     $A2
+LEA79:  sty     $A2
         rts
 
-        lda     $98
-        bne     LEA91
+LEA7C:  lda     $98
+        bne     LEA81
         rts
 
-LEA91:  lda     $AF
-        beq     LEA99
+LEA81:  lda     $AF
+        beq     LEA89
         lda     #$04
         sta     $FF
-LEA99:  lda     $EA
+LEA89:  lda     $EA
         cmp     #$08
-        bpl     LEAC2
+        bpl     LEAB2
         lda     #$21
         sta     $A1
         lda     #$7A
         sta     $A0
         lda     $AF
-        bne     LEABD
+        bne     LEAAD
         lda     $EA
         cmp     #$05
-        bne     LEABD
+        bne     LEAAD
         lda     $A5
         cmp     #$01
-        beq     LEABD
+        beq     LEAAD
         lda     $98
         eor     #$03
-        bne     LEABF
-LEABD:  lda     $98
-LEABF:  jmp     LEAFE
+        bne     LEAAF
+LEAAD:  lda     $98
+LEAAF:  jmp     LEAFE
 
-LEAC2:  bne     LEAFB
+LEAB2:  bne     LEAEB
         lda     $98
         cmp     #$05
-        bpl     LEAD7
+        bpl     LEAC7
         lda     #$20
         sta     $A1
         lda     #$FA
@@ -5588,8 +5438,8 @@ LEAC2:  bne     LEAFB
         lda     $98
         jmp     LEAFE
 
-LEAD7:  cmp     #$09
-        bpl     LEAEB
+LEAC7:  cmp     #$09
+        bpl     LEADB
         lda     #$21
         sta     $A1
         lda     #$38
@@ -5599,7 +5449,7 @@ LEAD7:  cmp     #$09
         sbc     #$04
         jmp     LEAFE
 
-LEAEB:  lda     #$21
+LEADB:  lda     #$21
         sta     $A1
         lda     #$7A
         sta     $A0
@@ -5608,8 +5458,7 @@ LEAEB:  lda     #$21
         sbc     #$08
         jmp     LEAFE
 
-LEAFB:  tay
-LEAFE           := * + 2
+LEAEB:  tay
         lda     LC0B6,y
         clc
         adc     $98
@@ -5617,25 +5466,23 @@ LEAFE           := * + 2
         lda     LC04B,x
         sta     $A1
         lda     LC071,x
-LEB0D           := * + 2
         jmp     LEB0D
 
-        sec
+LEAFE:  sec
         sbc     #$01
         sta     $A2
         clc
-LEB15           := * + 1
         adc     $A2
         sta     $A2
         lda     $A0
         sec
         sbc     $A2
-        sta     $A0
+LEB0D:  sta     $A0
         lda     $BC
         jsr     LEE5E
         rts
 
-        ldx     $EA
+LEB15:  ldx     $EA
         lda     LC032,x
         and     #$0F
         tay
@@ -5650,64 +5497,60 @@ LEB15           := * + 1
         sta     $04FD
         lda     $EA
         cmp     #$05
-LEB41           := * + 1
-        beq     LEB72
+        beq     LEB62
         cmp     #$08
-        beq     LEB72
+        beq     LEB62
         cmp     #$09
-        bpl     LEB85
+        bpl     LEB75
         inc     $0487
         lda     #$0F
         sta     $A2
-        dex
-        bmi     LEB5D
-LEB56           := * + 2
+LEB41:  dex
+        bmi     LEB4D
         jsr     LEBE5
         sta     $0498,x
         jmp     LEB41
 
-LEB5D:  inc     $0487
+LEB4D:  inc     $0487
         lda     #$F0
         sta     $A2
         tya
         tax
-LEB66:  dex
-        bmi     LEB9A
+LEB56:  dex
+        bmi     LEB8A
         jsr     LEBE5
         sta     $04A0,x
         jmp     LEB56
 
-LEB72:  lda     #$0F
+LEB62:  lda     #$0F
         sta     $A2
-        inc     $0487
+LEB66:  inc     $0487
         dex
-LEB7B           := * + 1
-        bmi     LEB85
+        bmi     LEB75
         jsr     LEBE5
         sta     $0490,x
         jmp     LEB66
 
-LEB85:  lda     #$F0
+LEB75:  lda     #$F0
         sta     $A2
         tya
         tax
-        inc     $0487
+LEB7B:  inc     $0487
         dex
-        bmi     LEB9A
+        bmi     LEB8A
         jsr     LEBE5
-LEB95           := * + 1
         sta     $0488,x
         jmp     LEB7B
 
-LEB9A:  ldx     $EA
+LEB8A:  ldx     $EA
         lda     LC0D1,x
         cmp     #$02
-        bne     LEBD1
+        bne     LEBC1
         ldx     #$06
-LEBA5:  lda     $0498,x
+LEB95:  lda     $0498,x
         cmp     $04A0,x
-        beq     LEBBF
-        bpl     LEBD0
+        beq     LEBAF
+        bpl     LEBC0
         sta     $0D
         lda     $04A0,x
         sta     $0498,x
@@ -5715,27 +5558,26 @@ LEBA5:  lda     $0498,x
         sta     $04A0,x
         jmp     LEB95
 
-LEBBF:  dex
-        bpl     LEBA5
+LEBAF:  dex
+        bpl     LEB95
         lda     $04A0
         cmp     #$00
-        beq     LEBCD
+        beq     LEBBD
         dec     $04A0
         rts
 
-LEBCD:  inc     $0498
-LEBD0:  rts
+LEBBD:  inc     $0498
+LEBC0:  rts
 
-LEBD1:  cpx     #$05
-        bne     LEBD8
+LEBC1:  cpx     #$05
+        bne     LEBC8
         jmp     LED9F
 
-LEBD8:  cpx     #$09
-        bne     LEBD0
+LEBC8:  cpx     #$09
+        bne     LEBC0
         lda     $0489
         cmp     $048A
-        bpl     LEBD0
-LEBE5           := * + 1
+        bpl     LEBC0
         lda     #$0A
         sta     $EA
         lda     $0488
@@ -5744,95 +5586,92 @@ LEBE5           := * + 1
         sta     $0499
         rts
 
-        lda     $18,x
-LEBF7:  pha
+LEBE5:  lda     $18,x
+        pha
         lda     $A2
         cmp     #$0F
-        beq     LEC06
+        beq     LEBF6
         pla
         ror     a
         ror     a
-LEC01:  ror     a
+        ror     a
         ror     a
         jmp     LEBF7
 
-LEC06:  pla
-        and     #$0F
-        beq     LEC19
+LEBF6:  pla
+LEBF7:  and     #$0F
+        beq     LEC09
         cmp     #$0A
-        bmi     LEC11
-LEC0F:  and     #$07
-LEC11:  pha
+        bmi     LEC01
+        and     #$07
+LEC01:  pha
         lda     #$00
         sta     $0487
         pla
         rts
 
-LEC19:
-LEC1B           := * + 2
-        adc     $0487
+LEC09:  adc     $0487
         jmp     LEC01
 
-        lda     #$00
+LEC0F:  lda     #$00
         tax
-LEC22:  sta     $0480,x
+LEC12:  sta     $0480,x
         inx
         cpx     #$40
-        bne     LEC22
+        bne     LEC12
         rts
 
-        ldx     $EA
-LEC2F           := * + 2
+LEC1B:  ldx     $EA
         lda     LC0D1,x
         cmp     #$01
-        beq     LEC3F
+        beq     LEC2F
         cmp     #$02
-        beq     LEC6B
+        beq     LEC5B
         cmp     #$03
-        beq     LEC9B
+        beq     LEC8B
         jmp     LED0F
 
-LEC3F:  pha
+LEC2F:  pha
         txa
         pha
         ldx     #$00
-LEC44:  lda     $0498,x
+LEC34:  lda     $0498,x
         clc
         adc     $04A0,x
         adc     $04B0,x
         cmp     #$0A
-        bmi     LEC5F
+        bmi     LEC4F
         sec
-LEC53:  sbc     #$0A
+        sbc     #$0A
         sta     $04A8,x
         inx
         inc     $04B0,x
         jmp     LEC53
 
-LEC5F:  sta     $04A8,x
+LEC4F:  sta     $04A8,x
         inx
-        cpx     #$08
-        bne     LEC44
+LEC53:  cpx     #$08
+        bne     LEC34
         pla
         tax
         pla
         rts
 
-LEC6B:  ldx     #$00
-LEC6D:  lda     $04A0,x
+LEC5B:  ldx     #$00
+LEC5D:  lda     $04A0,x
         clc
         adc     $04B0,x
         cmp     $0498,x
-LEC77:  beq     LEC85
-        bmi     LEC85
+        beq     LEC75
+        bmi     LEC75
         lda     #$0A
         inx
         inc     $04B0,x
         dex
         jmp     LEC77
 
-LEC85:  lda     #$00
-        clc
+LEC75:  lda     #$00
+LEC77:  clc
         adc     $0498,x
         sec
         sbc     $04B0,x
@@ -5840,10 +5679,10 @@ LEC85:  lda     #$00
         sta     $04A8,x
         inx
         cpx     #$08
-        bne     LEC6D
+        bne     LEC5D
         rts
 
-LEC9B:  ldx     $0490
+LEC8B:  ldx     $0490
         lda     #$B8
         sta     $00
         lda     #$04
@@ -5854,7 +5693,7 @@ LEC9B:  ldx     $0490
         sta     $03
         jsr     LECDA
         ldx     $0491
-        beq     LECC9
+        beq     LECB9
         lda     #$BC
         sta     $00
         lda     #$04
@@ -5864,58 +5703,58 @@ LEC9B:  ldx     $0490
         lda     #$04
         sta     $03
         jsr     LECDA
-LECC9:  jsr     LEC2F
+LECB9:  jsr     LEC2F
         lda     $EA
         cmp     #$05
-        bne     LECE9
+        bne     LECD9
         lda     #$00
         sta     $0499
         lda     $0490
-LECDA:  sta     $04A0
+        sta     $04A0
         lda     $0488
         sta     $0498
         lda     $04B9
         sta     $04B1
-LECE9:  rts
+LECD9:  rts
 
-        txa
+LECDA:  txa
         pha
         ldy     #$00
         sty     $90
-LECF0:  lda     ($00),y
-LECF2:  clc
+LECE0:  lda     ($00),y
+LECE2:  clc
         adc     $0488,y
         cmp     #$0A
-        bmi     LECFF
+        bmi     LECEF
         sec
         sbc     #$0A
         inc     $90
-LECFF:  dex
-        bne     LECF2
+LECEF:  dex
+        bne     LECE2
         sta     (L0002),y
         lda     $90
         iny
         sta     ($00),y
         dey
         cpy     #$02
-        beq     LED18
+        beq     LED08
         iny
-LED0F:  pla
+        pla
         pha
         tax
-LED12:  lda     #$00
+        lda     #$00
         sta     $90
-        beq     LECF0
-LED18:  iny
+        beq     LECE0
+LED08:  iny
         lda     ($00),y
         sta     (L0002),y
         pla
         rts
 
-        lda     $0489
-        sec
+LED0F:  lda     $0489
+LED12:  sec
         sbc     $048A
-        bmi     LED3D
+        bmi     LED2D
         pha
         lda     $0491
         clc
@@ -5926,64 +5765,64 @@ LED18:  iny
         inc     $0481
         jmp     LED12
 
-LED3D:  lda     $0488
+LED2D:  lda     $0488
         sta     $0498
         lda     $0499
         tax
-        beq     LED54
+        beq     LED44
         lda     $0498
-LED4C:  clc
+LED3C:  clc
         adc     #$0A
         dex
-LED50:  beq     LED5B
-        bne     LED4C
-LED54:  lda     #$0C
+        beq     LED4B
+        bne     LED3C
+LED44:  lda     #$0C
         sta     $EA
         lda     $0498
-LED5B:  cmp     $048A
-        bmi     LED85
-        sec
+LED4B:  cmp     $048A
+        bmi     LED75
+LED50:  sec
         sbc     $048A
-        bmi     LED89
+        bmi     LED79
         inc     $0480
         pha
         lda     $04A0
         clc
         adc     $048A
         cmp     #$0A
-        bmi     LED7B
+        bmi     LED6B
         inc     $04A1
         sec
         sbc     #$0A
-LED7B:  sta     $04A0
+LED6B:  sta     $04A0
         pla
         sta     $04A8
         jmp     LED50
 
-LED85:  lda     #$0B
+LED75:  lda     #$0B
         sta     $EA
-LED89:  lda     $04A1
+LED79:  lda     $04A1
         sta     $04B0
         lda     $EA
         cmp     #$0A
-        bne     LED9F
+        bne     LED8F
+        lda     $04A1
+        bne     LED8E
+        lda     #$0D
+        sta     $EA
+LED8E:  rts
+
+LED8F:  lda     $EA
+        cmp     #$09
+        bne     LED9E
         lda     $04A1
         bne     LED9E
-        lda     #$0D
+        lda     #$0E
         sta     $EA
 LED9E:  rts
 
-LED9F:  lda     $EA
-        cmp     #$09
-        bne     LEDAE
-        lda     $04A1
-        bne     LEDAE
-        lda     #$0E
-        sta     $EA
-LEDAE:  rts
-
-LEDAF:  ldy     #$09
-LEDB1:  lda     $0490
+LED9F:  ldy     #$09
+LEDA1:  lda     $0490
         clc
         rol     a
         rol     a
@@ -5991,34 +5830,34 @@ LEDB1:  lda     $0490
         rol     a
         ora     $0488
         ldx     #$09
-LEDBE:  cmp     $04C0,x
-        bne     LEDDD
-        dec     $0488
+LEDAE:  cmp     $04C0,x
         bne     LEDCD
+        dec     $0488
+        bne     LEDBD
         lda     #$09
         sta     $0488
-LEDCD:  dey
-        bne     LEDB1
+LEDBD:  dey
+        bne     LEDA1
         dec     $0490
-        bne     LEDAF
+        bne     LED9F
         lda     #$09
-LEDD7:  sta     $0490
+        sta     $0490
         jmp     LED9F
 
-LEDDD:  dex
-        bpl     LEDBE
+LEDCD:  dex
+        bpl     LEDAE
         ldx     $0402
         sta     $04BF,x
         rts
 
-        ldx     $EA
+LEDD7:  ldx     $EA
         lda     LC0D1,x
         cpx     #$08
-        beq     LEE06
+        beq     LEDF6
         cmp     #$09
-        beq     LEE14
+        beq     LEE04
         cmp     #$0A
-        beq     LEE1B
+        beq     LEE0B
         ldx     #$1E
         lda     #$80
         jsr     LEE10
@@ -6026,59 +5865,55 @@ LEDDD:  dex
         lda     #$C0
         jmp     LEE10
 
-LEE06:  ldx     #$0E
+LEDF6:  ldx     #$0E
         lda     #$00
         jsr     LEE10
         ldx     #$16
-LEE10           := * + 1
         lda     #$40
         jmp     LEE10
 
-LEE14:  lda     #$40
-        ldx     #$0E
+LEE04:  lda     #$40
+LEE06:  ldx     #$0E
         jmp     LEE10
 
-LEE1B:  lda     #$A0
+LEE0B:  lda     #$A0
         jmp     LEE06
 
-        sta     $04D1
+LEE10:  sta     $04D1
         lda     #$20
-LEE25:  sta     $A1
+        sta     $A1
         lda     #$6E
         clc
         adc     $04D1
         sta     $A0
-        bcc     LEE33
+        bcc     LEE23
         inc     $A1
-LEE33:  ldy     #$07
-        lda     $0480,x
-        beq     LEE49
-LEE3A:  lda     $0480,x
+LEE23:  ldy     #$07
+LEE25:  lda     $0480,x
+        beq     LEE39
+LEE2A:  lda     $0480,x
         jsr     LEE5E
         dex
         inc     $A0
-LEE44           := * + 1
         inc     $A0
         dey
-        bne     LEE3A
-LEE48:  rts
+        bne     LEE2A
+LEE38:  rts
 
-LEE49:  dex
+LEE39:  dex
         inc     $A0
-LEE4D           := * + 1
         inc     $A0
         dey
-        beq     LEE48
+        beq     LEE38
         jmp     LEE25
 
-        lda     #$94
+LEE44:  lda     #$94
         sta     $00
         lda     #$05
         sta     $01
         rts
 
-LEE5E           := * + 1
-        lda     #$94
+LEE4D:  lda     #$94
         sta     L0002
         lda     #$05
         sta     $03
@@ -6088,8 +5923,8 @@ LEE5E           := * + 1
         sta     $00
         rts
 
-        pha
-LEE6F:  sta     $0595
+LEE5E:  pha
+        sta     $0595
         lda     #$11
         sta     $0594
         jsr     LEE4D
@@ -6097,37 +5932,36 @@ LEE6F:  sta     $0595
         pla
         rts
 
-        ldy     #$FF
-LEE82           := * + 1
+LEE6F:  ldy     #$FF
         lda     LC166,x
         tax
-LEE85:  iny
+LEE75:  iny
         inx
         lda     LC0F9,x
         sta     $0594,y
-        bne     LEE85
+        bne     LEE75
         jmp     LEF1B
 
-LEE92:  lda     #$24
+LEE82:  lda     #$24
         sta     $0594,y
-LEE97:  lda     #$C4
+        lda     #$C4
         iny
         sta     $0594,y
         iny
         dex
-        bne     LEE92
+        bne     LEE82
         lda     #$00
         sta     $0594,y
         rts
 
-        lda     #$00
+LEE97:  lda     #$00
         jsr     LEFEA
         lda     $EA
         cmp     #$08
-        bmi     LEEB5
+        bmi     LEEA5
         jmp     LEF21
 
-LEEB5:  lda     #$20
+LEEA5:  lda     #$20
         sta     $0594
         ldy     $EA
         lda     LC0EB,y
@@ -6144,23 +5978,22 @@ LEEB5:  lda     #$20
         clc
         adc     $0595
         sta     $0595
-LEEE1:  ldx     $EA
+        ldx     $EA
         lda     LC044,x
         sta     $0597
         jsr     LEF1B
-LEEED           := * + 1
         ldx     $EA
         jsr     LEE6F
-        lda     #$07
+LEEE1:  lda     #$07
         sta     $A5
         sta     $A9
         sta     $AC
         ldy     #$03
         ldx     #$06
-        lda     $04A8,x
-        bne     LEF18
+LEEED:  lda     $04A8,x
+        bne     LEF08
         dex
-        bmi     LEF18
+        bmi     LEF08
         lda     #$24
         sta     $0594,y
         iny
@@ -6171,21 +6004,20 @@ LEEED           := * + 1
         dec     $AC
         jmp     LEEED
 
-LEF18:  inx
+LEF08:  inx
         lda     #$21
-LEF1B:  sta     $0594
+        sta     $0594
         lda     #$6D
-LEF21           := * + 1
         sta     $0595
         lda     #$0E
         sta     $0596
-        jsr     LEE82
-        jsr     LEE44
+LEF18:  jsr     LEE82
+LEF1B:  jsr     LEE44
         jmp     LF218
 
-        lda     $EA
+LEF21:  lda     $EA
         cmp     #$08
-        bne     LEF90
+        bne     LEF80
         ldx     $EA
         jsr     LEE6F
         lda     #$04
@@ -6199,7 +6031,7 @@ LEF21           := * + 1
         ldx     #$04
         ldy     #$03
         lda     $049B
-        bne     LEF6A
+        bne     LEF5A
         dex
         dec     $A3
         dec     $A7
@@ -6208,23 +6040,23 @@ LEF21           := * + 1
         sta     $0597
         sta     $0598
         ldy     #$05
-LEF6A:  jsr     LEF18
+LEF5A:  jsr     LEF18
         inc     $0594
         lda     #$31
         sta     $0595
         lda     #$C4
         sta     $0598
         lda     $04A4
-        bne     LEF8A
+        bne     LEF7A
         lda     #$24
         sta     $0598
         dec     $A4
         dec     $A8
         dec     $AB
-LEF8A:  jsr     LEF1B
+LEF7A:  jsr     LEF1B
         jmp     LEEE1
 
-LEF90:  lda     $EA
+LEF80:  lda     $EA
         tax
         lda     LC0BC,x
         sta     $A2
@@ -6239,16 +6071,16 @@ LEF90:  lda     $EA
         jsr     LEE82
         lda     $A2
         cmp     #$97
-        beq     LEFBC
+        beq     LEFAC
         inc     $0594
         lda     #$15
         sta     $0595
-LEFBC:  jsr     LEF1B
+LEFAC:  jsr     LEF1B
         ldx     $EA
         lda     LC0D1,x
         tax
         jsr     LEE6F
-LEFC8:  lda     #$C4
+        lda     #$C4
         sta     $BC
         lda     $EA
         tax
@@ -6256,105 +6088,102 @@ LEFC8:  lda     #$C4
         sta     $B3
         lda     #$01
         sta     $98
-        jsr     LEA7C
+LEFC8:  jsr     LEA7C
         lda     $98
         cmp     $B3
-        beq     LEFE6
+        beq     LEFD6
         inc     $98
         jmp     LEFC8
 
-LEFE6:  lda     $EA
+LEFD6:  lda     $EA
         cmp     #$0B
-LEFEA:  bne     LEFF9
+        bne     LEFE9
         lda     #$20
         sta     $A1
         lda     #$DA
         sta     $A0
         lda     #$00
-LEFF7           := * + 1
         jsr     LEE5E
-LEFF9:  rts
+LEFE9:  rts
 
-        sta     $A3
+LEFEA:  sta     $A3
         sta     $A4
         sta     $A7
         sta     $A8
         sta     $AA
         sta     $AB
-LF006:  rts
+        rts
 
-        lda     $AF
-        bne     LF01C
+LEFF7:  lda     $AF
+        bne     LF00C
         lda     $EC
         cmp     #$01
-        beq     LF015
+        beq     LF005
         lda     #$00
         sta     $CF
-LF015:  rts
+LF005:  rts
 
-        lda     $EC
+LF006:  lda     $EC
         cmp     #$01
-        bne     LF015
-LF01C:  lda     #$00
+        bne     LF005
+LF00C:  lda     #$00
         sta     $DB
         sta     $BF
         lda     $CF
-        beq     LF02C
+        beq     LF01C
         ldy     $EC
         cpy     #$01
-        beq     LF034
-LF02C:  lda     $36
-        bne     LF015
-LF030:  lda     #$1F
+        beq     LF024
+LF01C:  lda     $36
+        bne     LF005
+        lda     #$1F
         sta     $36
-LF034:  lda     $EA
+LF024:  lda     $EA
         cmp     #$08
-        bpl     LF09B
+        bpl     LF08B
         lda     $CF
         sta     $98
         inc     $98
-        tax
+LF030:  tax
         lda     $04A8,x
         ldy     $EC
         cpy     #$01
-        bne     LF052
-LF04B           := * + 1
+        bne     LF042
         jsr     LF12B
         inx
         txa
-LF051           := * + 2
         jmp     LF04B
 
-LF052:  sta     $BC
+LF042:  sta     $BC
         inx
         txa
         pha
         jsr     LEA7C
         pla
-        inc     $CF
+LF04B:  inc     $CF
         cmp     $A5
-        bne     LF015
-        ldy     $EC
+        bne     LF005
+LF051:  ldy     $EC
         cpy     #$01
-        bne     LF08B
+        bne     LF07B
         lda     $EA
         cmp     #$05
-        bne     LF07F
+        bne     LF06F
         lda     $A5
         cmp     #$01
-        beq     LF07F
+        beq     LF06F
         ldy     $05E0
         lda     $05E1
         sta     $05E0
         sty     $05E1
-LF07F:  lda     #$16
+LF06F:  lda     #$16
         sta     $EC
         lda     #$00
         sta     $05F0
         sta     $98
         rts
 
-LF08B:  lda     #$08
+LF07B:  lda     #$08
         sta     $EC
         lda     #$00
         sta     $AD
@@ -6363,63 +6192,61 @@ LF08B:  lda     #$08
         ldx     #$00
         jmp     LD20E
 
-LF09B:  bne     LF101
+LF08B:  bne     LF0F1
         lda     $CF
         sta     $98
         inc     $98
         cmp     #$04
-        bpl     LF0CD
+        bpl     LF0BD
         lda     $CF
         tax
         lda     $0498,x
-LF0AE           := * + 1
         ldy     $EC
         cpy     #$01
-        bne     LF0B9
+        bne     LF0A9
         jsr     LF12B
         jmp     LF0AE
 
-LF0B9:  sta     $BC
+LF0A9:  sta     $BC
         jsr     LEA7C
-        inc     $CF
+LF0AE:  inc     $CF
         lda     $A3
         cmp     #$03
-        bne     LF0CC
+        bne     LF0BC
         cmp     $CF
-        bne     LF0CC
+        bne     LF0BC
         inc     $CF
-LF0CC:  rts
+LF0BC:  rts
 
-LF0CD:  cmp     #$08
-        bpl     LF0F9
+LF0BD:  cmp     #$08
+        bpl     LF0E9
         lda     $CF
         tax
         lda     $049D,x
-LF0D8           := * + 1
         ldy     $EC
         cpy     #$01
-        bne     LF0E3
+        bne     LF0D3
         jsr     LF12B
         jmp     LF0D8
 
-LF0E3:  sta     $BC
+LF0D3:  sta     $BC
         jsr     LEA7C
-        inc     $CF
+LF0D8:  inc     $CF
         lda     $A4
         cmp     #$03
-        bne     LF0F8
+        bne     LF0E8
         lda     $CF
         cmp     #$07
-        bne     LF0F8
+        bne     LF0E8
         inc     $CF
-LF0F8:  rts
+LF0E8:  rts
 
-LF0F9:  lda     $CF
+LF0E9:  lda     $CF
         sec
         sbc     #$08
         jmp     LF030
 
-LF101:  lda     $EA
+LF0F1:  lda     $EA
         tax
         lda     LC0B6,x
         clc
@@ -6432,35 +6259,33 @@ LF101:  lda     $EA
         lda     LC098,x
         tay
         lda     $047F,y
-LF11C           := * + 1
         ldy     $EC
         cpy     #$01
-        bne     LF127
+        bne     LF117
         jsr     LF12B
         jmp     LF11C
 
-LF127:  sta     $BC
-LF12B           := * + 2
+LF117:  sta     $BC
         jsr     LEA7C
-        inc     $CF
+LF11C:  inc     $CF
         lda     $04D4
         tax
         lda     LC099,x
-LF135:  bne     LF13A
+        bne     LF12A
         jmp     LF051
 
-LF13A:  rts
+LF12A:  rts
 
-        ldy     $05F0
+LF12B:  ldy     $05F0
         sta     $05E0,y
         inc     $05F0
         rts
 
-        lda     $0331
-        bne     LF189
+LF135:  lda     $0331
+        bne     LF179
         ldx     $0300
         lda     $0302,x
-        beq     LF189
+        beq     LF179
         and     #$F0
         lsr     a
         lsr     a
@@ -6484,40 +6309,40 @@ LF13A:  rts
         inx
         txa
         cmp     #$2E
-LF17A:  bcc     LF17E
+        bcc     LF16E
         lda     #$00
-LF17E:  sta     $0300
+LF16E:  sta     $0300
         lda     $0301,x
         sta     $00
         jmp     (L0002)
 
-LF189:  rts
+LF179:  rts
 
-        ldx     $0301
+LF17A:  ldx     $0301
         ldy     $0302,x
-        bne     LF1A6
+        bne     LF196
         sta     $0303,x
         lda     $01
-LF197:  sta     $0302,x
+        sta     $0302,x
         inx
         inx
         txa
         cmp     #$2E
-        bcc     LF1A3
+        bcc     LF193
         lda     #$00
-LF1A3:  sta     $0301
-LF1A6:  rts
+LF193:  sta     $0301
+LF196:  rts
 
-        lda     $2002
+LF197:  lda     $2002
         lda     $10
         and     #$FB
         sta     $2000
         sta     $10
         lda     #$1C
         clc
-LF1B6:  adc     #$04
+LF1A6:  adc     #$04
         dec     $01
-        bne     LF1B6
+        bne     LF1A6
         sta     L0002
         sta     $2006
         lda     #$00
@@ -6525,11 +6350,11 @@ LF1B6:  adc     #$04
         ldx     #$04
         ldy     #$00
         lda     #$24
-LF1CC:  sta     $2007
+LF1BC:  sta     $2007
         dey
-        bne     LF1CC
+        bne     LF1BC
         dex
-        bne     LF1CC
+        bne     LF1BC
         lda     L0002
         adc     #$03
         sta     $2006
@@ -6537,12 +6362,12 @@ LF1CC:  sta     $2007
         sta     $2006
         ldy     #$40
         lda     #$00
-LF1E5:  sta     $2007
+LF1D5:  sta     $2007
         dey
-        bne     LF1E5
+        bne     LF1D5
         rts
 
-LF1EC:  sta     $2006
+LF1DC:  sta     $2006
         iny
         lda     ($00),y
         sta     $2006
@@ -6552,57 +6377,53 @@ LF1EC:  sta     $2006
         pha
         lda     $10
         ora     #$04
-        bcs     LF202
+        bcs     LF1F2
         and     #$FB
-LF202:  sta     $2000
+LF1F2:  sta     $2000
         sta     $10
         pla
         asl     a
-        bcc     LF20E
+        bcc     LF1FE
         ora     #$02
         iny
-LF20E:  lsr     a
+LF1FE:  lsr     a
         lsr     a
         tax
-LF211:  bcs     LF214
+LF201:  bcs     LF204
         iny
-LF214:  lda     ($00),y
-LF218           := * + 2
+LF204:  lda     ($00),y
         sta     $2007
         dex
-        bne     LF211
+        bne     LF201
         sec
         tya
         adc     $00
-LF221           := * + 1
         sta     $00
         lda     #$00
         adc     $01
         sta     $01
-LF22A           := * + 2
-        ldx     $2002
+LF218:  ldx     $2002
         ldy     #$00
         lda     ($00),y
-        bne     LF1EC
-        lda     #$00
+        bne     LF1DC
+LF221:  lda     #$00
         sta     $2005
         sta     $2005
         rts
 
-        sta     $00
-LF23D           := * + 1
+LF22A:  sta     $00
         lda     #$04
-LF23E:  lsr     $00
-        bcc     LF247
+LF22E:  lsr     $00
+        bcc     LF237
         pha
         jsr     LF23D
         pla
-LF247:  clc
+LF237:  clc
         sbc     #$00
-        bpl     LF23E
+        bpl     LF22E
         rts
 
-        asl     a
+LF23D:  asl     a
         asl     a
         tay
         sta     L0002
@@ -6630,12 +6451,12 @@ LF247:  clc
         iny
         lda     LC00A,y
         sta     $03
-LF289:  dex
+LF279:  dex
         lda     $20,y
         and     #$0F
         sta     $0331,x
         dec     $01
-        beq     LF2A8
+        beq     LF298
         dex
         lda     $20,y
         and     #$F0
@@ -6646,19 +6467,19 @@ LF289:  dex
         sta     $0331,x
         dey
         dec     $01
-        bne     LF289
-LF2A8:  lda     $03
-LF2AA:  and     #$01
-LF2AC:  beq     LF2B9
+        bne     LF279
+LF298:  lda     $03
+        and     #$01
+        beq     LF2A9
         ldy     L0002
         clc
         lda     $20,y
         adc     #$37
         sta     $0331,x
-LF2B9:  rts
+LF2A9:  rts
 
-        sta     $03
-        txa
+LF2AA:  sta     $03
+LF2AC:  txa
         pha
         tya
         pha
@@ -6673,7 +6494,7 @@ LF2B9:  rts
         lsr     a
         sta     $04
         ldx     $0330
-LF2D3:  lda     $01
+LF2C3:  lda     $01
         sta     $0331,x
         jsr     LF30A
         lda     $00
@@ -6683,37 +6504,35 @@ LF2D3:  lda     $01
         sta     $06
         ora     #$80
         sta     $0331,x
-LF2EC:  jsr     LF30A
+LF2DC:  jsr     LF30A
         iny
         lda     (L0002),y
         sta     $0331,x
         dec     $06
-        bne     LF2EC
+        bne     LF2DC
         jsr     LF30A
         clc
         lda     #$01
         adc     $00
         sta     $00
         lda     #$00
-LF305:  adc     $01
+        adc     $01
         sta     $01
-LF30A           := * + 1
         stx     $0330
-LF30C:  dec     $05
-        bne     LF2D3
+        dec     $05
+        bne     LF2C3
         lda     #$00
         sta     $0331,x
-        pla
+LF305:  pla
         tay
         pla
         tax
         rts
 
-        inx
+LF30A:  inx
         txa
-        cmp     #$3F
-LF31E:  bcc     LF32D
-LF322           := * + 2
+LF30C:  cmp     #$3F
+        bcc     LF31D
         ldx     $0330
         lda     #$00
         sta     $0331,x
@@ -6721,36 +6540,35 @@ LF322           := * + 2
         pla
         jmp     LF305
 
-LF32D:  rts
+LF31D:  rts
 
-        ldx     #$FF
-        bne     LF334
-        ldx     #$00
-LF334:  stx     $04
+LF31E:  ldx     #$FF
+        bne     LF324
+LF322:  ldx     #$00
+LF324:  stx     $04
         ldx     #$00
         stx     $05
         stx     $06
         stx     $07
-LF33F           := * + 1
         lda     $01
         and     #$08
-        bne     LF345
+        bne     LF335
         inx
-LF345:  lda     $00
+LF335:  lda     $00
         sta     $06,x
         lda     $01
         jsr     LF33F
         rts
 
-        and     #$07
+LF33F:  and     #$07
         asl     a
         asl     a
         tax
         lda     $04
-        beq     LF37F
+        beq     LF36F
         lda     $24,x
-        beq     LF383
-LF35C:  clc
+        beq     LF373
+LF34C:  clc
         lda     $27,x
         sta     $03
         lda     $07
@@ -6768,9 +6586,9 @@ LF35C:  clc
         sta     $25,x
         rts
 
-LF37F:  lda     $24,x
-        beq     LF35C
-LF383:  sec
+LF36F:  lda     $24,x
+        beq     LF34C
+LF373:  sec
         lda     $27,x
         sta     $03
         lda     $07
@@ -6787,21 +6605,20 @@ LF383:  sec
         jsr     LF3E5
         sta     $25,x
         lda     $25,x
-        bne     LF3B1
+        bne     LF3A1
         lda     $26,x
-        bne     LF3B1
+        bne     LF3A1
         lda     $27,x
-        beq     LF3B7
-LF3B1:  bcs     LF3D3
+        beq     LF3A7
+LF3A1:  bcs     LF3C3
         lda     $24,x
         eor     #$FF
-LF3B7:  sta     $24,x
+LF3A7:  sta     $24,x
         sec
         lda     #$00
         sta     $03
         lda     $27,x
         jsr     LF3E5
-LF3C4           := * + 1
         sta     $27,x
         lda     $26,x
         jsr     LF3E5
@@ -6809,50 +6626,48 @@ LF3C4           := * + 1
         lda     $25,x
         jsr     LF3E5
         sta     $25,x
-LF3D3:  rts
+LF3C3:  rts
 
-        jsr     LF407
+LF3C4:  jsr     LF407
         adc     $01
         cmp     #$0A
-        bcc     LF3DF
+        bcc     LF3CF
         adc     #$05
-LF3DF:  clc
+LF3CF:  clc
         adc     L0002
         sta     L0002
-LF3E5           := * + 1
         lda     $03
         and     #$F0
         adc     L0002
-        bcc     LF3F0
-LF3EC:  adc     #$5F
+        bcc     LF3E0
+LF3DC:  adc     #$5F
         sec
         rts
 
-LF3F0:  cmp     #$A0
-        bcs     LF3EC
+LF3E0:  cmp     #$A0
+        bcs     LF3DC
         rts
 
-        jsr     LF407
+LF3E5:  jsr     LF407
         sbc     $01
         sta     $01
-        bcs     LF408
+        bcs     LF3F8
         adc     #$0A
         sta     $01
         lda     L0002
         adc     #$0F
-LF407           := * + 1
         sta     L0002
-LF408:  lda     $03
+LF3F8:  lda     $03
         and     #$F0
         sec
         sbc     L0002
-        bcs     LF414
+        bcs     LF404
         adc     #$A0
         clc
-LF414:  ora     $01
+LF404:  ora     $01
         rts
 
-        pha
+LF407:  pha
         and     #$0F
         sta     $01
         pla
@@ -6876,11 +6691,11 @@ LF414:  ora     $01
         asl     a
         asl     a
         tax
-LF43B:  lda     $20,y
-        beq     LF491
+LF42B:  lda     $20,y
+        beq     LF481
         lda     $24,x
-        beq     LF46A
-LF444:  sec
+        beq     LF45A
+LF434:  sec
         lda     $23,y
         sta     $03
         lda     $27,x
@@ -6893,15 +6708,15 @@ LF444:  sec
         sta     $03
         lda     $25,x
         jsr     LF3E5
-        bcs     LF495
+        bcs     LF485
         lda     $20,y
-        bne     LF49A
-LF46A:  lda     #$FF
+        bne     LF48A
+LF45A:  lda     #$FF
         sta     $04
         sec
-LF46F:  tya
-        bne     LF490
-        bcc     LF484
+LF45F:  tya
+        bne     LF480
+        bcc     LF474
         lda     $24,x
         sta     $20
         lda     $25,x
@@ -6910,33 +6725,33 @@ LF46F:  tya
         sta     $22
         lda     $27,x
         sta     $23
-LF484:  lda     $00
+LF474:  lda     $00
         and     #$08
-        beq     LF490
+        beq     LF480
         dex
         dex
         dex
-LF48D:  dex
-        bpl     LF43B
-LF490:  rts
+        dex
+        bpl     LF42B
+LF480:  rts
 
-LF491:  lda     $24,x
-        beq     LF444
-LF495:  lda     $20,y
-        bne     LF46A
-LF49A:  clc
-        bcc     LF46F
-        ldx     #$07
+LF481:  lda     $24,x
+        beq     LF434
+LF485:  lda     $20,y
+        bne     LF45A
+LF48A:  clc
+        bcc     LF45F
+LF48D:  ldx     #$07
         dec     $30
-        bpl     LF4A9
+        bpl     LF499
         lda     #$0A
         sta     $30
         ldx     #$16
-LF4A9:  lda     $31,x
-        beq     LF4AF
+LF499:  lda     $31,x
+        beq     LF49F
         dec     $31,x
-LF4AF:  dex
-        bpl     LF4A9
+LF49F:  dex
+        bpl     LF499
         rts
 
         txa
@@ -6952,7 +6767,6 @@ LF4AF:  dex
         sta     $0331,x
         jsr     LF30A
         tya
-LF4D2           := * + 1
         sta     $0331,x
         jsr     LF30A
         lda     #$00
@@ -6962,18 +6776,16 @@ LF4D2           := * + 1
         tax
         rts
 
-        lda     $18
+LF4D2:  lda     $18
         and     #$02
         sta     $00
         lda     $19
         and     #$02
         eor     $00
         clc
-        beq     LF4F2
+        beq     LF4E2
         sec
-LF4F2:
-LF4F3           := * + 1
-        ror     $18
+LF4E2:  ror     $18
         ror     $19
         ror     $1A
         ror     $1B
@@ -6983,11 +6795,10 @@ LF4F3           := * + 1
         ror     $1F
         rts
 
-        txa
+LF4F3:  txa
         pha
         lda     #$01
         sta     $4016
-LF50B           := * + 1
         ldx     #$00
         lda     #$00
         sta     $4016
@@ -6998,8 +6809,8 @@ LF50B           := * + 1
         tax
         rts
 
-        ldy     #$08
-LF51D:  pha
+LF50B:  ldy     #$08
+LF50D:  pha
         lda     $4016,x
         sta     $00
         lsr     a
@@ -7008,7 +6819,7 @@ LF51D:  pha
         pla
         rol     a
         dey
-        bne     LF51D
+        bne     LF50D
         stx     $00
         asl     $00
         ldx     $00
@@ -7016,13 +6827,21 @@ LF51D:  pha
         sty     $00
         sta     $14,x
         and     #$FF
-        bpl     LF542
+        bpl     LF532
         bit     $00
-        bpl     LF542
+        bpl     LF532
         and     #$7F
-LF542:  ldy     $15,x
-        .byte   $95,$15,$98,$29,$0F,$35,$15,$F0
-        .byte   $06,$09,$F0,$35,$15,$95,$15,$60
+LF532:  ldy     $15,x
+        sta     $15,x
+        tya
+        and     #$0F
+        and     $15,x
+        beq     LF543
+        ora     #$F0
+        and     $15,x
+        sta     $15,x
+LF543:  rts
+
         .byte   $3F,$00,$12,$0F,$30,$26,$2C,$0F
         .byte   $30,$12,$21,$0F,$27,$27,$27,$0F
         .byte   $30,$30,$30,$0F,$21,$23,$C0,$50
@@ -7184,19 +7003,9 @@ LF542:  ldy     $15,x
         .byte   $23,$09,$01,$66,$23,$0E,$0D,$66
         .byte   $24,$66,$24,$66,$24,$66,$24,$66
         .byte   $24,$66,$24,$66,$23,$60,$60,$69
-LFA5C:  .byte   $22
-        iny
-        .byte   $03
-        adc     $71F7
-        .byte   $22
-        inx
-        .byte   $03
-        ror     $7289
-        brk
-        brk
-        .byte   $FF
-        .byte   $FF
-        lda     #$C0
+        .byte   $22,$C8,$03,$6D,$F7,$71,$22,$E8
+        .byte   $03,$6E,$89,$72,$00,$00,$FF,$FF
+LFA5C:  lda     #$C0
         sta     $4017
         jsr     LFBDC
         ldx     #$00
@@ -7205,12 +7014,12 @@ LFA5C:  .byte   $22
         stx     $FD
         lda     $FB
         cmp     #$20
-        bcs     LFA85
+        bcs     LFA75
         stx     $06B2
-LFA85:  cmp     #$80
-        bcc     LFA8C
+LFA75:  cmp     #$80
+        bcc     LFA7C
         inc     $06B2
-LFA8C:  tay
+LFA7C:  tay
         lsr     a
         lsr     a
         lsr     a
@@ -7218,145 +7027,139 @@ LFA8C:  tay
         lsr     a
         sta     $00
         tya
-LFA95:  ldx     $06B2
-        bne     LFA9F
+        ldx     $06B2
+        bne     LFA8F
         sec
         adc     $00
-        bne     LFAA2
-LFA9F:  clc
+        bne     LFA92
+LFA8F:  clc
         sbc     $00
-LFAA2:  sta     $FB
+LFA92:  sta     $FB
         rts
 
-        sta     $F3
-LFAA7:  stx     $F4
-LFAA9:  sty     $06A1
+LFA95:  sta     $F3
+        stx     $F4
+        sty     $06A1
         ldx     #$9A
         ldy     #$08
-LFAB1           := * + 1
         stx     $4004
         sty     $4005
         rts
 
-        lda     #$00
-        lsr     a
+LFAA7:  lda     #$00
+LFAA9:  lsr     a
         lsr     a
         ora     #$90
         sta     $4000
         rts
 
-        tax
-LFAC2:  ror     a
+LFAB1:  tax
+        ror     a
         txa
-LFAC4:  rol     a
-LFAC5:  rol     a
+        rol     a
+        rol     a
         rol     a
         and     #$07
         clc
         adc     $068D
-LFACD:  tay
+        tay
         lda     LFB40,y
         rts
 
-        tya
-LFAD3:  lsr     a
+LFAC2:  tya
         lsr     a
-LFAD5:  lsr     a
+LFAC4:  lsr     a
+LFAC5:  lsr     a
         sta     $00
-LFAD8:  tya
+        tya
         sec
         sbc     $00
         rts
 
-        stx     $F1
+LFACD:  stx     $F1
         sty     $F0
-        bne     LFAE8
-        ldy     #$7F
-        jsr     LFAF9
-LFAE8:  ldx     #$00
-LFAEA:  tay
-LFAEC           := * + 1
+        bne     LFAD8
+LFAD3:  ldy     #$7F
+LFAD5:  jsr     LFAF9
+LFAD8:  ldx     #$00
+LFADA:  tay
         lda     LFB01,y
-        beq     LFAFB
-LFAF0:  sta     $4002,x
+        beq     LFAEB
+        sta     $4002,x
         lda     LFB00,y
-LFAF7           := * + 1
         ora     #$08
-LFAF9           := * + 1
         sta     $4003,x
-LFAFB:  rts
+LFAEB:  rts
 
-        ldx     #$04
-        bne     LFAEA
-LFB00:  .byte   $8A
-LFB01:  .byte   $29,$3E,$A2,$08,$D0,$E3,$A0,$7F
-        .byte   $8E,$00,$40,$8C,$01,$40,$60,$03
-        .byte   $89,$00,$00,$00,$69,$00,$D4,$00
+LFAEC:  ldx     #$04
+        bne     LFADA
+LFAF0:  txa
+        and     #$3E
+        ldx     #$08
+        bne     LFADA
+LFAF7:  ldy     #$7F
+LFAF9:  stx     $4000
+        sty     $4001
+        rts
+
+LFB00:  .byte   $03
+LFB01:  .byte   $89,$00,$00,$00,$69,$00,$D4,$00
         .byte   $BD,$00,$A8,$00,$9F,$00,$96,$00
         .byte   $8D,$00,$70,$01,$AB,$01,$93,$01
         .byte   $7C,$01,$67,$01,$52,$01,$3F,$01
         .byte   $2D,$01,$1C,$01,$0C,$00,$FD,$00
-        .byte   $E1,$03,$57,$02,$F9,$02,$A6
-LFB40:  .byte   $02,$80,$02,$3A,$02,$1A,$01,$FC
-        .byte   $01,$C4,$05,$F3,$05,$01,$04,$35
-        .byte   $04,$08,$10
-LFB53:  .byte   $20,$40,$05,$0A,$14,$28,$50
-LFB5A:  .byte   $1E,$3C,$06,$0C,$18,$30,$60,$24
-LFB62:  pha
-        php
-        asl     a
-        .byte   $14
-        .byte   $03
-        .byte   $07
-        php
-        bpl     LFAF0
-        sty     $84
-        sty     $84
-        sty     $8C8C
-        ldy     #$07
-LFB74:  asl     a
-        bcs     LFB7A
+        .byte   $E1,$03,$57,$02,$F9,$02,$A6,$02
+        .byte   $80,$02,$3A,$02,$1A,$01,$FC,$01
+        .byte   $C4,$05,$F3,$05,$01,$04,$35
+LFB40:  .byte   $04,$08,$10,$20,$40,$05,$0A,$14
+        .byte   $28,$50,$1E,$3C,$06,$0C,$18,$30
+        .byte   $60,$24,$48
+LFB53:  .byte   $08,$0A,$14,$03,$07,$08,$10
+LFB5A:  .byte   $85,$84,$84,$84,$84,$8C,$8C,$8C
+LFB62:  ldy     #$07
+LFB64:  asl     a
+        bcs     LFB6A
         dey
-        bne     LFB74
-LFB7A:  rts
+        bne     LFB64
+LFB6A:  rts
 
-LFB7B:  sta     $F0
+LFB6B:  sta     $F0
         sta     $06A1
         sta     $06A2
         rts
 
-LFB84:  sty     $F0
+LFB74:  sty     $F0
         lda     #$08
         sta     $F1
         ldx     #$9F
         ldy     #$A5
         lda     #$04
         jsr     LFAD5
-LFB93:  dec     $F1
-        bne     LFBEA
+LFB83:  dec     $F1
+        bne     LFBDA
         lda     #$8F
         jmp     LFC31
 
-LFB9C:  sty     $F0
+LFB8C:  sty     $F0
         lda     #$80
         sta     $F1
         ldx     #$9C
         lda     #$12
         jsr     LFAD3
-LFBA9:  dec     $F1
+LFB99:  dec     $F1
         lda     $F1
-        beq     LFB7B
+        beq     LFB6B
         cmp     #$30
-        bcs     LFBB6
+        bcs     LFBA6
         jsr     LFAA9
-LFBB6:  lda     $F1
+LFBA6:  lda     $F1
         and     #$07
         tay
         lda     LFB5A,y
         sta     $4001
         jmp     LFE51
 
-LFBC4:  ldx     #$0E
+LFBB4:  ldx     #$0E
         lda     #$26
         jsr     LFACD
         lda     #$FE
@@ -7364,108 +7167,108 @@ LFBC4:  ldx     #$0E
         ldx     #$84
         ldy     #$8A
         jsr     LFAF9
-LFBD6:  dec     $F1
-        beq     LFC3F
+LFBC6:  dec     $F1
+        beq     LFC2F
         lda     $F1
-LFBDC:  lsr     a
-        bcs     LFC2C
+        lsr     a
+        bcs     LFC1C
         lda     $F2
         tay
         jsr     LFAC4
         sta     $F2
         sta     $4002
-LFBEA:  bne     LFC2C
-        lda     $FA
-        bne     LFC2C
+LFBDA:  bne     LFC1C
+LFBDC:  lda     $FA
+        bne     LFC1C
         ldy     $FF
         lda     $F0
         lsr     a
-        bcs     LFB93
+        bcs     LFB83
         lsr     $FF
-        bcs     LFB84
+        bcs     LFB74
         lsr     a
-        bcs     LFBA9
+        bcs     LFB99
         lsr     $FF
-        bcs     LFB9C
+        bcs     LFB8C
         lsr     a
-        bcs     LFBD6
+        bcs     LFBC6
         lsr     $FF
-        bcs     LFBC4
+        bcs     LFBB4
         lsr     a
-        bcs     LFC3B
+        bcs     LFC2B
         lsr     $FF
-        bcs     LFC2F
+        bcs     LFC1F
         lsr     a
-        bcs     LFC51
+        bcs     LFC41
         lsr     $FF
-        bcs     LFC4A
+        bcs     LFC3A
         lsr     a
-        bcs     LFC62
+        bcs     LFC52
         lsr     $FF
-        bcs     LFC5B
+        bcs     LFC4B
         lsr     a
-        bcs     LFC7B
+        bcs     LFC6B
         lsr     $FF
-        bcs     LFC74
+        bcs     LFC64
         lsr     a
-        bcs     LFC9D
+        bcs     LFC8D
         lsr     $FF
-        bcs     LFC97
-LFC2C:  jmp     LFD6B
+        bcs     LFC87
+LFC1C:  jmp     LFD6B
 
-LFC2F:  ldx     #$04
-LFC31:  lda     #$04
+LFC1F:  ldx     #$04
+        lda     #$04
         jsr     LFACD
         ldx     #$80
         jsr     LFAF7
-LFC3B:  dec     $F1
-        bne     LFC2C
-LFC3F:  lda     #$90
-        sta     $4000
+LFC2B:  dec     $F1
+        bne     LFC1C
+LFC2F:  lda     #$90
+LFC31:  sta     $4000
         lda     #$00
         sta     $F0
-        beq     LFC2C
-LFC4A:  ldx     #$0C
+        beq     LFC1C
+LFC3A:  ldx     #$0C
         lda     #$2A
         jsr     LFACD
-LFC51:  ldx     #$85
+LFC41:  ldx     #$85
         ldy     #$85
         dec     $F1
-LFC57:  beq     LFC3F
-        bne     LFC92
-LFC5B:  ldx     #$0A
+LFC47:  beq     LFC2F
+        bne     LFC82
+LFC4B:  ldx     #$0A
         lda     #$10
         jsr     LFACD
-LFC62:  dec     $F1
+LFC52:  dec     $F1
         ldy     #$84
         lda     $F1
         cmp     #$03
-        beq     LFC57
+        beq     LFC47
         cmp     #$08
-        bcs     LFC8F
+        bcs     LFC7F
         ldy     #$8B
-        bne     LFC8F
-LFC74:  ldx     #$15
+        bne     LFC7F
+LFC64:  ldx     #$15
         lda     #$06
         jsr     LFACD
-LFC7B:  dec     $F1
-        beq     LFC57
+LFC6B:  dec     $F1
+        beq     LFC47
         ldy     #$84
         lda     $F1
         cmp     #$12
-        bcs     LFC89
+        bcs     LFC79
         ldy     #$8D
-LFC89:  cmp     #$0A
-        bcc     LFC8F
+LFC79:  cmp     #$0A
+        bcc     LFC7F
         lda     #$0A
-LFC8F:  ora     #$50
+LFC7F:  ora     #$50
         tax
-LFC92:  jsr     LFAF9
-        bne     LFC2C
-LFC97:  sty     $F0
+LFC82:  jsr     LFAF9
+        bne     LFC1C
+LFC87:  sty     $F0
         lda     #$0C
         sta     $F1
-LFC9D:  lda     $FB
+LFC8D:  lda     $FB
         rol     a
         rol     a
         rol     a
@@ -7475,85 +7278,85 @@ LFC9D:  lda     $FB
         dec     $F1
         lda     $F1
         cmp     #$02
-        beq     LFC57
+        beq     LFC47
         ldy     #$7F
-        bne     LFC8F
-LFCB5:  lda     #$48
+        bne     LFC7F
+LFCA5:  lda     #$48
         ldx     #$FE
         jsr     LFA95
-LFCBC:  ldy     $F4
+LFCAC:  ldy     $F4
         dec     $F3
         lda     $F3
-        beq     LFD17
+        beq     LFD07
         and     #$03
-        beq     LFCD3
+        beq     LFCC3
         cmp     #$03
-        beq     LFCD8
+        beq     LFCC8
         tya
         jsr     LFAC5
         tay
-        bne     LFCD8
-LFCD3:  jsr     LFAC2
+        bne     LFCC8
+LFCC3:  jsr     LFAC2
         sta     $F4
-LFCD8:  tya
+LFCC8:  tya
         clc
         rol     a
         rol     a
         sta     $4006
         rol     a
-        bne     LFD07
-LFCE2:  lda     #$1C
+        bne     LFCF7
+LFCD2:  lda     #$1C
         ldx     #$2A
         jsr     LFA95
-LFCE9:  dec     $F3
+LFCD9:  dec     $F3
         lda     $F3
-        beq     LFD17
+        beq     LFD07
         lsr     a
         lda     $F4
-        bcs     LFCFA
+        bcs     LFCEA
         lsr     a
         clc
         adc     $F4
-        bne     LFD02
-LFCFA:  lsr     a
+        bne     LFCF2
+LFCEA:  lsr     a
         lsr     a
         lsr     a
         clc
         adc     $F4
         sta     $F4
-LFD02:  sta     $4006
+LFCF2:  sta     $4006
         lda     #$08
-LFD07:  sta     $4007
+LFCF7:  sta     $4007
         lda     $F3
         cmp     #$18
-        bcs     LFD16
-LFD10:  lsr     a
+        bcs     LFD06
+        lsr     a
         ora     #$90
         sta     $4004
-LFD16:  rts
+LFD06:  rts
 
-LFD17:  sta     $06A1
+LFD07:  sta     $06A1
         lda     #$10
         sta     $400C
         rts
 
-        ldy     $FE
+LFD10:  ldy     $FE
         lda     $06A1
         lsr     $FE
-        bcs     LFCB5
+        bcs     LFCA5
         lsr     a
-        bcs     LFCBC
+        bcs     LFCAC
         lsr     a
-        bcs     LFCE9
+        bcs     LFCD9
         lsr     $FE
-        bcs     LFCE2
+        bcs     LFCD2
         lsr     $FE
-        bcs     LFD3B
+        bcs     LFD2B
         lsr     a
-        bcs     LFD4F
+        bcs     LFD3F
         rts
 
-LFD3B:  sty     $06A1
+LFD2B:  sty     $06A1
         lda     #$20
         sta     $F3
         lda     #$04
@@ -7562,50 +7365,50 @@ LFD3B:  sty     $06A1
         sta     $400C
         asl     a
         sta     $400F
-LFD4F:  ldy     #$02
+LFD3F:  ldy     #$02
         dec     $F3
         lda     $F3
-        beq     LFD17
+        beq     LFD07
         cmp     #$18
-        beq     LFD5F
-        bcs     LFD72
-        bcc     LFD69
-LFD5F:  ldx     #$0F
+        beq     LFD4F
+        bcs     LFD62
+        bcc     LFD59
+LFD4F:  ldx     #$0F
         stx     $400C
         ldx     #$50
         stx     $400F
-LFD69:  ldy     $F4
-LFD6B:  lsr     a
-        bcs     LFD77
+LFD59:  ldy     $F4
+        lsr     a
+        bcs     LFD67
         inc     $F4
-        bne     LFD75
-LFD72:  lsr     a
-        bcs     LFD77
-LFD75:  ldy     #$0E
-LFD77:  sty     $400E
+        bne     LFD65
+LFD62:  lsr     a
+        bcs     LFD67
+LFD65:  ldy     #$0E
+LFD67:  sty     $400E
         rts
 
-        ldx     $F9
-        bne     LFDC7
+LFD6B:  ldx     $F9
+        bne     LFDB7
         lda     $FC
-        bne     LFD89
+        bne     LFD79
         sta     $06B6
         jmp     LFDB7
 
-LFD89:  eor     $06B6
-        beq     LFD9E
-LFD8E:  lda     $FC
+LFD79:  eor     $06B6
+        beq     LFD8E
+LFD7E:  lda     $FC
         sta     $06B6
         jsr     LFB62
         lda     LFFB9,y
         sta     $0680
-        bne     LFDA3
-LFD9E:  dec     $0698
-        bne     LFDC7
-LFDA3:  ldy     $0680
+        bne     LFD93
+LFD8E:  dec     $0698
+        bne     LFDB7
+LFD93:  ldy     $0680
         inc     $0680
         lda     LFFBA,y
-        beq     LFD8E
+        beq     LFD7E
         tax
         ror     a
         txa
@@ -7614,19 +7417,19 @@ LFDA3:  ldy     $0680
         rol     a
         and     #$07
         tay
-LFDB7:  lda     LFB53,y
+        lda     LFB53,y
         sta     $0698
         jsr     LFAF0
-        beq     LFDC7
+        beq     LFDB7
         lda     #$10
         sta     $4008
-LFDC7:  lda     $FD
-        bne     LFDD3
+LFDB7:  lda     $FD
+        bne     LFDC3
         lda     $06A2
-        bne     LFE17
+        bne     LFE07
         jmp     LFD10
 
-LFDD3:  jsr     LFB62
+LFDC3:  jsr     LFB62
         inc     $06A2
         sty     $06F1
         lda     LFEAA,y
@@ -7651,48 +7454,47 @@ LFDD3:  jsr     LFB62
         ldy     #$00
         sty     $0682
         lda     $06F1
-        beq     LFE1B
-LFE17:  ldy     $FA
-        beq     LFE4A
-LFE1B:  dec     $0696
-        bne     LFE4A
+        beq     LFE0B
+LFE07:  ldy     $FA
+        beq     LFE3A
+LFE0B:  dec     $0696
+        bne     LFE3A
         inc     $FA
         lda     ($F7),y
-        beq     LFE5E
+        beq     LFE4E
         jsr     LFAB1
         sta     $0696
         txa
         and     #$3E
         jsr     LFAD8
-        bne     LFE38
+        bne     LFE28
         ldy     #$10
-        bne     LFE47
-LFE38:  ldy     #$9F
+        bne     LFE37
+LFE28:  ldy     #$9F
         lda     $06F1
-        beq     LFE47
+        beq     LFE37
         ldy     #$06
         lda     $F9
-        bne     LFE47
+        bne     LFE37
         ldy     #$86
-LFE47:  sty     $4000
-LFE4A:  lda     $06F1
-        beq     LFE8E
-LFE51           := * + 2
+LFE37:  sty     $4000
+LFE3A:  lda     $06F1
+        beq     LFE7E
         dec     $0695
-        bne     LFE8E
+        bne     LFE7E
         ldy     $0682
         inc     $0682
         lda     ($F7),y
-        bne     LFE6E
-LFE5E:  jsr     LFAA7
-        lda     #$00
+        bne     LFE5E
+LFE4E:  jsr     LFAA7
+LFE51:  lda     #$00
         sta     $FA
         sta     $F9
         sta     $06A2
         sta     $4008
         rts
 
-LFE6E:  jsr     LFAB1
+LFE5E:  jsr     LFAB1
         sta     $0695
         txa
         and     #$3E
@@ -7700,16 +7502,16 @@ LFE6E:  jsr     LFAB1
         ldy     #$87
         lda     $0695
         cmp     #$10
-        bcs     LFE8B
+        bcs     LFE7B
         ldy     #$85
         cmp     #$08
-        bcs     LFE8B
+        bcs     LFE7B
         ldy     #$81
-LFE8B:  sty     $4004
-LFE8E:  ldy     $F9
-        beq     LFEB9
+LFE7B:  sty     $4004
+LFE7E:  ldy     $F9
+        beq     LFEA9
         dec     $0698
-        bne     LFEB9
+        bne     LFEA9
         inc     $F9
         lda     ($F7),y
         jsr     LFAB1
@@ -7719,49 +7521,55 @@ LFE8E:  ldy     $F9
         asl     a
         asl     a
         cmp     #$3C
-        bcc     LFEAC
-LFEAA:  .byte   $A9
-LFEAB:  .byte   $3C
-LFEAC:  .byte   $AC
-LFEAD:  .byte   $F1
-LFEAE:  .byte   $06,$D0,$02,$A9,$FF,$8D,$08,$40
-        .byte   $20,$F0,$FA
-LFEB9:  .byte   $60,$08,$0D,$12,$00,$17,$1C,$21
-        .byte   $26,$0C,$D5,$FE,$13,$00,$05,$F2
-        .byte   $FE,$11,$00,$00,$F2,$FE,$11,$00
-        .byte   $05,$14,$FF,$10,$00,$13,$34,$FF
-        .byte   $00,$00,$05,$3B,$FF,$00,$00,$0C
-        .byte   $44,$FF,$22,$4C,$42,$7A,$7C,$7E
-        .byte   $40,$6C,$70,$74,$78,$18,$16,$18
-        .byte   $16,$18,$16,$18,$16,$D8,$00,$82
-        .byte   $6C,$70,$74,$78,$58,$5E,$64,$E8
-        .byte   $E8,$62,$86,$62,$86,$A2,$60,$86
-        .byte   $60,$86,$A0,$5E,$86,$5E,$86,$8A
-        .byte   $11,$00,$94,$9C,$A2,$94,$94,$9A
-        .byte   $A0,$9A,$98,$9E,$A6,$86,$82,$20
-        .byte   $62,$02,$F2,$94,$A2,$5C,$55,$B8
-        .byte   $A2,$5C,$79,$B6,$94,$5C,$A2,$5C
-        .byte   $D8,$D4,$00,$94,$B2,$AE,$B2,$9C
-        .byte   $B8,$B2,$B8,$9E,$94,$AE,$B8,$72
-        .byte   $B2,$6C,$D4,$E8,$07,$CE,$11,$D2
-        .byte   $05,$00,$04,$10,$04,$10,$04,$10
-        .byte   $04,$50,$00,$51,$8A,$88,$46,$48
-        .byte   $4A,$4A,$CA,$42,$48,$4A,$4A,$4B
-        .byte   $4A,$48,$11,$10,$10,$90,$8A,$88
-        .byte   $46,$0A,$0A,$8B,$48,$0A,$0A,$8A
-        .byte   $8A,$62,$66,$C6,$00,$46,$A2,$86
-        .byte   $62,$66,$68,$66,$9C,$A6,$5C,$5E
-        .byte   $62,$66,$9E,$A6,$5E,$62,$66,$62
-        .byte   $B2,$B2,$72,$76,$78,$54,$B2,$94
-        .byte   $72,$76,$78,$66,$9C,$A6,$5C,$5E
-        .byte   $62,$58,$B6,$98,$72,$76,$15,$4B
-        .byte   $86,$A8,$62,$66,$46,$46,$C6,$42
-        .byte   $66,$46,$46,$86,$66,$46,$68,$C8
-        .byte   $42,$78,$58,$78,$62,$5C,$54,$A2
-LFFB9:  .byte   $72
-LFFBA:  .byte   $54,$5C,$66,$5C,$54,$A6,$76,$54
-        .byte   $5C,$66,$5E,$58,$A6,$78,$54,$1D
-        .byte   $05,$05,$05,$18,$33,$9F,$99,$95
+        bcc     LFE9C
+        lda     #$3C
+LFE9C:  ldy     $06F1
+        bne     LFEA3
+        lda     #$FF
+LFEA3:  sta     $4008
+        jsr     LFAF0
+LFEA9:  rts
+
+LFEAA:  .byte   $08
+LFEAB:  .byte   $0D
+LFEAC:  .byte   $12
+LFEAD:  .byte   $00
+LFEAE:  .byte   $17,$1C,$21,$26,$0C,$D5,$FE,$13
+        .byte   $00,$05,$F2,$FE,$11,$00,$00,$F2
+        .byte   $FE,$11,$00,$05,$14,$FF,$10,$00
+        .byte   $13,$34,$FF,$00,$00,$05,$3B,$FF
+        .byte   $00,$00,$0C,$44,$FF,$22,$4C,$42
+        .byte   $7A,$7C,$7E,$40,$6C,$70,$74,$78
+        .byte   $18,$16,$18,$16,$18,$16,$18,$16
+        .byte   $D8,$00,$82,$6C,$70,$74,$78,$58
+        .byte   $5E,$64,$E8,$E8,$62,$86,$62,$86
+        .byte   $A2,$60,$86,$60,$86,$A0,$5E,$86
+        .byte   $5E,$86,$8A,$11,$00,$94,$9C,$A2
+        .byte   $94,$94,$9A,$A0,$9A,$98,$9E,$A6
+        .byte   $86,$82,$20,$62,$02,$F2,$94,$A2
+        .byte   $5C,$55,$B8,$A2,$5C,$79,$B6,$94
+        .byte   $5C,$A2,$5C,$D8,$D4,$00,$94,$B2
+        .byte   $AE,$B2,$9C,$B8,$B2,$B8,$9E,$94
+        .byte   $AE,$B8,$72,$B2,$6C,$D4,$E8,$07
+        .byte   $CE,$11,$D2,$05,$00,$04,$10,$04
+        .byte   $10,$04,$10,$04,$50,$00,$51,$8A
+        .byte   $88,$46,$48,$4A,$4A,$CA,$42,$48
+        .byte   $4A,$4A,$4B,$4A,$48,$11,$10,$10
+        .byte   $90,$8A,$88,$46,$0A,$0A,$8B,$48
+        .byte   $0A,$0A,$8A,$8A,$62,$66,$C6,$00
+        .byte   $46,$A2,$86,$62,$66,$68,$66,$9C
+        .byte   $A6,$5C,$5E,$62,$66,$9E,$A6,$5E
+        .byte   $62,$66,$62,$B2,$B2,$72,$76,$78
+        .byte   $54,$B2,$94,$72,$76,$78,$66,$9C
+        .byte   $A6,$5C,$5E,$62,$58,$B6,$98,$72
+        .byte   $76,$15,$4B,$86,$A8,$62,$66,$46
+        .byte   $46,$C6,$42,$66,$46,$46,$86,$66
+        .byte   $46,$68,$C8,$42,$78,$58,$78,$62
+        .byte   $5C,$54,$A2,$72,$54,$5C,$66,$5C
+        .byte   $54,$A6,$76,$54,$5C,$66,$5E,$58
+        .byte   $A6,$78,$54
+LFFB9:  .byte   $1D
+LFFBA:  .byte   $05,$05,$05,$18,$33,$9F,$99,$95
         .byte   $59,$9F,$9F,$59,$95,$99,$A3,$9D
         .byte   $99,$5D,$A3,$A3,$5D,$99,$9D,$00
         .byte   $5E,$9E,$54,$5E,$9E,$54,$5E,$9E
@@ -7769,7 +7577,8 @@ LFFBA:  .byte   $54,$5C,$66,$5C,$54,$A6,$76,$54
         .byte   $62,$A2,$58,$62,$A2,$58,$62,$60
         .byte   $62,$64,$00,$06,$06,$06,$06,$08
         .byte   $0A,$0C,$0C,$0C,$0C,$0A,$08,$00
-        .byte   $A9,$C4,$1E,$C4,$F0,$FF
+        .byte   $A9,$C4,$1E,$C4,$F0
+        .byte   $FF
 
 ; End of "CODE" segment
 .code

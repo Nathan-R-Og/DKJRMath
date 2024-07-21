@@ -5,7 +5,6 @@
 
 .setcpu "6502"
 
-;why does it generate the header automatically??? i appreciate it but i disasmed it for a reason
-;.include "header.asm"
+.include "header.asm"
 .include "prg.asm"
 .include "chr.asm"
