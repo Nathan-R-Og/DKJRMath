@@ -1,0 +1,2 @@
+#!/bin/bash
+da65 -i info.cfg

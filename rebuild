@@ -1,0 +1,4 @@
+#!/bin/bash
+ca65 -o example.o main.asm
+ld65 -t nes -o dkjrm_rebuilt.nes example.o
+rm -rf example.o
