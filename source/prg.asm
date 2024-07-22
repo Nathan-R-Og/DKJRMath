@@ -1,5 +1,5 @@
 ; da65 V2.19 - Git 03d824e13
-; Created:    2024-07-21 16:50:49
+; Created:    2024-07-21 19:04:43
 ; Input file: dkjrm.nes
 ; Page:       1
 
@@ -7,6 +7,70 @@
         .setcpu "6502"
 
 L0002           := $0002
+SPR_0           := $0200
+SPR_1           := $0204
+SPR_2           := $0208
+SPR_3           := $020C
+SPR_4           := $0210
+SPR_5           := $0214
+SPR_6           := $0218
+SPR_7           := $021C
+SPR_8           := $0220
+SPR_9           := $0224
+SPR_A           := $0228
+SPR_B           := $022C
+SPR_C           := $0230
+SPR_D           := $0234
+SPR_E           := $0238
+SPR_F           := $023C
+SPR_10          := $0240
+SPR_11          := $0244
+SPR_12          := $0248
+SPR_13          := $024C
+SPR_14          := $0250
+SPR_15          := $0254
+SPR_16          := $0258
+SPR_17          := $025C
+SPR_18          := $0260
+SPR_19          := $0264
+SPR_1A          := $0268
+SPR_1B          := $026C
+SPR_1C          := $0270
+SPR_1D          := $0274
+SPR_1E          := $0278
+SPR_1F          := $027C
+SPR_20          := $0280
+SPR_21          := $0284
+SPR_22          := $0288
+SPR_23          := $028C
+SPR_24          := $0290
+SPR_25          := $0294
+SPR_26          := $0298
+SPR_27          := $029C
+SPR_28          := $02A0
+SPR_29          := $02A4
+SPR_2A          := $02A8
+SPR_2B          := $02AC
+SPR_2C          := $02B0
+SPR_2D          := $02B4
+SPR_2E          := $02B8
+SPR_2F          := $02BC
+SPR_30          := $02C0
+SPR_31          := $02C4
+SPR_32          := $02C8
+SPR_33          := $02CC
+SPR_34          := $02D0
+SPR_35          := $02D4
+SPR_36          := $02D8
+SPR_37          := $02DC
+SPR_38          := $02E0
+SPR_39          := $02E4
+SPR_3A          := $02E8
+SPR_3B          := $02EC
+SPR_3C          := $02F0
+SPR_3D          := $02F4
+SPR_3E          := $02F8
+SPR_3F          := $02FC
 APU_STATUS      := $4015
 
 .segment        "CODE": absolute
@@ -66,7 +130,8 @@ LC0F9:  .byte   $0D,$21,$55,$47,$C5,$00,$21,$53
         .byte   $24,$C4,$24,$C4,$00
 LC166:  .byte   $00,$00,$05,$0A,$0F,$14,$19,$1E
         .byte   $23,$3E,$50,$5E,$63
-LC173:  .byte   $06
+P1_startX: .byte $06
+P2_startX  = $D8 ;defined, not stored
 LC174:  .byte   $BF,$B0,$C7,$1F,$C7
 LC179:  .byte   $01
 LC17A:  .byte   $08
@@ -237,7 +302,7 @@ LC47B:  lda     #$10
         jsr     LF221
         lda     #$FF
         ldy     #$00
-LC48C:  sta     $0200,y
+LC48C:  sta     SPR_0,y
         dey
         beq     LC495
         jmp     LC48C
@@ -293,15 +358,15 @@ LC4DE:  dec     $05B0
         jsr     LC911
         jmp     LC541
 
-LC507:  lda     $0210
+LC507:  lda     SPR_4
         sta     $0101
-        lda     $0213
+        lda     SPR_4+3
         sta     $0100
         ldx     #$00
         jsr     LC866
-        lda     $0230
+        lda     SPR_C
         sta     $0101
-        lda     $0233
+        lda     SPR_C+3
         sta     $0100
         ldx     #$01
         jsr     LC866
@@ -350,14 +415,14 @@ LC574:  lda     $AE
         sta     $01
         jsr     LF218
         lda     $ED
-        sta     $0200
+        sta     SPR_0
         lda     #$5C
-        sta     $0201
+        sta     SPR_0+1
         lda     #$00
-        sta     $0202
+        sta     SPR_0+2
         sta     $4C
         lda     #$48
-        sta     $0203
+        sta     SPR_0+3
         sta     $AE
         lda     #$20
         sta     $3C
@@ -385,13 +450,13 @@ LC5C3:  lda     #$20
         sta     $3C
         lda     $94
         bne     LC5E3
-        lda     $0200
+        lda     SPR_0
         clc
         adc     #$10
         cmp     #$C7
         bne     LC5D7
         lda     #$97
-LC5D7:  sta     $0200
+LC5D7:  sta     SPR_0
         sta     $ED
         inc     $94
         lda     #$01
@@ -686,7 +751,7 @@ LC80F:  inx
         bne     LC7F3
         rts
 
-LC814:  lda     LC173,y
+LC814:  lda     P1_startX,y
         sta     $00
         lda     LC174,y
         sta     $01
@@ -695,7 +760,7 @@ LC814:  lda     LC173,y
         lda     $5F,x
         cmp     #$01
         beq     LC833
-        lda     $0233
+        lda     SPR_C+3
         cmp     #$80
         bcs     LC833
         lda     #$D8
@@ -706,7 +771,7 @@ LC833:  jsr     LD69F
         bpl     LC861
         txa
         beq     LC861
-LC83F:  lda     #$D8
+LC83F:  lda     #P2_startX
         sta     $00
         lda     #$BF
         sta     $01
@@ -715,7 +780,7 @@ LC83F:  lda     #$D8
         lda     $5F,x
         cmp     #$01
         beq     LC85C
-        lda     $0213
+        lda     SPR_4+3
         cmp     #$80
         bcc     LC85C
         lda     #$06
@@ -1224,7 +1289,7 @@ LCC26:  jsr     LCC47
         jmp     LCC42
 
 LCC2C:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $71,x
         lda     #$01
         sta     $09
@@ -1245,7 +1310,7 @@ LCC47:  txa
         lda     #$40
         sta     $FF
         jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $71,x
         rts
 
@@ -1329,11 +1394,11 @@ LCCE2:  jsr     LD55E
         jsr     LDA5E
         lda     $8D
         sec
-        sbc     $0210,y
+        sbc     SPR_4,y
         clc
         adc     #$01
-        adc     $0210,y
-        sta     $0210,y
+        adc     SPR_4,y
+        sta     SPR_4,y
 LCCF9:  lda     $76,x
         beq     LCD09
         lda     $73,x
@@ -1461,7 +1526,7 @@ LCDD8:  txa
 LCDE7:  jsr     LD55E
         bne     LCE14
         jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     #$D8
         bcs     LCE19
         jmp     LD0CA
@@ -1515,7 +1580,7 @@ LCE3D:  jsr     LD562
         rts
 
 LCE4A:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     #$D8
         bcc     LCE5D
         lda     #$10
@@ -1525,15 +1590,15 @@ LCE4A:  jsr     LDA5E
         rts
 
 LCE5D:  jsr     LDA5E
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
-        lda     $0210,y
+        lda     SPR_4,y
         clc
         adc     $78
         sta     $01
-        lda     $0211,y
+        lda     SPR_4+1,y
         pha
-        lda     $0212,y
+        lda     SPR_4+2,y
         cmp     #$40
         bmi     LCE7F
         pla
@@ -1546,7 +1611,7 @@ LCE80:  sta     L0002
         jmp     LD6A3
 
 LCE85:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
         lda     $51,x
         cmp     #$03
@@ -1567,7 +1632,7 @@ LCEAC:  pla
         sta     $67,x
         lda     $6F,x
         sta     L0002
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
         jsr     LD6A3
 LCEBB:  rts
@@ -1581,11 +1646,11 @@ LCEBC:  lda     #$01
         clc
         adc     #$A0
         sta     $55,x
-        lda     $0213,y
+        lda     SPR_4+3,y
         adc     #$00
         rts
 
-LCED3:  lda     $0213,y
+LCED3:  lda     SPR_4+3,y
         sec
         sbc     #$02
         rts
@@ -1599,11 +1664,11 @@ LCEDA:  lda     #$00
         sec
         sbc     #$A0
         sta     $55,x
-        lda     $0213,y
+        lda     SPR_4+3,y
         sbc     #$00
         rts
 
-LCEF1:  lda     $0213,y
+LCEF1:  lda     SPR_4+3,y
         clc
         adc     #$02
         rts
@@ -1657,7 +1722,7 @@ LCF3A:  lda     $51,x
 LCF46:  lda     $4A
         cmp     #$01
         bne     LCF62
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     #$AF
         bcc     LCF62
         jsr     LD7F0
@@ -1676,7 +1741,7 @@ LCF65:  sta     $01
         bne     LCF71
 LCF6F:  lda     #$30
 LCF71:  sta     L0002
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         jsr     LD6A3
         lda     #$01
@@ -1692,7 +1757,7 @@ LCF8A:  lda     $55,x
         sec
         sbc     #$A0
         sta     $55,x
-        lda     $0210,y
+        lda     SPR_4,y
         sbc     #$00
         rts
 
@@ -1700,7 +1765,7 @@ LCF97:  lda     $75
         cmp     #$02
         bne     LCFA4
         sec
-        lda     $0210,y
+        lda     SPR_4,y
         sbc     #$01
         rts
 
@@ -1710,7 +1775,7 @@ LCFA4:  clc
         sta     $55,x
         lda     #$20
         sta     $FF
-        lda     $0210,y
+        lda     SPR_4,y
         adc     #$01
         rts
 
@@ -1770,7 +1835,7 @@ LD01B:  lda     $63,x
         cmp     $05CA,x
         bne     LD037
         jsr     LDA5E
-        lda     $0211,y
+        lda     SPR_4+1,y
         cmp     $05CC,x
         bne     LD037
 LD02D:  lda     #$00
@@ -1868,13 +1933,13 @@ LD0C5:  lda     #$20
 LD0C9:  rts
 
 LD0CA:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
         jsr     LD65F
         lda     $51,x
         cmp     #$03
         bpl     LD0E1
-        lda     $0213,y
+        lda     SPR_4+3,y
         jmp     LD102
 
 LD0E1:  clc
@@ -1887,12 +1952,12 @@ LD0E1:  clc
         lda     $51,x
         cmp     #$03
         beq     LD0FC
-        lda     $0213,y
+        lda     SPR_4+3,y
         clc
         adc     $00
         jmp     LD102
 
-LD0FC:  lda     $0213,y
+LD0FC:  lda     SPR_4+3,y
         sec
         sbc     $00
 LD102:  sta     $00
@@ -1917,7 +1982,7 @@ LD125:  sta     $5F,x
         rts
 
 LD128:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     $71,x
         bcc     LD139
         sec
@@ -1973,20 +2038,20 @@ LD17A:  lda     $4A
 
 LD189:  lda     #$01
         sta     $63
-        lda     $0210
+        lda     SPR_4
         cmp     #$20
         bcc     LD1B8
-        lda     $0210
+        lda     SPR_4
         and     #$0F
         cmp     #$08
         bpl     LD1A8
-        lda     $0210
+        lda     SPR_4
         and     #$F0
         sec
         sbc     #$04
         jmp     LD1AB
 
-LD1A8:  lda     $0210
+LD1A8:  lda     SPR_4
 LD1AB:  sta     $01
         lda     #$02
         sta     $FE
@@ -1996,7 +2061,7 @@ LD1AB:  sta     $01
 
 LD1B8:  cmp     #$03
         bne     LD22F
-        lda     $0213
+        lda     SPR_4+3
         cmp     $05F3
         bne     LD22F
         jsr     LE5F8
@@ -2004,7 +2069,7 @@ LD1B8:  cmp     #$03
         ldy     #$00
         sty     $BF
         lda     #$F8
-        sta     $02D0
+        sta     SPR_34
         sta     $05F5
         lda     $BE
         beq     LD22F
@@ -2067,7 +2132,7 @@ LD242:  lda     $8D
         sbc     #$11
         sta     $01
         jsr     LDA5E
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         lda     #$20
         sta     L0002
@@ -2088,10 +2153,10 @@ LD268:  sta     $79
         rts
 
 LD273:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
         sta     $71,x
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         lda     #$18
         sta     L0002
@@ -2103,7 +2168,7 @@ LD273:  jsr     LDA5E
         rts
 
 LD292:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     #$D8
         bcs     LD2B5
         clc
@@ -2111,7 +2176,7 @@ LD292:  jsr     LDA5E
         sta     $01
         lda     $09
         sta     $FF
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         lda     #$40
         sta     L0002
@@ -2127,17 +2192,17 @@ LD2BC:  lda     $4A
         cmp     #$03
         bne     LD312
         lda     #$F8
-        sta     $02D8
-        sta     $02DC
+        sta     SPR_36
+        sta     SPR_37
         lda     $EC
         cmp     #$08
         bne     LD312
-        lda     $0211
+        lda     SPR_4+1
         cmp     #$F8
         beq     LD2F7
         lda     #$C7
         sta     $01
-        lda     $0213
+        lda     SPR_4+3
         sta     $00
         lda     #$F8
         sta     L0002
@@ -2168,9 +2233,9 @@ LD312:  lda     $59,x
         lda     #$02
         sta     $FF
 LD31C:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         ldy     #$40
         lda     $59,x
@@ -2182,7 +2247,7 @@ LD333:  sty     L0002
         lda     #$20
         sta     $39,x
         jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         cmp     #$D8
         bcs     LD34A
         lda     #$10
@@ -2687,9 +2752,9 @@ LD6B4:  sta     $04
         jmp     LD6D2
 
 LD6BA:  jsr     LDA5E
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         rts
 
@@ -2944,7 +3009,7 @@ LD84D:  ldx     $0A
         beq     LD87A
         cmp     #$03
         beq     LD8C5
-        lda     $0211,y
+        lda     SPR_4+1,y
         cmp     #$2E
         beq     LD879
         cmp     #$28
@@ -2963,7 +3028,7 @@ LD87A:  lda     $6B,x
         beq     LD8A3
         cmp     #$02
         beq     LD8A3
-        lda     $0213,y
+        lda     SPR_4+3,y
         sta     $00
         lda     $0101
         sta     $01
@@ -2981,14 +3046,14 @@ LD89E:  ldx     $0A
         jsr     LD158
 LD8A3:  rts
 
-LD8A4:  lda     $0211,y
+LD8A4:  lda     SPR_4+1,y
         cmp     #$50
         beq     LD8C4
         lda     $0100
         sta     $00
-        lda     $0210,y
+        lda     SPR_4,y
         sta     $01
-        lda     $0211,y
+        lda     SPR_4+1,y
         ldy     $63,x
         bne     LD8BF
         sec
@@ -3019,12 +3084,12 @@ LD8C5:  lda     $05C0
 
 LD8EE:  ldx     $0A
         jsr     LDA5E
-        lda     $021B,y
+        lda     SPR_6+3,y
         sta     $00
         tya
         eor     #$20
         tay
-        lda     $021B,y
+        lda     SPR_6+3,y
         ldy     #$03
         cmp     $00
         bcs     LD906
@@ -3059,7 +3124,7 @@ LD922:  lda     $0A
         lda     $05C0
         cmp     #$02
         bpl     LD94C
-        lda     $0210,y
+        lda     SPR_4,y
         sec
         sbc     #$04
         cmp     #$59
@@ -3067,11 +3132,11 @@ LD922:  lda     $0A
         lda     #$59
         jmp     LD952
 
-LD94C:  lda     $0210,y
+LD94C:  lda     SPR_4,y
         clc
         adc     #$04
 LD952:  sta     $01
-        lda     $0213,y
+        lda     SPR_4+3,y
         jsr     LD156
         rts
 
@@ -4142,11 +4207,11 @@ LE0FD:  lda     $09
         adc     $0D
         tax
         lda     $09
-        sta     $0253,x
+        sta     SPR_14+3,x
         lda     #$AE
-        sta     $0251,x
+        sta     SPR_14+1,x
         lda     #$30
-        sta     $0250,x
+        sta     SPR_14,x
         pla
         tax
         inc     $05C7,x
@@ -4183,7 +4248,7 @@ LE137:  lda     #$B4
         ldy     #$14
 LE15F:  ldx     #$05
         lda     #$F7
-LE163:  sta     $0250,y
+LE163:  sta     SPR_14,y
         iny
         iny
         iny
@@ -4404,14 +4469,14 @@ LE2DE:  lda     $BF
 LE2E2:  rts
 
 LE2E3:  jsr     LE314
-        lda     $0213
+        lda     SPR_4+3
         cmp     $05F3
         bne     LE2E2
         lda     #$00
         sta     $0400
         lda     #$B8
 LE2F5:  sta     $0401
-        lda     $0210
+        lda     SPR_4
         cmp     $0401
         bcc     LE308
         lda     $0400
@@ -4432,19 +4497,19 @@ LE314:  lda     $33
         jmp     LE324
 
 LE322:  lda     #$F8
-LE324:  sta     $02D0
+LE324:  sta     SPR_34
         rts
 
 LE328:  lda     #$3E
         sta     $33
         rts
 
-LE32D:  lda     $0211
+LE32D:  lda     SPR_4+1
         cmp     #$94
         bne     LE352
         ldy     #$01
         lda     #$4B
-LE338:  cmp     $0214
+LE338:  cmp     SPR_5
         bcs     LE344
         iny
         clc
@@ -4477,28 +4542,28 @@ LE359:  lda     $35
 LE36F:  ldy     $0402
         dey
         lda     LC299,y
-        sta     $02D8
-        sta     $02DC
+        sta     SPR_36
+        sta     SPR_37
         lda     #$18
-        sta     $02DF
+        sta     SPR_37+3
         lda     #$00
         sta     $0405
 LE386:  rts
 
 LE387:  lda     #$FF
-        sta     $02D8
-        sta     $02DC
+        sta     SPR_36
+        sta     SPR_37
         lda     #$5E
-        sta     $02D9
-        sta     $02DD
+        sta     SPR_36+1
+        sta     SPR_37+1
         lda     #$03
-        sta     $02DA
-        sta     $02DE
+        sta     SPR_36+2
+        sta     SPR_37+2
         lda     #$1F
-        sta     $02DB
+        sta     SPR_36+3
         rts
 
-LE3A5:  lda     $02E0
+LE3A5:  lda     SPR_38
         sta     $01
         lda     #$22
         sta     $03
@@ -4526,15 +4591,15 @@ LE3D1:  lda     $040E
         beq     LE3DF
         jmp     LE481
 
-LE3DF:  lda     $02E3
+LE3DF:  lda     SPR_38+3
         clc
         adc     #$02
-        sta     $02E3
+        sta     SPR_38+3
         cmp     #$D0
         bcc     LE3F0
         lda     #$01
         sta     $B1
-LE3F0:  lda     $02E3
+LE3F0:  lda     SPR_38+3
         sta     $00
         lda     $040E
         and     #$10
@@ -4587,33 +4652,33 @@ LE44E:  tay
         bne     LE45F
 LE456:  lda     LC2B0,y
 LE459:  sta     $0470,x
-        sta     $02D4
+        sta     SPR_35
 LE45F:  lda     #$03
-        sta     $02D6
-        lda     $02E3
+        sta     SPR_35+2
+        lda     SPR_38+3
         clc
         adc     #$04
-        sta     $02D7
+        sta     SPR_35+3
         ldy     $B0
         bne     LE476
         sta     $0460,x
         inc     $BD
 LE476:  lda     #$9C
-        sta     $02D5
+        sta     SPR_35+1
         lda     #$06
         sta     $EC
         bne     LE405
-LE481:  lda     $02E3
+LE481:  lda     SPR_38+3
         sec
         sbc     #$02
-        sta     $02E3
+        sta     SPR_38+3
         lda     $EA
         cmp     #$09
         bpl     LE4A2
         cmp     #$05
         beq     LE4A2
         lda     #$68
-LE496:  cmp     $02E3
+LE496:  cmp     SPR_38+3
         bcc     LE49F
         lda     #$00
         sta     $B1
@@ -4623,7 +4688,7 @@ LE4A2:  lda     #$B8
         bne     LE496
 LE4A6:  cmp     #$FF
         beq     LE4B4
-        cmp     $02E3
+        cmp     SPR_38+3
         bne     LE4BC
         inc     $AD
 LE4B1:  lda     $EA
@@ -4713,7 +4778,7 @@ LE542:  lda     $A9
         cmp     #$01
         bne     LE54A
         sta     $93
-LE54A:  lda     $02E3
+LE54A:  lda     SPR_38+3
         clc
         adc     #$04
         cmp     $0460,x
@@ -4724,13 +4789,13 @@ LE54A:  lda     $02E3
         tax
         lda     $DB
         bne     LE568
-        lda     $0290,x
-        sta     $02D4
+        lda     SPR_24,x
+        sta     SPR_35
         lda     #$F8
-        sta     $0290,x
+        sta     SPR_24,x
 LE568:  jmp     LE4B1
 
-LE56B:  lda     $02E3
+LE56B:  lda     SPR_38+3
         cmp     LC2A3,y
         bne     LE5BD
         lda     #$01
@@ -4745,7 +4810,7 @@ LE57E:  lda     #$00
         sta     $AD
         jmp     LE57C
 
-LE585:  lda     $02E3
+LE585:  lda     SPR_38+3
         cmp     LC2AA,y
         bne     LE5BD
         lda     #$02
@@ -4763,7 +4828,7 @@ LE596:  lda     $EA
         jmp     LE5AB
 
 LE5A8:  lda     LC2A3,y
-LE5AB:  cmp     $02E3
+LE5AB:  cmp     SPR_38+3
         bne     LE5BD
         lda     #$03
         pha
@@ -4941,13 +5006,13 @@ LE6DE:  lda     #$00
 LE6F1:  ldx     #$00
         ldy     #$00
 LE6F5:  lda     $0470,x
-        sta     $0290,y
+        sta     SPR_24,y
         lda     $0460,x
-        sta     $0293,y
+        sta     SPR_24+3,y
         lda     #$9C
-        sta     $0291,y
+        sta     SPR_24+1,y
         lda     #$03
-        sta     $0292,y
+        sta     SPR_24+2,y
         inx
         iny
         iny
@@ -4974,14 +5039,14 @@ LE729:  jmp     LE73F
 LE72C:  ldx     #$1E
 LE72E:  lda     #$F7
         sta     $05F5
-        sta     $02D0
-        sta     $02D4
+        sta     SPR_34
+        sta     SPR_35
         sta     $0460,x
         dex
         bpl     LE72E
 LE73F:  ldx     #$34
 LE741:  lda     #$F8
-        sta     $028F,x
+        sta     SPR_23+3,x
         dex
         bne     LE741
         rts
@@ -5001,10 +5066,10 @@ LE75B:  lda     $8C
         sec
         sbc     #$10
         sta     $05F3
-        lda     $02E3
+        lda     SPR_38+3
         cmp     $8C
         bcs     LE754
-        lda     $02EB
+        lda     SPR_3A+3
         clc
         adc     #$08
         cmp     $8C
@@ -5022,10 +5087,10 @@ LE75B:  lda     $8C
         asl     a
         asl     a
         tax
-        lda     $0290,x
-        sta     $02D4
+        lda     SPR_24,x
+        sta     SPR_35
         lda     #$F7
-        sta     $0290,x
+        sta     SPR_24,x
 LE795:  inc     $BD
         ldx     $BD
         jmp     LE7A0
@@ -5054,16 +5119,16 @@ LE7C3:  cpx     #$08
         bne     LE7CA
         jsr     LE7F5
 LE7CA:  stx     $98
-        lda     $02D4
+        lda     SPR_35
         sta     $05F5
-        lda     $02D7
-        sta     $02D3
+        lda     SPR_35+3
+        sta     SPR_34+3
         lda     #$5E
-        sta     $02D1
+        sta     SPR_34+1
         lda     #$03
-        sta     $02D2
+        sta     SPR_34+2
         lda     #$F7
-        sta     $02D4
+        sta     SPR_35
         lda     #$16
         sta     $BF
         sta     $EC
@@ -5098,7 +5163,7 @@ LE80B:  inc     $0402
         sta     $04FB
         sta     $50
 LE825:  lda     #$03
-        sta     $02D6
+        sta     SPR_35+2
         lda     #$5F
         sta     $01
         lda     #$22
@@ -5159,26 +5224,26 @@ LE88B:  lda     $AF
 LE89A:  lda     $0404
         bne     LE8C9
         lda     #$40
-        bit     $02F2
+        bit     SPR_3C+2
         bne     LE8AE
-        lda     $02F3
+        lda     SPR_3C+3
         cmp     #$28
         beq     LE8B5
 LE8AD:  rts
 
-LE8AE:  lda     $02F3
+LE8AE:  lda     SPR_3C+3
         cmp     #$20
         bne     LE8AD
 LE8B5:  lda     #$68
-        sta     $0240
+        sta     SPR_10
         lda     #$F0
-        sta     $0241
+        sta     SPR_10+1
         lda     #$03
-        sta     $0242
+        sta     SPR_10+2
         lda     #$28
-        sta     $0243
-LE8C9:  inc     $0240
-        lda     $0240
+        sta     SPR_10+3
+LE8C9:  inc     SPR_10
+        lda     SPR_10
         ldy     $0402
         dey
         cmp     LC299,y
@@ -5196,14 +5261,14 @@ LE8E0:  cpy     #$00
         dey
         jmp     LE8E0
 
-LE8EC:  lda     $0240,y
-        sta     $0240,x
+LE8EC:  lda     SPR_10,y
+        sta     SPR_10,x
         iny
         inx
         cpy     #$04
         bne     LE8EC
         lda     #$F7
-        sta     $0240
+        sta     SPR_10
 LE8FD:  lda     #$00
         sta     $0420
         sta     $0404
@@ -5236,15 +5301,15 @@ LE928:  lda     $EC
         beq     LE949
         lda     $040F
         bne     LE96F
-        inc     $02F3
-        lda     $02F3
+        inc     SPR_3C+3
+        lda     SPR_3C+3
         cmp     #$30
         bcc     LE949
         lda     #$01
         sta     $040F
-LE949:  lda     $02F3
+LE949:  lda     SPR_3C+3
         sta     $00
-        lda     $02F0
+        lda     SPR_3C
         sta     $01
         lda     #$22
         sta     $03
@@ -5260,10 +5325,10 @@ LE966:  sty     L0002
         jsr     LD6D2
 LE96E:  rts
 
-LE96F:  lda     $02F3
+LE96F:  lda     SPR_3C+3
         sec
         sbc     #$01
-        sta     $02F3
+        sta     SPR_3C+3
         cmp     #$10
         bcs     LE981
         lda     #$00

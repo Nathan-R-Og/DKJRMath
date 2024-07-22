@@ -1,3 +1,4 @@
 disasm.asm
 *.nes
 /cc65
+*.deb
