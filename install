@@ -6,8 +6,7 @@ if cat /etc/os-release | grep -E 'ID=debian|ID_LIKE=(.*)debian' &> /dev/null; th
     sudo apt-get install make gcc git
 
     #make subfolder
-    echo "Installing cc65... this'll take a bit!"
-    rm -rf cc65 && git clone https://github.com/cc65/cc65.git
+    git submodule update --remote
     #go in and install cc65
-    cd cc65 && make && sudo make unavail && sudo make avail && cd -
+    cd cc65 && make && sudo make unavail && sudo make avail && cd - 
 fi
