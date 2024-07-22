@@ -5,9 +5,9 @@ For WSL2 Ubuntu. Probably also works on actual Linux.
 
 Run `./install` to download and set up cc65
 
-Run `./init` to generate disassembly
+Run `./configure` to generate disassembly
 
-Run `./rebuild` to make a new rom from disasm files
+Run `./assemble` to make a new rom from disasm files
 
 Still incredibly wip, i do not have enough knowledge to know why parts do and dont work
 
