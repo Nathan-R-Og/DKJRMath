@@ -1,4 +1,4 @@
-;Dragon Warrior NES Emulator Header File.
+;iNES Emulator Header File.
 .segment        "INESHDR":absolute
 
 ;----------------------------------------------------------------------------------------------------
