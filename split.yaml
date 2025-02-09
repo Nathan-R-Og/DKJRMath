@@ -1,0 +1,17 @@
+name: Donkey Kong Jr. Math
+md5: ed081b5c6dbddd623a845f0d27b4a288
+options:
+  prgs: 1
+  chrs: 1
+  mapper: NROM
+splits:
+  prg:
+    - bank: header
+    - bank: 0
+    #  splits:
+  chr:
+    - bank: 0
+      splits:
+      - [0]
+      - [0x80, chr/dkjr_standing]
+      - [0x110]

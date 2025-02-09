@@ -1,0 +1,9 @@
+#!/bin/bash
+ca65 -o example.o -g src/main.asm -t nes
+ld65 -Ln linked.txt -C linker.cfg -o dkjrm_rebuilt.nes example.o
+rm -rf example.o
+rm -rf dkjrm_rebuilt.nes.deb
+
+
+
+python3 tools/checksum.py

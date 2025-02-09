@@ -1,3 +1,7 @@
 disasm.asm
 *.nes
 *.deb
+linked.txt
+split/
+tools/outputs/
+__pycache__/

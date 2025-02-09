@@ -1,5 +1,0 @@
-#!/bin/bash
-ca65 -o example.o source/main.asm
-ld65 -C linker.cfg -o dkjrm_rebuilt.nes example.o
-rm -rf example.o
-rm -rf dkjrm_rebuilt.nes.deb

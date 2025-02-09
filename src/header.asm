@@ -1,21 +1,21 @@
 ;iNES Emulator Header File.
-.segment        "INESHDR":absolute
+.segment        "HEADER":absolute
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Bytes 0-3.
 ;      NES   EOF
-.byte "NES", $1A        ;ASCII NES followed by MS-DOS end-of-file.
+.literal "NES", $1A        ;ASCII NES followed by MS-DOS end-of-file.
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Byte 4.
-.byte $01                       ;PRG ROM size: 4 banks * 16KB = 64KB.
+.byte 1                       ;PRG ROM size: 1 bank * 16KB = 16KB.
 
 ;----------------------------------------------------------------------------------------------------
 
 ;Byte 5.
-.byte $01                       ;CHR ROM size: 2 banks * 8KB = 16KB.
+.byte 1                       ;CHR ROM size: 1 bank * 8KB = 8KB.
 
 ;----------------------------------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@
 ;  ||  ++- TV system (0: NTSC; 2: PAL; 1/3: dual compatible)
 ;  |+----- PRG RAM ($6000-$7FFF) (0: present; 1: not present)
 ;  +------ 0: Board has no bus conflicts; 1: Board has bus conflicts
-;  
+;
 ;Byte 10.
 .byte $00                       ;NTSC, no PRG RAM, no bus conflicts.
 

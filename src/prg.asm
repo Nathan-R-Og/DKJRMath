@@ -1,12 +1,11 @@
-; da65 V2.19 - Git 03d824e13
-; Created:    2024-07-21 19:04:43
-; Input file: dkjrm.nes
-; Page:       1
+PPUCTRL_store := $10
+PPUMASK_store := $11
 
+sixteenbit_lo := $0
+sixteenbit_hi := $1
 
-        .setcpu "6502"
+Shadow_Oam = $200
 
-L0002           := $0002
 SPR_0           := $0200
 SPR_1           := $0204
 SPR_2           := $0208
@@ -131,7 +130,7 @@ LC0F9:  .byte   $0D,$21,$55,$47,$C5,$00,$21,$53
 LC166:  .byte   $00,$00,$05,$0A,$0F,$14,$19,$1E
         .byte   $23,$3E,$50,$5E,$63
 P1_startX: .byte $06
-P2_startX  = $D8 ;defined, not stored
+P2_startX = $D8 ;defined, not stored
 LC174:  .byte   $BF,$B0,$C7,$1F,$C7
 LC179:  .byte   $01
 LC17A:  .byte   $08
@@ -185,8 +184,13 @@ LC27C:  .byte   $01
 LC27D:  .byte   $25,$01,$49,$2B,$0A,$01,$28,$20
         .byte   $01,$26,$2A,$01,$29,$40,$01,$27
         .byte   $41,$49,$2C,$4A,$01,$2A
-LC293:  .byte   $40
-LC294:  .byte   $F7,$C5,$F8,$A0,$F9
+
+;table of the tile bg
+LC293:
+    .addr Game_Tiles
+    .addr Exercise_Menu_Tiles
+    .addr Exercise_Tiles
+
 LC299:  .byte   $B7,$AF,$A7,$9F,$97,$8F,$87,$7F
         .byte   $77,$6F
 LC2A3:  .byte   $CC,$BC,$AC,$9C,$8C,$7C,$6C
@@ -251,112 +255,175 @@ LC351:  .byte   $C3,$01,$C4,$0E,$C4,$00,$D0,$24
         .byte   $D8,$FF
 LC41B:  .byte   $01
 LC41C:  .byte   $3C,$C4
-        sei
-        cld
-        lda     #$10
-        sta     $2000
-        ldx     #$FF
-        txs
-LC428:  lda     $2002
-        and     #$80
-        beq     LC428
-        ldy     #$07
-        sty     $01
-        ldy     #$00
-        sty     $00
-        lda     #$00
-LC439:  sta     ($00),y
-        dey
-        bne     LC439
-        dec     $01
-        bpl     LC439
-        jsr     LC47B
-        lda     #$97
-        sta     $ED
-        lda     #$01
-        sta     $49
-        lda     #$00
-        sta     $48
-        lda     #$0B
-        sta     $2006
-        lda     #$00
-        sta     $2006
-        lda     $2007
-        ldy     #$00
-LC460:  lda     $2007
-        sta     $0700,y
-        iny
-        cpy     #$80
-        bne     LC460
-        lda     $2002
-        lda     $10
-        eor     #$80
-        jsr     LC553
-LC475:  jsr     LF4D2
-        jmp     LC475
 
-LC47B:  lda     #$10
-        jsr     LC553
-        lda     #$06
-        jsr     LC723
-        jsr     LF221
-        lda     #$FF
-        ldy     #$00
-LC48C:  sta     SPR_0,y
-        dey
-        beq     LC495
-        jmp     LC48C
+Reset:
+    sei
+    cld
 
-LC495:  lda     #$00
-        sta     $4011
-        jsr     LC6F9
-        lda     #$24
-        sta     $00
-        lda     #$02
-        sta     $01
-        jsr     LF197
-        rts
+    lda #$10
+    sta PPUCTRL
 
-        pha
-        lda     $00
-        pha
-        lda     $10
-        and     #$7F
-        jsr     LC553
-        lda     #$00
-        sta     $2003
-        lda     #$02
-        sta     $4014
-        lda     #$31
-        sta     $00
-        lda     #$03
-        sta     $01
-        jsr     LF218
-        lda     #$00
-        sta     $0330
-        sta     $0331
-        inc     $040E
-        lda     $05B0
-        bne     LC4DE
-        lda     #$05
-        sta     $05B0
-LC4DE:  dec     $05B0
-        lda     $11
-        eor     #$18
-        sta     $2001
-        jsr     LFA5C
-        jsr     LF4F3
-        lda     $49
-        bne     LC535
-        lda     $48
-        beq     LC53E
-        lda     $4B
-        bne     LC52F
-        ldx     #$00
-        lda     $041F
-        beq     LC507
-        jsr     LC911
-        jmp     LC541
+    ;reset stack
+    ldx #$FF
+    txs
+
+    @Wait_VBlank:
+    ;wait for vblank
+    lda PPUSTATUS
+    and #%10000000
+    beq @Wait_VBlank
+
+    ;clear 0-$07ff
+    ranger = $0700
+    ldy #.HIBYTE(ranger)
+    sty sixteenbit_hi
+    ldy #.LOBYTE(ranger)
+    sty sixteenbit_lo
+    lda #0
+
+    @fill:
+    ;fill with 0
+    sta (sixteenbit_lo),y
+    dey
+    bne @fill
+    ;hibyte dec
+    dec sixteenbit_hi
+    bpl @fill
+
+    jsr LC47B
+
+    lda #$97
+    sta $ED
+
+    lda #$01
+    sta $49
+
+    lda #$00
+    sta $48
+
+    ;addr == $0b00
+    lda #$0B
+    sta PPUADDR
+    lda #$00
+    sta PPUADDR
+
+    lda PPUDATA
+    ldy #$00
+
+    ;clear $0700-$077f with 0
+    @clear:
+    lda PPUDATA
+    sta $0700,y
+    iny
+    cpy #$80 ;end
+    bne @clear
+
+    lda PPUSTATUS
+    lda PPUCTRL_store
+    eor #%10000000 ;flip nmi (probably turn on)
+    jsr Set_PPUCTRL
+
+    ;wait for nmi (vblank)
+    @loop:
+    jsr NMI_wait
+    jmp @loop
+
+LC47B:
+    lda #%00010000
+    jsr Set_PPUCTRL
+
+    lda #%00000110
+    jsr Set_PPUMASK
+
+    jsr Reset_PPUSCROLL
+
+    ;init $FF to $200-$2ff
+    lda #$FF
+    ldy #$00
+    @loop:
+    sta SPR_0,y
+    dey
+    beq @break
+    jmp @loop
+
+    @break:
+    lda #0
+    sta DMC_RAW
+
+    ;init routine data into clear ppudata?
+    jsr LC6F9
+
+    ranger4 = $0224
+    lda #.LOBYTE(ranger4)
+    sta sixteenbit_lo
+    lda #.HIBYTE(ranger4)
+    sta sixteenbit_hi
+
+    jsr Clear_PPUData
+
+    rts
+
+NMI:
+    pha
+    lda sixteenbit_lo
+    pha
+
+    ;turn off nmi
+    lda PPUCTRL_store
+    and #%01111111
+    jsr Set_PPUCTRL
+
+    lda #0
+    sta OAMADDR
+
+    ;load dma
+    lda #.HIBYTE(Shadow_Oam)
+    sta OAMDMA
+
+    ;addr to read from
+    ranger5 = $0331
+    lda #.LOBYTE(ranger5)
+    sta sixteenbit_lo
+    lda #.HIBYTE(ranger5)
+    sta sixteenbit_hi
+    ;read, if 0, reset ppu scroll
+    ;else draw
+    jsr Draw_Tiles
+
+    lda #0
+    sta $0330
+    sta $0331
+
+    inc $040E
+
+    lda $05B0
+    bne @skip_default
+
+    lda #$05
+    sta $05B0
+    @skip_default:
+
+    dec $05B0
+
+    ;toggle gfx
+    lda PPUMASK_store
+    eor #%00011000
+    sta PPUMASK
+
+    jsr LFA5C
+
+    jsr LF4F3
+    lda $49
+    bne LC535
+    lda $48
+    beq LC53E
+    lda $4B
+    bne LC52F
+    ldx #$00
+    lda $041F
+    beq LC507
+    jsr LC911
+    jmp LC541
 
 LC507:  lda     SPR_4
         sta     $0101
@@ -382,18 +449,19 @@ LC535:  jsr     LC559
 
 LC53E:  jsr     LC656
 LC541:  jsr     LF135
-        lda     $2002
-        lda     $10
+        lda     PPUSTATUS
+        lda PPUCTRL_store
         eor     #$80
-        jsr     LC553
+        jsr     Set_PPUCTRL
         pla
         sta     $00
         pla
         rti
 
-LC553:  sta     $2000
-        sta     $10
-        rts
+Set_PPUCTRL:
+    sta PPUCTRL
+    sta PPUCTRL_store
+    rts
 
 LC559:  lda     $06A2
         bne     LC561
@@ -406,27 +474,31 @@ LC561:  lda     $05B4
         sta     $05B4
         lda     #$0F
         sta     APU_STATUS
-LC574:  lda     $AE
-        bne     LC5A3
-        jsr     LC71F
-        lda     #$44
-        sta     $00
-        lda     #$F5
-        sta     $01
-        jsr     LF218
-        lda     $ED
-        sta     SPR_0
-        lda     #$5C
-        sta     SPR_0+1
-        lda     #$00
-        sta     SPR_0+2
-        sta     $4C
-        lda     #$48
-        sta     SPR_0+3
-        sta     $AE
-        lda     #$20
-        sta     $3C
-        rts
+LC574:
+    lda $AE
+    bne LC5A3
+    jsr Disable_GFX
+
+    ;load title screen
+    lda #.LOBYTE(Title_Tiles)
+    sta sixteenbit_lo
+    lda #.HIBYTE(Title_Tiles)
+    sta sixteenbit_hi
+    jsr Draw_Tiles
+
+    lda $ED
+    sta SPR_0
+    lda #$5C
+    sta SPR_0+1
+    lda #$00
+    sta SPR_0+2
+    sta $4C
+    lda #$48
+    sta SPR_0+3
+    sta $AE
+    lda #$20
+    sta $3C
+    rts
 
 LC5A3:  lda     $15
         and     #$20
@@ -610,31 +682,38 @@ LC6EC:  lda     #$00
         lda     #$0F
         jmp     LD6D2
 
-LC6F9:  lda     #$24
-        sta     $00
-        lda     #$01
-        sta     $01
-        jsr     LC71F
-        jmp     LF197
+LC6F9:
+    ranger2 = $0124
+    lda #.LOBYTE(ranger2)
+    sta sixteenbit_lo
+    lda #.HIBYTE(ranger2)
+    sta sixteenbit_hi
 
-LC707:  jsr     LC71F
-        ldy     $4A
-        dey
-        tya
-        asl     a
-        sta     $08
-        tay
-        lda     LC293,y
-        sta     $00
-        lda     LC294,y
-        sta     $01
-        jmp     LF218
+    jsr Disable_GFX
+    jmp Clear_PPUData
 
-LC71F:  lda     $11
-        and     #$E7
-LC723:  sta     $2001
-        sta     $11
-        rts
+LC707:
+    jsr     Disable_GFX
+    ldy     $4A
+    dey
+    tya
+    asl     a
+    sta     $08
+    tay
+
+    lda LC293,y
+    sta sixteenbit_lo
+    lda LC293+1,y
+    sta sixteenbit_hi
+    jmp Draw_Tiles
+
+Disable_GFX:
+    lda PPUMASK_store
+    and #%11100111
+    Set_PPUMASK:
+    sta PPUMASK
+    sta PPUMASK_store
+    rts
 
 LC729:  lda     #$00
         ldy     #$53
@@ -735,7 +814,7 @@ LC7F1:  ldx     #$00
 LC7F3:  lda     LC179,x
         cmp     #$FF
         beq     LC80F
-        sta     L0002
+        sta     $02
         lda     LC17A,x
         sta     $03
         lda     LC17B,x
@@ -756,7 +835,7 @@ LC814:  lda     P1_startX,y
         lda     LC174,y
         sta     $01
         lda     #$50
-        sta     L0002
+        sta     $02
         lda     $5F,x
         cmp     #$01
         beq     LC833
@@ -776,7 +855,7 @@ LC83F:  lda     #P2_startX
         lda     #$BF
         sta     $01
         lda     #$50
-        sta     L0002
+        sta     $02
         lda     $5F,x
         cmp     #$01
         beq     LC85C
@@ -856,10 +935,10 @@ LC8E1:  rts
 
 LC8E2:  lda     $49
         bne     LC8E1
-        lda     $10
+        lda PPUCTRL_store
         and     #$FE
-        sta     $2000
-        sta     $10
+        sta     PPUCTRL
+        sta PPUCTRL_store
         lda     #$01
         sta     $49
         sta     $94
@@ -972,16 +1051,16 @@ LC9A8:  lda     $15
         lda     #$3F
         sta     $01
         lda     #$00
-        sta     L0002
+        sta     $02
         lda     #$C3
         jsr     LF2AA
-LC9D9:  lda     $10
+LC9D9:  lda PPUCTRL_store
         and     #$FE
-        sta     $10
-        sta     $2000
-        lda     $11
+        sta PPUCTRL_store
+        sta     PPUCTRL
+        lda     PPUMASK_store
         and     #$EF
-        sta     $11
+        sta     PPUMASK_store
         jmp     LC9F8
 
 LC9EB:  rts
@@ -1008,13 +1087,13 @@ LCA0B:  lda     $EB
         bne     LCA10
         rts
 
-LCA10:  lda     $10
+LCA10:  lda PPUCTRL_store
         ora     #$01
-        sta     $10
-        sta     $2000
-        lda     $11
+        sta PPUCTRL_store
+        sta     PPUCTRL
+        lda     PPUMASK_store
         ora     #$10
-        sta     $11
+        sta     PPUMASK_store
         lda     $4A
         cmp     #$01
         bne     LCA36
@@ -1023,7 +1102,7 @@ LCA10:  lda     $10
         lda     #$3F
         sta     $01
         lda     #$FD
-        sta     L0002
+        sta     $02
         lda     #$C2
         jsr     LF2AA
 LCA36:  rts
@@ -1076,7 +1155,7 @@ LCA86:  lda     $5B,x
         beq     LCA98
         jsr     LD6BA
         lda     #$08
-        sta     L0002
+        sta     $02
         jsr     LD6A3
         lda     #$00
         sta     $5B,x
@@ -1269,7 +1348,7 @@ LCBDE:  lda     #$00
 
 LCC02:  lda     #$00
         sta     $6F,x
-        sta     L0002
+        sta     $02
         sta     $69,x
         sta     $67,x
         sta     $39,x
@@ -1350,7 +1429,7 @@ LCC8C:  ldy     $6B,x
         adc     #$07
 LCC94:  tay
         lda     LC196,y
-        sta     L0002
+        sta     $02
         lda     LC197,y
         rts
 
@@ -1607,7 +1686,7 @@ LCE5D:  jsr     LDA5E
         jmp     LCE80
 
 LCE7F:  pla
-LCE80:  sta     L0002
+LCE80:  sta     $02
         jmp     LD6A3
 
 LCE85:  jsr     LDA5E
@@ -1631,7 +1710,7 @@ LCEA0:  sta     $00
 LCEAC:  pla
         sta     $67,x
         lda     $6F,x
-        sta     L0002
+        sta     $02
         lda     SPR_4,y
         sta     $01
         jsr     LD6A3
@@ -1740,7 +1819,7 @@ LCF65:  sta     $01
         lda     #$28
         bne     LCF71
 LCF6F:  lda     #$30
-LCF71:  sta     L0002
+LCF71:  sta     $02
         lda     SPR_4+3,y
         sta     $00
         jsr     LD6A3
@@ -1962,7 +2041,7 @@ LD0FC:  lda     SPR_4+3,y
         sbc     $00
 LD102:  sta     $00
         lda     #$18
-        sta     L0002
+        sta     $02
         jmp     LD6A3
 
 LD10B:  jsr     LD55E
@@ -2009,7 +2088,7 @@ LD153:  sec
         sbc     #$10
 LD156:  sta     $00
 LD158:  lda     #$28
-        sta     L0002
+        sta     $02
         jsr     LD6A3
         lda     #$01
         sta     $6B,x
@@ -2106,7 +2185,7 @@ LD20E:  lda     #$00
         sta     $5F
         jsr     LD6BA
         lda     #$18
-        sta     L0002
+        sta     $02
         lda     $63
         eor     #$01
         jsr     LD6A7
@@ -2117,7 +2196,7 @@ LD22C:  pla
         rts
 
 LD22F:  lda     #$38
-LD231:  sta     L0002
+LD231:  sta     $02
         jsr     LD6A3
         jsr     LE32D
         lda     #$02
@@ -2135,7 +2214,7 @@ LD242:  lda     $8D
         lda     SPR_4+3,y
         sta     $00
         lda     #$20
-        sta     L0002
+        sta     $02
         sta     $5B,x
         jsr     LD6A3
         lda     #$02
@@ -2159,7 +2238,7 @@ LD273:  jsr     LDA5E
         lda     SPR_4+3,y
         sta     $00
         lda     #$18
-        sta     L0002
+        sta     $02
         jsr     LD6A3
         lda     #$00
         sta     $6B,x
@@ -2179,7 +2258,7 @@ LD292:  jsr     LDA5E
         lda     SPR_4+3,y
         sta     $00
         lda     #$40
-        sta     L0002
+        sta     $02
         lda     #$00
         sta     $09
         jmp     LD6A7
@@ -2205,7 +2284,7 @@ LD2BC:  lda     $4A
         lda     SPR_4+3
         sta     $00
         lda     #$F8
-        sta     L0002
+        sta     $02
         jsr     LD69F
         ldy     #$C0
         lda     $AF
@@ -2242,7 +2321,7 @@ LD31C:  jsr     LDA5E
         and     #$02
         bne     LD333
         ldy     #$48
-LD333:  sty     L0002
+LD333:  sty     $02
         jsr     LD69F
         lda     #$20
         sta     $39,x
@@ -2277,7 +2356,7 @@ LD35E:  tya
         beq     LD38D
         sta     $01
         lda     #$8E
-        sta     L0002
+        sta     $02
         lda     #$C1
         sta     $03
         jsr     LD9AF
@@ -2396,7 +2475,7 @@ LD438:  lda     #$81
         lda     #$82
 LD43E:  sta     $D6
         lda     #$D1
-        sta     L0002
+        sta     $02
         lda     #$00
         jsr     LF2AA
         rts
@@ -2429,7 +2508,7 @@ LD466:  lda     $03E0,y
         lda     LC256,y
         sta     $01
         lda     #$92
-        sta     L0002
+        sta     $02
         lda     #$C1
         sta     $03
         jsr     LD9AF
@@ -2565,7 +2644,7 @@ LD564:  sta     $0F
         pha
         lda     $01
         pha
-        lda     L0002
+        lda     $02
         pha
         lda     $03
         pha
@@ -2594,7 +2673,7 @@ LD59A:  lda     $4A
         asl     a
         tay
         lda     LC34A,y
-        sta     L0002
+        sta     $02
         lda     LC34B,y
         jmp     LD9B3
 
@@ -2634,7 +2713,7 @@ LD5E3:  lda     $4A
         asl     a
         tay
         lda     LC350,y
-        sta     L0002
+        sta     $02
         lda     LC351,y
         jsr     LD9B3
         jmp     LD615
@@ -2659,7 +2738,7 @@ LD615:  sta     $0F
         pla
         sta     $03
         pla
-        sta     L0002
+        sta     $02
         pla
         sta     $01
         pla
@@ -2677,7 +2756,7 @@ LD62A:  lda     $4A
         asl     a
         tay
         lda     LC344,y
-        sta     L0002
+        sta     $02
         lda     LC345,y
         sta     $03
         rts
@@ -2840,7 +2919,7 @@ LD731:  pla
         pla
         rts
 
-LD74C:  lda     L0002
+LD74C:  lda     $02
         ldx     $03
         ldy     #$02
 LD752:  sta     ($04),y
@@ -2852,7 +2931,7 @@ LD752:  sta     ($04),y
         bne     LD752
         rts
 
-LD75C:  lda     L0002
+LD75C:  lda     $02
         ldx     $08
         ldy     #$01
 LD762:  sta     ($04),y
@@ -2907,7 +2986,7 @@ LD7AB:  tya
         pha
         clc
         tya
-        adc     L0002
+        adc     $02
         ldy     $0A
         sta     ($04),y
         iny
@@ -2961,7 +3040,7 @@ LD7FA:  jsr     LCC5C
         sta     $00
         sta     $01
         lda     LC320,y
-        sta     L0002
+        sta     $02
         lda     LC321,y
         sta     $03
         jsr     LD9AF
@@ -3058,7 +3137,7 @@ LD8A4:  lda     SPR_4+1,y
         bne     LD8BF
         sec
         sbc     #$06
-LD8BF:  sta     L0002
+LD8BF:  sta     $02
         jsr     LD6A3
 LD8C4:  rts
 
@@ -3215,18 +3294,18 @@ LD9D2:  jsr     LDA0C
         jsr     LDA2A
         jmp     LDA03
 
-LD9DB:  lda     (L0002),y
+LD9DB:  lda     ($02),y
         cmp     #$FF
         beq     LD9FE
         sta     $8C
         iny
-        lda     (L0002),y
+        lda     ($02),y
         sta     $8D
         iny
-        lda     (L0002),y
+        lda     ($02),y
         sta     $8E
         iny
-        lda     (L0002),y
+        lda     ($02),y
         sta     $8F
         iny
         inc     $0419
@@ -3249,13 +3328,13 @@ LDA0C:  ldx     #$00
         beq     LDA14
         ldx     #$04
 LDA14:  jsr     LDA17
-LDA17:  lda     (L0002),y
+LDA17:  lda     ($02),y
         clc
         adc     $00
         sta     $88,x
         inx
         iny
-        lda     (L0002),y
+        lda     ($02),y
         clc
         adc     $01
         sta     $88,x
@@ -3552,7 +3631,7 @@ LDC0D:  lda     LC251,x
         lda     #$20
         sta     $01
         lda     #$06
-        sta     L0002
+        sta     $02
         lda     #$C3
         jmp     LF2AA
 
@@ -3809,7 +3888,7 @@ LDDEF:  sta     $0539
         lda     LC1C1,y
         sta     $00
         lda     #$38
-        sta     L0002
+        sta     $02
         lda     #$05
         jsr     LF2AA
         pla
@@ -3848,7 +3927,7 @@ LDE3D:  txa
         lda     $19
         sta     $01
         lda     $1A
-        sta     L0002
+        sta     $02
         eor     $18
         sta     $03
         ldx     #$00
@@ -3971,7 +4050,7 @@ LDF31:  cpy     $0522
         beq     LDF44
         sty     $0522
         lda     LC1EA,y
-        sta     L0002
+        sta     $02
         lda     LC1EB,y
         jsr     LF2AA
 LDF44:  lda     #$00
@@ -4003,7 +4082,7 @@ LDF76:  lda     $18,x
         and     #$0F
         cmp     #$0A
         bmi     LDF84
-LDF7E:  jsr     LF4D2
+LDF7E:  jsr     NMI_wait
         jmp     LDF6E
 
 LDF84:  sta     $051E,x
@@ -4051,7 +4130,7 @@ LDFD8:  lda     #$6E
 LDFE0:  lda     #$14
         sta     $0519
         lda     #$19
-        sta     L0002
+        sta     $02
         lda     #$05
         jmp     LF2AA
 
@@ -4239,7 +4318,7 @@ LE137:  lda     #$B4
         lda     #$2F
         sta     $01
         lda     #$F8
-        sta     L0002
+        sta     $02
         jsr     LD69F
         ldy     #$00
         txa
@@ -4605,7 +4684,7 @@ LE3F0:  lda     SPR_38+3
         and     #$10
         beq     LE406
         lda     #$6C
-LE3FE:  sta     L0002
+LE3FE:  sta     $02
         lda     $B1
         jsr     LD6D2
 LE405:  rts
@@ -4977,7 +5056,7 @@ LE6A1:  lda     #$40
         jsr     LC814
         jmp     LE825
 
-LE6BA:  jsr     LC71F
+LE6BA:  jsr     Disable_GFX
         jsr     LEE97
         jsr     LEDD7
         jsr     LE72C
@@ -5171,7 +5250,7 @@ LE825:  lda     #$03
         lda     #$E0
         sta     $00
         lda     #$68
-        sta     L0002
+        sta     $02
         lda     #$E0
         sta     $04
         ldx     #$D0
@@ -5189,7 +5268,7 @@ LE84C:  stx     $00
         lda     #$5F
         sta     $01
         lda     #$84
-        sta     L0002
+        sta     $02
         lda     #$F0
         sta     $04
         lda     #$22
@@ -5320,7 +5399,7 @@ LE949:  lda     SPR_3C+3
         and     #$10
         beq     LE966
         ldy     #$88
-LE966:  sty     L0002
+LE966:  sty     $02
         lda     $040F
         jsr     LD6D2
 LE96E:  rts
@@ -5753,7 +5832,7 @@ LEC8B:  ldx     $0490
         lda     #$04
         sta     $01
         lda     #$98
-        sta     L0002
+        sta     $02
         lda     #$04
         sta     $03
         jsr     LECDA
@@ -5764,7 +5843,7 @@ LEC8B:  ldx     $0490
         lda     #$04
         sta     $01
         lda     #$A1
-        sta     L0002
+        sta     $02
         lda     #$04
         sta     $03
         jsr     LECDA
@@ -5796,7 +5875,7 @@ LECE2:  clc
         inc     $90
 LECEF:  dex
         bne     LECE2
-        sta     (L0002),y
+        sta     ($02),y
         lda     $90
         iny
         sta     ($00),y
@@ -5812,7 +5891,7 @@ LECEF:  dex
         beq     LECE0
 LED08:  iny
         lda     ($00),y
-        sta     (L0002),y
+        sta     ($02),y
         pla
         rts
 
@@ -5979,7 +6058,7 @@ LEE44:  lda     #$94
         rts
 
 LEE4D:  lda     #$94
-        sta     L0002
+        sta     $02
         lda     #$05
         sta     $03
         lda     $A1
@@ -6078,7 +6157,7 @@ LEF08:  inx
         sta     $0596
 LEF18:  jsr     LEE82
 LEF1B:  jsr     LEE44
-        jmp     LF218
+    jmp     Draw_Tiles
 
 LEF21:  lda     $EA
         cmp     #$08
@@ -6357,7 +6436,7 @@ LF135:  lda     $0331
         lsr     a
         tay
         lda     $BFFE,y
-        sta     L0002
+        sta     $02
         iny
         lda     $BFFE,y
         sta     $03
@@ -6379,7 +6458,7 @@ LF135:  lda     $0331
 LF16E:  sta     $0300
         lda     $0301,x
         sta     $00
-        jmp     (L0002)
+        jmp     ($02)
 
 LF179:  rts
 
@@ -6398,83 +6477,128 @@ LF17A:  ldx     $0301
 LF193:  sta     $0301
 LF196:  rts
 
-LF197:  lda     $2002
-        lda     $10
-        and     #$FB
-        sta     $2000
-        sta     $10
-        lda     #$1C
-        clc
-LF1A6:  adc     #$04
-        dec     $01
-        bne     LF1A6
-        sta     L0002
-        sta     $2006
-        lda     #$00
-        sta     $2006
-        ldx     #$04
-        ldy     #$00
-        lda     #$24
-LF1BC:  sta     $2007
-        dey
-        bne     LF1BC
-        dex
-        bne     LF1BC
-        lda     L0002
-        adc     #$03
-        sta     $2006
-        lda     #$C0
-        sta     $2006
-        ldy     #$40
-        lda     #$00
-LF1D5:  sta     $2007
-        dey
-        bne     LF1D5
-        rts
+;clean ppudata???
+Clear_PPUData:
+    ;edit ppuctrl
+    lda PPUSTATUS
+    lda PPUCTRL_store
+    and #%11111011 ;add 1 per ppudata write
+    sta PPUCTRL
+    sta PPUCTRL_store
 
-LF1DC:  sta     $2006
-        iny
-        lda     ($00),y
-        sta     $2006
-        iny
-        lda     ($00),y
-        asl     a
-        pha
-        lda     $10
-        ora     #$04
-        bcs     LF1F2
-        and     #$FB
-LF1F2:  sta     $2000
-        sta     $10
-        pla
-        asl     a
-        bcc     LF1FE
-        ora     #$02
-        iny
-LF1FE:  lsr     a
-        lsr     a
-        tax
-LF201:  bcs     LF204
-        iny
-LF204:  lda     ($00),y
-        sta     $2007
-        dex
-        bne     LF201
-        sec
-        tya
-        adc     $00
-        sta     $00
-        lda     #$00
-        adc     $01
-        sta     $01
-LF218:  ldx     $2002
-        ldy     #$00
-        lda     ($00),y
-        bne     LF1DC
-LF221:  lda     #$00
-        sta     $2005
-        sta     $2005
-        rts
+    lda #$1C
+    clc
+    @decrement:
+    adc #$04
+    dec sixteenbit_hi
+    bne @decrement
+    sta $02 ;push a
+
+    ;ppuaddr == 0
+    sta PPUADDR
+    lda #0
+    sta PPUADDR
+
+    ranger3 = $0400
+    ldx #.HIBYTE(ranger3)
+    ldy #.LOBYTE(ranger3)
+    lda #$24
+
+    @fill:
+    sta PPUDATA
+    dey
+    bne @fill
+    dex
+    bne @fill
+
+    ;will probably go to attr data
+    lda $02 ;pop a
+    adc #$03
+    sta PPUADDR
+    lda #$C0
+    sta PPUADDR
+
+    ;clear attr data(?)
+    ldy #$40
+    lda #0
+    @clear:
+    sta PPUDATA
+    dey
+    bne @clear
+    rts
+
+;y is the current offset from the beginning of the tile group
+Write_Tiles:
+    ;set the ppuaddr
+    sta PPUADDR
+    iny
+    lda (sixteenbit_lo),y
+    sta PPUADDR
+    iny
+
+    ;;checks the heighest bit (by setting c from asl) if you want to go
+    ;;up to down instead of left to right
+    lda (sixteenbit_lo),y
+    asl a
+    pha
+    lda PPUCTRL_store
+    ;default updown
+    ora #%00000100
+    bcs @keep_updown
+    ;set back to across
+    and #%11111011
+
+
+    @keep_updown:
+    sta PPUCTRL
+    sta PPUCTRL_store
+    pla
+
+    ;jump if 2nd heighest bit set
+    asl a
+    bcc @skip
+    ora #%00000010
+    iny
+    @skip:
+
+    ;reset a back to normal
+    lsr a
+    lsr a
+    ;store in x
+    tax
+
+    @loop:
+    ;jump if the 2nd bit was set from the 2nd heighest bit being set
+    bcs @skip2
+    iny
+    @skip2:
+    ;start actually r/w content
+    lda (sixteenbit_lo),y
+    sta PPUDATA
+    dex
+    bne @loop
+
+    ;16 bit add to the current address
+    sec
+    tya
+    adc sixteenbit_lo
+    sta sixteenbit_lo
+    lda #0
+    adc sixteenbit_hi
+    sta sixteenbit_hi
+    ;repeat
+Draw_Tiles:
+    ;load byte
+    ldx PPUSTATUS
+    ldy #0
+    lda (sixteenbit_lo),y
+    ;if not zero, write the data
+    bne Write_Tiles
+    Reset_PPUSCROLL:
+    lda #0
+    sta PPUSCROLL
+    sta PPUSCROLL
+    rts
 
 LF22A:  sta     $00
         lda     #$04
@@ -6491,7 +6615,7 @@ LF237:  clc
 LF23D:  asl     a
         asl     a
         tay
-        sta     L0002
+        sta     $02
         ldx     $0330
         lda     LC00A,y
         sta     $0331,x
@@ -6536,7 +6660,7 @@ LF279:  dex
 LF298:  lda     $03
         and     #$01
         beq     LF2A9
-        ldy     L0002
+        ldy     $02
         clc
         lda     $20,y
         adc     #$37
@@ -6549,10 +6673,10 @@ LF2AC:  txa
         tya
         pha
         ldy     #$00
-        lda     (L0002),y
+        lda     ($02),y
         and     #$0F
         sta     $05
-        lda     (L0002),y
+        lda     ($02),y
         lsr     a
         lsr     a
         lsr     a
@@ -6571,7 +6695,7 @@ LF2C3:  lda     $01
         sta     $0331,x
 LF2DC:  jsr     LF30A
         iny
-        lda     (L0002),y
+        lda     ($02),y
         sta     $0331,x
         dec     $06
         bne     LF2DC
@@ -6699,11 +6823,11 @@ LF3C4:  jsr     LF407
         bcc     LF3CF
         adc     #$05
 LF3CF:  clc
-        adc     L0002
-        sta     L0002
+        adc     $02
+        sta     $02
         lda     $03
         and     #$F0
-        adc     L0002
+        adc     $02
         bcc     LF3E0
 LF3DC:  adc     #$5F
         sec
@@ -6719,13 +6843,13 @@ LF3E5:  jsr     LF407
         bcs     LF3F8
         adc     #$0A
         sta     $01
-        lda     L0002
+        lda     $02
         adc     #$0F
-        sta     L0002
+        sta     $02
 LF3F8:  lda     $03
         and     #$F0
         sec
-        sbc     L0002
+        sbc     $02
         bcs     LF404
         adc     #$A0
         clc
@@ -6737,7 +6861,7 @@ LF407:  pha
         sta     $01
         pla
         and     #$F0
-        sta     L0002
+        sta     $02
         lda     $03
         and     #$0F
         rts
@@ -6841,32 +6965,39 @@ LF49F:  dex
         tax
         rts
 
-LF4D2:  lda     $18
-        and     #$02
-        sta     $00
-        lda     $19
-        and     #$02
-        eor     $00
-        clc
-        beq     LF4E2
-        sec
-LF4E2:  ror     $18
-        ror     $19
-        ror     $1A
-        ror     $1B
-        ror     $1C
-        ror     $1D
-        ror     $1E
-        ror     $1F
-        rts
+NMI_wait:
+    lda $18
+    and #%00000010
+    sta sixteenbit_lo
+
+    lda $19
+    and #%00000010
+    eor sixteenbit_lo
+
+    clc
+
+    beq @skip
+
+    sec
+
+    @skip:
+    ror $18
+    ror $19
+    ror $1A
+    ror $1B
+    ror $1C
+    ror $1D
+    ror $1E
+    ror $1F
+    rts
 
 LF4F3:  txa
         pha
         lda     #$01
-        sta     $4016
+        sta     JOY1
         ldx     #$00
         lda     #$00
-        sta     $4016
+        sta     JOY1
         jsr     LF50B
         inx
         jsr     LF50B
@@ -6876,7 +7007,7 @@ LF4F3:  txa
 
 LF50B:  ldy     #$08
 LF50D:  pha
-        lda     $4016,x
+        lda     JOY1,x
         sta     $00
         lsr     a
         ora     $00
@@ -6907,180 +7038,728 @@ LF532:  ldy     $15,x
         sta     $15,x
 LF543:  rts
 
-        .byte   $3F,$00,$12,$0F,$30,$26,$2C,$0F
-        .byte   $30,$12,$21,$0F,$27,$27,$27,$0F
-        .byte   $30,$30,$30,$0F,$21,$23,$C0,$50
-        .byte   $55,$23,$D0,$48,$05,$23,$D8,$48
-        .byte   $00,$23,$E2,$44,$A0,$23,$E8,$48
-        .byte   $AA,$23,$F1,$46,$FF,$27,$DB,$42
-        .byte   $AA,$27,$E3,$42,$AA,$27,$EB,$42
-        .byte   $0A,$20,$62,$1B,$A3,$A6,$A9,$AC
-        .byte   $A6,$A9,$AE,$B1,$B4,$B6,$B8,$BB
-        .byte   $A3,$BE,$C0,$B6,$F3,$B4,$24,$D2
-        .byte   $CD,$24,$D2,$D5,$D5,$D5,$DE,$20
-        .byte   $82,$1B,$A4,$A7,$AA,$A4,$A7,$AA
-        .byte   $AF,$B2,$AA,$B7,$B9,$24,$BD,$BF
-        .byte   $24,$AD,$C6,$AB,$24,$D3,$E0,$24
-        .byte   $D3,$D6,$D0,$DB,$DF,$20,$A2,$1B
-        .byte   $A5,$A8,$AB,$AD,$A8,$AB,$B0,$B3
-        .byte   $B5,$B0,$BA,$BC,$A5,$BE,$C0,$C1
-        .byte   $C8,$24,$24,$D3,$E0,$24,$D3,$E0
-        .byte   $24,$D3,$E0,$20,$D5,$08,$D3,$E0
-        .byte   $24,$D3,$D7,$D5,$DC,$E1,$20,$E5
-        .byte   $0C,$B6,$B8,$BB,$AC,$A6,$A9,$AE
-        .byte   $B1,$B4,$AC,$A6,$A9,$20,$F4,$09
-        .byte   $EC,$EB,$E0,$24,$D3,$D6,$D9,$F2
-        .byte   $DE,$21,$05,$18,$B7,$B9,$24,$A4
-        .byte   $A7,$AA,$AF,$B2,$AA,$A4,$C9,$CC
-        .byte   $24,$24,$D2,$CE,$F2,$CF,$24,$D3
-        .byte   $E0,$DA,$DD,$DF,$21,$25,$19,$B0
-        .byte   $BA,$BC,$AD,$A8,$AB,$B0,$B3,$B5
-        .byte   $AD,$CB,$B5,$24,$24,$D4,$D0,$D0
-        .byte   $D1,$24,$D4,$D8,$24,$D4,$D8,$E2
-        .byte   $21,$42,$5C,$F0,$21,$64,$17,$E3
-        .byte   $E5,$E7,$E5,$F4,$24,$E3,$BE,$BE
-        .byte   $BE,$F4,$24,$ED,$BE,$EE,$BE,$EF
-        .byte   $24,$B6,$24,$24,$24,$B6,$21,$84
-        .byte   $17,$E4,$E6,$E8,$E6,$E9,$24,$A4
-        .byte   $24,$24,$24,$A4,$24,$24,$24,$A4
-        .byte   $24,$24,$24,$A4,$24,$24,$24,$A4
-        .byte   $21,$A4,$17,$A4,$24,$A4,$24,$A4
-        .byte   $24,$A4,$24,$24,$24,$A4,$24,$24
-        .byte   $24,$A4,$24,$24,$24,$B7,$BE,$BE
-        .byte   $BE,$F1,$21,$C4,$17,$A4,$24,$B0
-        .byte   $24,$A4,$24,$B7,$BE,$BE,$BE,$F1
-        .byte   $24,$24,$24,$A4,$24,$24,$24,$A4
-        .byte   $24,$24,$24,$A4,$21,$E4,$17,$B0
-        .byte   $24,$24,$24,$B0,$24,$B0,$24,$24
-        .byte   $24,$B0,$24,$24,$24,$B0,$24,$24
-        .byte   $24,$B0,$24,$24,$24,$B0,$22,$6B
-        .byte   $0B,$0C,$0A,$15,$0C,$1E,$15,$0A
-        .byte   $1D,$0E,$24,$0A,$22,$AB,$0B,$0C
-        .byte   $0A,$15,$0C,$1E,$15,$0A,$1D,$0E
-        .byte   $24,$0B,$22,$EB,$0D,$85,$86,$87
-        .byte   $88,$24,$0E,$21,$0E,$1B,$0C,$12
-        .byte   $1C,$0E,$23,$25,$16,$FE,$01,$09
-        .byte   $08,$03,$24,$17,$12,$17,$1D,$0E
-        .byte   $17,$0D,$18,$24,$0C,$18,$CA,$15
-        .byte   $1D,$0D,$C7,$26,$CC,$48,$69,$26
-        .byte   $EA,$4C,$69,$27,$00,$60,$69,$26
-        .byte   $AD,$01,$3E,$25,$CE,$88,$95,$50
-        .byte   $91,$92,$93,$94,$42,$43,$25,$CF
-        .byte   $88,$9A,$51,$96,$97,$98,$99,$46
-        .byte   $47,$25,$D0,$88,$9F,$52,$9B,$9C
-        .byte   $9D,$9E,$4A,$4B,$25,$D1,$88,$90
-        .byte   $53,$F8,$A0,$A1,$A2,$4E,$4F,$26
-        .byte   $B2,$01,$3F,$00,$3F,$00,$20,$0F
-        .byte   $2A,$17,$37,$0F,$30,$2A,$16,$0F
-        .byte   $30,$36,$06,$0F,$12,$37,$16,$0F
-        .byte   $30,$25,$36,$0F,$30,$06,$36,$0F
-        .byte   $2A,$27,$38,$0F,$30,$2A,$16,$23
-        .byte   $C0,$15,$40,$50,$50,$90,$60,$50
-        .byte   $50,$10,$44,$55,$55,$99,$66,$55
-        .byte   $55,$11,$00,$00,$00,$0A,$0A,$23
-        .byte   $F8,$48,$0F,$23,$F0,$48,$05,$21
-        .byte   $00,$4B,$5E,$21,$2A,$42,$5E,$21
-        .byte   $4C,$48,$5E,$21,$34,$42,$5E,$21
-        .byte   $15,$4B,$5E,$22,$0E,$04,$F5,$F6
-        .byte   $F5,$F6,$22,$8E,$04,$F5,$F6,$F5
-        .byte   $F6,$21,$22,$8E,$65,$65,$5A,$24
-        .byte   $5B,$65,$5A,$24,$5B,$65,$5A,$24
-        .byte   $5B,$66,$21,$3D,$8E,$65,$65,$5A
-        .byte   $24,$5B,$65,$5A,$24,$5B,$65,$5A
-        .byte   $24,$5B,$66,$21,$24,$CE,$65,$21
-        .byte   $3B,$CE,$65,$21,$26,$8E,$65,$65
-        .byte   $5A,$24,$5B,$65,$5A,$24,$5B,$65
-        .byte   $5A,$24,$5B,$66,$21,$39,$8E,$65
-        .byte   $65,$5A,$24,$5B,$65,$5A,$24,$5B
-        .byte   $65,$5A,$24,$5B,$66,$21,$28,$CE
-        .byte   $65,$21,$37,$CE,$65,$21,$4A,$8D
-        .byte   $65,$5A,$24,$5B,$65,$5A,$24,$5B
-        .byte   $65,$5A,$24,$5B,$66,$21,$55,$8D
-        .byte   $65,$5A,$24,$5B,$65,$5A,$24,$5B
-        .byte   $65,$5A,$24,$5B,$66,$21,$6C,$CC
-        .byte   $65,$21,$73,$CC,$65,$22,$E4,$01
-        .byte   $66,$22,$E8,$01,$66,$22,$EC,$01
-        .byte   $66,$22,$F3,$01,$66,$22,$F7,$01
-        .byte   $66,$22,$FB,$01,$66,$23,$47,$12
-        .byte   $5F,$60,$61,$24,$24,$5F,$60,$61
-        .byte   $24,$24,$5F,$60,$61,$24,$24,$5F
-        .byte   $60,$61,$23,$40,$44,$60,$23,$44
-        .byte   $01,$61,$23,$67,$43,$62,$23,$6C
-        .byte   $43,$62,$23,$71,$43,$62,$23,$76
-        .byte   $43,$62,$23,$5B,$01,$5F,$23,$5C
-        .byte   $44,$60,$23,$80,$60,$63,$23,$A0
-        .byte   $60,$64,$23,$60,$44,$62,$23,$7C
-        .byte   $44,$62,$23,$28,$01,$86,$23,$2D
-        .byte   $01,$87,$23,$32,$01,$88,$23,$37
-        .byte   $01,$85,$20,$62,$83,$25,$26,$27
-        .byte   $20,$6C,$83,$28,$29,$2A,$20,$63
-        .byte   $49,$2B,$20,$A3,$49,$2C,$20,$73
-        .byte   $83,$25,$26,$27,$20,$7D,$83,$28
-        .byte   $29,$2A,$20,$74,$49,$2B,$20,$B4
-        .byte   $49,$2C,$20,$C3,$04,$20,$12,$17
-        .byte   $58,$20,$D4,$04,$20,$12,$17,$58
-        .byte   $00,$3F,$00,$20,$0F,$21,$12,$37
-        .byte   $0F,$30,$2A,$16,$0F,$30,$36,$06
-        .byte   $0F,$12,$37,$16,$0F,$30,$06,$36
-        .byte   $0F,$30,$24,$37,$0F,$30,$27,$13
-        .byte   $0F,$30,$0F,$26,$23,$D3,$43,$55
-        .byte   $23,$DB,$43,$55,$23,$E3,$44,$55
-        .byte   $23,$EB,$44,$55,$23,$C3,$44,$50
-        .byte   $23,$F3,$42,$05,$23,$E0,$42,$AA
-        .byte   $23,$E8,$42,$AA,$20,$6C,$0D,$85
-        .byte   $86,$87,$88,$24,$0E,$21,$0E,$1B
-        .byte   $0C,$12,$1C,$0E,$20,$A8,$56,$69
-        .byte   $20,$C8,$56,$6A,$20,$E8,$D4,$67
-        .byte   $20,$FD,$D4,$67,$23,$60,$60,$69
-        .byte   $23,$02,$46,$69,$23,$22,$46,$69
-        .byte   $23,$42,$46,$69,$20,$EA,$D1,$65
-        .byte   $20,$AA,$82,$6B,$6C,$23,$0A,$01
-        .byte   $66,$21,$0D,$47,$C4,$21,$4D,$49
-        .byte   $C4,$21,$8D,$4B,$C4,$21,$CD,$4B
-        .byte   $C4,$22,$0D,$45,$C4,$22,$4D,$4F
-        .byte   $C4,$22,$8D,$4F,$C4,$22,$CD,$48
-        .byte   $C4,$23,$0D,$46,$C4,$21,$0F,$03
-        .byte   $24,$85,$24,$21,$50,$03,$24,$86
-        .byte   $24,$21,$91,$03,$24,$85,$24,$21
-        .byte   $D1,$03,$24,$86,$24,$22,$0E,$03
-        .byte   $24,$87,$24,$22,$53,$03,$24,$85
-        .byte   $24,$22,$93,$03,$24,$86,$24,$22
-        .byte   $D0,$03,$24,$87,$24,$23,$0F,$03
-        .byte   $24,$88,$24,$00,$23,$C0,$58,$AA
-        .byte   $20,$89,$03,$8D,$8E,$8F,$20,$68
-        .byte   $83,$25,$26,$27,$20,$70,$83,$28
-        .byte   $29,$2A,$20,$69,$47,$2B,$20,$A9
-        .byte   $47,$2C,$20,$84,$04,$95,$9A,$9F
-        .byte   $90,$20,$C4,$85,$91,$92,$93,$94
-        .byte   $42,$20,$C5,$85,$96,$97,$98,$99
-        .byte   $46,$20,$C6,$85,$9B,$9C,$9D,$9E
-        .byte   $4A,$20,$C7,$85,$F8,$A0,$A1,$A2
-        .byte   $4E,$21,$63,$06,$3E,$43,$47,$4B
-        .byte   $4F,$3F,$21,$82,$5C,$69,$21,$A2
-        .byte   $5C,$6A,$21,$89,$82,$6B,$6C,$21
-        .byte   $C2,$CD,$67,$21,$DD,$CD,$67,$21
-        .byte   $C3,$01,$01,$21,$C4,$8A,$00,$09
-        .byte   $08,$07,$06,$05,$04,$03,$02,$01
-        .byte   $21,$C9,$CA,$65,$21,$CE,$CA,$65
-        .byte   $21,$D0,$CA,$65,$21,$D2,$CA,$65
-        .byte   $21,$D4,$CA,$65,$21,$D6,$CA,$65
-        .byte   $21,$D8,$CA,$65,$21,$DA,$CA,$65
-        .byte   $23,$09,$01,$66,$23,$0E,$0D,$66
-        .byte   $24,$66,$24,$66,$24,$66,$24,$66
-        .byte   $24,$66,$24,$66,$23,$60,$60,$69
-        .byte   $22,$C8,$03,$6D,$F7,$71,$22,$E8
-        .byte   $03,$6E,$89,$72,$00,$00,$FF,$FF
-LFA5C:  lda     #$C0
-        sta     $4017
-        jsr     LFBDC
-        ldx     #$00
-        stx     $FF
-        stx     $FE
-        stx     $FD
-        lda     $FB
-        cmp     #$20
-        bcs     LFA75
-        stx     $06B2
+    Title_Tiles:
+    .byte   $3F,$00,$12
+
+    ;title bg palette
+    .byte $0F,$30,$26,$2C
+    .byte $0F,$30,$12,$21
+    .byte $0F,$27,$27,$27
+    .byte $0F,$30,$30,$30
+
+    ;enough of the title spr palette for the asterisk
+    .byte $0F,$21
+
+    ;attr
+    .byte BigEndian($23c0)
+    .byte $50
+    .byte $55
+    .byte BigEndian($23d0)
+    .byte $48
+    .byte $05
+    .byte BigEndian($23d8)
+    .byte $48
+    .byte $00
+    .byte BigEndian($23e2)
+    .byte $44
+    .byte $A0
+    .byte BigEndian($23e8)
+    .byte $48
+    .byte $AA
+    .byte BigEndian($23f1)
+    .byte $46
+    .byte $FF
+
+
+    .byte BigEndian($27db)
+    .byte $42
+    .byte $AA
+    .byte BigEndian($27E3)
+    .byte $42
+    .byte $AA
+    .byte BigEndian($27EB)
+    .byte $42
+    .byte $0A
+
+    ;title_Tiles
+    .byte BigEndian($2062)
+    .byte $1B ;length
+    .byte $A3,$A6,$A9,$AC,$A6,$A9,$AE,$B1,$B4,$B6,$B8,$BB,$A3,$BE,$C0,$B6,$F3,$B4,$24,$D2,$CD,$24,$D2,$D5,$D5,$D5,$DE
+    .byte BigEndian($2082)
+    .byte $1B ;length
+    .byte $A4,$A7,$AA,$A4,$A7,$AA,$AF,$B2,$AA,$B7,$B9,$24,$BD,$BF,$24,$AD,$C6,$AB,$24,$D3,$E0,$24,$D3,$D6,$D0,$DB,$DF
+    .byte BigEndian($20A2)
+    .byte $1B ;length
+    .byte $A5,$A8,$AB,$AD,$A8,$AB,$B0,$B3,$B5,$B0,$BA,$BC,$A5,$BE,$C0,$C1,$C8,$24,$24,$D3,$E0,$24,$D3,$E0,$24,$D3,$E0
+    .byte BigEndian($20D5)
+    .byte 8 ;length
+    .byte $D3,$E0,$24,$D3,$D7,$D5,$DC,$E1
+    .byte BigEndian($20E5)
+    .byte $C ;length
+    .byte $B6,$B8,$BB,$AC,$A6,$A9,$AE,$B1,$B4,$AC,$A6,$A9
+    .byte BigEndian($20F4)
+    .byte 9 ;length
+    .byte $EC,$EB,$E0,$24,$D3,$D6,$D9,$F2,$DE
+    .byte BigEndian($2105)
+    .byte $18 ;length
+    .byte $B7,$B9,$24,$A4,$A7,$AA,$AF,$B2,$AA,$A4,$C9,$CC,$24,$24,$D2,$CE,$F2,$CF,$24,$D3,$E0,$DA,$DD,$DF
+    .byte BigEndian($2125)
+    .byte $19 ;length
+    .byte $B0,$BA,$BC,$AD,$A8,$AB,$B0,$B3,$B5,$AD,$CB,$B5,$24,$24,$D4,$D0,$D0,$D1,$24,$D4,$D8,$24,$D4,$D8,$E2
+
+    .byte BigEndian($2142)
+    .byte $5C ;length
+    .byte $F0
+
+    .byte BigEndian($2164)
+    .byte $17 ;length
+    .byte $E3,$E5,$E7,$E5,$F4,$24,$E3,$BE,$BE,$BE,$F4,$24,$ED,$BE,$EE,$BE,$EF,$24,$B6,$24,$24,$24,$B6
+    .byte BigEndian($2184)
+    .byte $17 ;length
+    .byte $E4,$E6,$E8,$E6,$E9,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$A4
+    .byte BigEndian($21A4)
+    .byte $17 ;length
+    .byte $A4,$24,$A4,$24,$A4,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$B7,$BE,$BE,$BE,$F1
+    .byte BigEndian($21C4)
+    .byte $17 ;length
+    .byte $A4,$24,$B0,$24,$A4,$24,$B7,$BE,$BE,$BE,$F1,$24,$24,$24,$A4,$24,$24,$24,$A4,$24,$24,$24,$A4
+    .byte BigEndian($21E4)
+    .byte $17 ;length
+    .byte $B0,$24,$24,$24,$B0,$24,$B0,$24,$24,$24,$B0,$24,$24,$24,$B0,$24,$24,$24,$B0,$24,$24,$24,$B0
+
+    .byte BigEndian($226B)
+    .byte 11 ;length
+    .byte "CALCULATE A"
+
+    .byte BigEndian($22AB)
+    .byte 11 ;length
+    .byte "CALCULATE B"
+
+    .byte BigEndian($22EB)
+    .byte 13 ;length
+    .byte plus,minus,mult,divide," EXERCISE"
+
+    .charmap $2e, $C7 ;. == $c7
+    .byte BigEndian($2325)
+    .byte 22
+    .byte copyright,"1983 NINTENDO CO",periodcomma,"LTD."
+
+    ;pause screen
+    .byte BigEndian($26CC)
+    .byte $48
+    .byte $69
+
+    .byte BigEndian($26EA)
+    .byte $4C
+    .byte $69
+
+    .byte BigEndian($2700)
+    .byte $60
+    .byte $69
+
+    ;dk
+    ;these go top-down
+    .byte BigEndian($26AD)
+    .byte 1
+    .byte $3E
+
+    .byte BigEndian($25CE)
+    .byte $88
+    .byte $95,$50,$91,$92,$93,$94,$42,$43
+
+    .byte BigEndian($25CF)
+    .byte $88
+    .byte $9A,$51,$96,$97,$98,$99,$46,$47
+
+    .byte BigEndian($25D0)
+    .byte $88
+    .byte $9F,$52,$9B,$9C,$9D,$9E,$4A,$4B
+
+    .byte BigEndian($25D1)
+    .byte $88
+    .byte $90,$53,$F8,$A0,$A1,$A2,$4E,$4F
+
+    .byte BigEndian($26B2)
+    .byte 1
+    .byte $3f
+    ;;;
+    .byte 0 ;END
+
+
+    ;;;;main game
+    Game_Tiles:
+    .byte $3F,$00,$20
+
+
+    ;bg palette
+    .byte $0F,$2A,$17,$37
+    .byte $0F,$30,$2A,$16
+    .byte $0F,$30,$36,$06
+    .byte $0F,$12,$37,$16
+
+    ;spr palette
+    .byte $0F,$30,$25,$36
+    .byte $0F,$30,$06,$36
+    .byte $0F,$2A,$27,$38
+    .byte $0F,$30,$2A,$16
+
+    ;attr
+    .byte BigEndian($23c0)
+    .byte $15
+    .byte $40,$50,$50,$90,$60,$50,$50,$10
+    .byte $44,$55,$55,$99,$66,$55,$55,$11
+    .byte $00,$00,$00,$0A,$0A
+    .byte BigEndian($23f8)
+    .byte $48
+    .byte $0F
+    .byte BigEndian($23f0)
+    .byte $48
+    .byte $05
+
+    ;dk floor
+    .byte BigEndian($2100)
+    .byte $4B
+    .byte $5E
+    .byte BigEndian($212a)
+    .byte $42
+    .byte $5E
+    .byte BigEndian($214c)
+    .byte $48
+    .byte $5E
+    .byte BigEndian($2134)
+    .byte $42
+    .byte $5E
+    .byte BigEndian($2115)
+    .byte $4B
+    .byte $5E
+
+    ;top floating platform
+    .byte BigEndian($220e)
+    .byte $04
+    .byte $F5,$F6,$F5,$F6
+
+    ;bottom floating platform
+    .byte BigEndian($228e)
+    .byte $04
+    .byte $F5,$F6,$F5,$F6
+
+    ;chain 1 l
+    .byte BigEndian($2122)
+    .byte $8E
+    .byte $65,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 1 r
+    .byte BigEndian($213D)
+    .byte $8E
+    .byte $65,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 2 l
+    .byte BigEndian($2124)
+    .byte $CE
+    .byte $65
+
+    ;chain 2 r
+    .byte BigEndian($213B)
+    .byte $CE
+    .byte $65
+
+    ;chain 3 l
+    .byte BigEndian($2126)
+    .byte $8E
+    .byte $65,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 3 r
+    .byte BigEndian($2139)
+    .byte $8E
+    .byte $65,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 4 l
+    .byte BigEndian($2128)
+    .byte $CE
+    .byte $65
+
+    ;chain 4 r
+    .byte BigEndian($2137)
+    .byte $CE
+    .byte $65
+
+    ;chain 5 l
+    .byte BigEndian($214a)
+    .byte $8D
+    .byte     $65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 5 r
+    .byte BigEndian($2155)
+    .byte $8D
+    .byte     $65,$5A,$24,$5B,$65,$5A,$24,$5B,$65,$5A,$24,$5B,$66
+
+    ;chain 6 l
+    .byte BigEndian($216C)
+    .byte $CC
+    .byte $65
+
+    ;chain 6 r
+    .byte BigEndian($2173)
+    .byte $CC
+    .byte $65
+
+    ;low chain balls
+    .byte BigEndian($22E4)
+    .byte 1
+    .byte $66
+    .byte BigEndian($22E8)
+    .byte 1
+    .byte $66
+    .byte BigEndian($22EC)
+    .byte 1
+    .byte $66
+    .byte BigEndian($22F3)
+    .byte 1
+    .byte $66
+    .byte BigEndian($22F7)
+    .byte 1
+    .byte $66
+    .byte BigEndian($22FB)
+    .byte 1
+    .byte $66
+
+    ;tops of middle platforms
+    .byte BigEndian($2347)
+    .byte 18
+    .byte $5F,$60,$61,$24,$24,$5F,$60,$61,$24,$24,$5F,$60,$61,$24,$24,$5F,$60,$61
+
+    ;left platform top
+    .byte BigEndian($2340)
+    .byte $44
+    .byte $60
+    .byte BigEndian($2344)
+    .byte 1
+    .byte $61
+
+    ;platform 1 middle
+    .byte BigEndian($2367)
+    .byte $43
+    .byte $62
+
+    ;platform 2 middle
+    .byte BigEndian($236C)
+    .byte $43
+    .byte $62
+
+    ;platform 3 middle
+    .byte BigEndian($2371)
+    .byte $43
+    .byte $62
+
+    ;platform 4 middle
+    .byte BigEndian($2376)
+    .byte $43
+    .byte $62
+
+    ;right platform top
+    .byte BigEndian($235b)
+    .byte 1
+    .byte $5F
+    .byte BigEndian($235C)
+    .byte $44
+    .byte $60
+
+    ;water
+    .byte BigEndian($2380)
+    .byte $60
+    .byte $63
+    .byte BigEndian($23A0)
+    .byte $60
+    .byte $64
+
+    ;left platform middle
+    .byte BigEndian($2360)
+    .byte $44
+    .byte $62
+
+    ;right platform middle
+    .byte BigEndian($237C)
+    .byte $44
+    .byte $62
+
+    ;-, leftleft
+    .byte BigEndian($2328)
+    .byte 1
+    .byte minus
+
+    ;x, left
+    .byte BigEndian($232D)
+    .byte 1
+    .byte mult
+
+    ;/, right
+    .byte BigEndian($2332)
+    .byte 1
+    .byte divide
+
+    ;+, rightright
+    .byte BigEndian($2337)
+    .byte 1
+    .byte plus
+
+    ;p1 input window left, top-down
+    .byte BigEndian($2062)
+    .byte $83
+    .byte $25,$26,$27
+    ;p1 input window right, top-down
+    .byte BigEndian($206C)
+    .byte $83
+    .byte $28,$29,$2A
+    ;p1 input window top, left-right
+    .byte BigEndian($2063)
+    .byte $49
+    .byte $2B
+    ;p1 input window bottom, left-right
+    .byte BigEndian($20A3)
+    .byte $49
+    .byte $2C
+
+    ;p2 input window left, top-down
+    .byte BigEndian($2073)
+    .byte $83
+    .byte $25,$26,$27
+    ;p2 input window right, top-down
+    .byte BigEndian($207D)
+    .byte $83
+    .byte $28,$29,$2A
+    ;p2 input window top, left-right
+    .byte BigEndian($2074)
+    .byte $49
+    .byte $2B
+    ;p2 input window bottom, left-right
+    .byte BigEndian($20B4)
+    .byte $49
+    .byte $2C
+
+    .charmap $2e, $58 ;. == $58
+
+    ;p1
+    .byte BigEndian($20C3)
+    .byte 4
+    .byte "WIN."
+
+    ;p2
+    .byte BigEndian($20D4)
+    .byte 4
+    .byte "WIN."
+
+    .byte 0 ;END
+
+
+    ;;;;practice mode selection
+    Exercise_Menu_Tiles:
+    .byte $3F,$00,$20
+
+    ;bg palette
+    .byte $0F,$21,$12,$37
+    .byte $0F,$30,$2A,$16
+    .byte $0F,$30,$36,$06
+    .byte $0F,$12,$37,$16
+
+    ;spr palette
+    .byte $0F,$30,$06,$36
+    .byte $0F,$30,$24,$37
+    .byte $0F,$30,$27,$13
+    .byte $0F,$30,$0F,$26
+
+    ;attr
+    .byte BigEndian($23d3)
+    .byte $43
+    .byte $55
+    .byte BigEndian($23db)
+    .byte $43
+    .byte $55
+    .byte BigEndian($23e3)
+    .byte $44
+    .byte $55
+    .byte BigEndian($23eb)
+    .byte $44
+    .byte $55
+    .byte BigEndian($23c3)
+    .byte $44
+    .byte $50
+    .byte BigEndian($23f3)
+    .byte $42
+    .byte $05
+    .byte BigEndian($23e0)
+    .byte $42
+    .byte $AA
+    .byte BigEndian($23e8)
+    .byte $42
+    .byte $AA
+
+    ;tiles
+    .byte BigEndian($206c)
+    .byte 13
+    .byte plus,minus,mult,divide," EXERCISE"
+
+    ;frame
+    .byte BigEndian($20a8)
+    .byte $56
+    .byte $69
+    .byte BigEndian($20c8)
+    .byte $56
+    .byte $6A
+    .byte BigEndian($20e8)
+    .byte $D4
+    .byte $67
+    .byte BigEndian($20fd)
+    .byte $D4
+    .byte $67
+
+    ;floor
+    .byte BigEndian($2360)
+    .byte $60
+    .byte $69
+
+    ;dk stack
+    .byte BigEndian($2302)
+    .byte $46
+    .byte $69
+    .byte BigEndian($2322)
+    .byte $46
+    .byte $69
+    .byte BigEndian($2342)
+    .byte $46
+    .byte $69
+
+    ;main chain
+    .byte BigEndian($20ea)
+    .byte $D1
+    .byte $65
+
+    ;keyhole overwrite
+    .byte BigEndian($20aa)
+    .byte $82
+    .byte $6B,$6C
+
+    ;chain ball
+    .byte BigEndian($230a)
+    .byte $01
+    .byte $66
+
+    ;boxes
+    .byte BigEndian($210d)
+    .byte $47
+    .byte $C4
+    .byte BigEndian($214d)
+    .byte $49
+    .byte $C4
+    .byte BigEndian($218d)
+    .byte $4b
+    .byte $C4
+    .byte BigEndian($21cd)
+    .byte $4b
+    .byte $C4
+    .byte BigEndian($220d)
+    .byte $45
+    .byte $C4
+    .byte BigEndian($224d)
+    .byte $4f
+    .byte $C4
+    .byte BigEndian($228d)
+    .byte $4f
+    .byte $C4
+    .byte BigEndian($22cd)
+    .byte $48
+    .byte $C4
+    .byte BigEndian($230d)
+    .byte $46
+    .byte $C4
+
+    ;box overwrites
+    .byte BigEndian($210f)
+    .byte 3
+    .byte " ",plus," "
+
+    .byte BigEndian($2150)
+    .byte 3
+    .byte " ",minus," "
+
+    .byte BigEndian($2191)
+    .byte 3
+    .byte " ",plus," "
+
+    .byte BigEndian($21d1)
+    .byte 3
+    .byte " ",minus," "
+
+    .byte BigEndian($220e)
+    .byte 3
+    .byte " ",mult," "
+
+    .byte BigEndian($2253)
+    .byte 3
+    .byte " ",plus," "
+
+    .byte BigEndian($2293)
+    .byte 3
+    .byte " ",minus," "
+
+    .byte BigEndian($22d0)
+    .byte 3
+    .byte " ",mult," "
+
+    .byte BigEndian($230f)
+    .byte 3
+    .byte " ",divide," "
+
+    .byte 0 ;END
+
+    ;;;;practice game
+    Exercise_Tiles:
+    ;attr
+    .byte BigEndian($23c0)
+    .byte $58
+    .byte $AA
+
+    ;TOP*
+    .byte BigEndian($2089)
+    .byte 3
+    .byte $8D,$8E,$8F
+
+    ;highscore window left
+    .byte BigEndian($2068)
+    .byte $83
+    .byte $25,$26,$27
+    ;highscore window right
+    .byte BigEndian($2070)
+    .byte $83
+    .byte $28,$29,$2A
+    ;highscore window top
+    .byte BigEndian($2069)
+    .byte $47
+    .byte $2B
+    ;highscore window bottom
+    .byte BigEndian($20a9)
+    .byte $47
+    .byte $2C
+
+    ;dk
+    .byte BigEndian($2084)
+    .byte 4
+    .byte $95,$9A,$9F,$90
+    .byte BigEndian($20c4)
+    .byte $85
+    .byte $91,$92,$93,$94,$42
+    .byte BigEndian($20c5)
+    .byte $85
+    .byte $96,$97,$98,$99,$46
+    .byte BigEndian($20c6)
+    .byte $85
+    .byte $9B,$9C,$9D,$9E,$4A
+    .byte BigEndian($20c7)
+    .byte $85
+    .byte $F8,$A0,$A1,$A2,$4E
+    .byte BigEndian($2163)
+    .byte 6
+    .byte $3E,$43,$47,$4B,$4F,$3F
+
+    ;frame
+    .byte BigEndian($2182)
+    .byte $5C
+    .byte $69
+    .byte BigEndian($21a2)
+    .byte $5C
+    .byte $6A
+
+    ;frame keyhole overwrite
+    .byte BigEndian($2189)
+    .byte $82
+    .byte $6B,$6C
+
+    ;wall chains
+    .byte BigEndian($21c2)
+    .byte $CD
+    .byte $67
+    .byte BigEndian($21dd)
+    .byte $CD
+    .byte $67
+
+    ;numbers
+    .byte BigEndian($21c3)
+    .byte 1
+    .byte "1"
+    .byte BigEndian($21c4)
+    .byte $8A
+    .byte "0987654321"
+
+    ;key chain
+    .byte BigEndian($21c9)
+    .byte $CA
+    .byte $65
+
+    ;answering chains
+    .byte BigEndian($21ce)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21d0)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21d2)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21d4)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21d6)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21d8)
+    .byte $CA
+    .byte $65
+    .byte BigEndian($21da)
+    .byte $CA
+    .byte $65
+
+    ;chain balls
+    .byte BigEndian($2309)
+    .byte 1
+    .byte $66
+    .byte BigEndian($230e)
+    .byte 13
+    .byte $66,$24,$66,$24,$66,$24,$66,$24,$66,$24,$66,$24,$66
+
+    ;floor
+    .byte BigEndian($2360)
+    .byte $60
+    .byte $69
+
+    ;key
+    .byte BigEndian($22c8)
+    .byte 3
+    .byte $6D,$F7,$71
+    .byte BigEndian($22e8)
+    .byte 3
+    .byte $6E,$89,$72
+    ;;;;
+
+    .byte 0 ;END
+
+    .byte $00,$FF,$FF
+
+LFA5C:
+    lda #%11000000
+    sta FRAME_COUNTER
+
+    ;jump table doer???
+    jsr LFBDC
+
+    ldx #$00
+    stx $FF
+    stx $FE
+    stx $FD
+
+    lda $FB
+    cmp #$20
+    bcs LFA75
+
+    stx $06B2
 LFA75:  cmp     #$80
         bcc     LFA7C
         inc     $06B2
@@ -7107,7 +7786,7 @@ LFA95:  sta     $F3
         sty     $06A1
         ldx     #$9A
         ldy     #$08
-        stx     $4004
+        stx     SQ2
         sty     $4005
         rts
 
@@ -7115,7 +7794,7 @@ LFAA7:  lda     #$00
 LFAA9:  lsr     a
         lsr     a
         ora     #$90
-        sta     $4000
+        sta     SQ1
         rts
 
 LFAB1:  tax
@@ -7163,7 +7842,7 @@ LFAF0:  txa
         ldx     #$08
         bne     LFADA
 LFAF7:  ldy     #$7F
-LFAF9:  stx     $4000
+LFAF9:  stx     SQ1
         sty     $4001
         rts
 
@@ -7243,43 +7922,65 @@ LFBC6:  dec     $F1
         sta     $F2
         sta     $4002
 LFBDA:  bne     LFC1C
-LFBDC:  lda     $FA
-        bne     LFC1C
-        ldy     $FF
-        lda     $F0
-        lsr     a
-        bcs     LFB83
-        lsr     $FF
-        bcs     LFB74
-        lsr     a
-        bcs     LFB99
-        lsr     $FF
-        bcs     LFB8C
-        lsr     a
-        bcs     LFBC6
-        lsr     $FF
-        bcs     LFBB4
-        lsr     a
-        bcs     LFC2B
-        lsr     $FF
-        bcs     LFC1F
-        lsr     a
-        bcs     LFC41
-        lsr     $FF
-        bcs     LFC3A
-        lsr     a
-        bcs     LFC52
-        lsr     $FF
-        bcs     LFC4B
-        lsr     a
-        bcs     LFC6B
-        lsr     $FF
-        bcs     LFC64
-        lsr     a
-        bcs     LFC8D
-        lsr     $FF
-        bcs     LFC87
-LFC1C:  jmp     LFD6B
+
+;is this a jumptable????
+LFBDC:
+    lda $FA
+    bne LFC1C
+
+    ldy $FF
+    lda $F0
+    lsr a
+    bcs LFB83
+
+    lsr $FF
+    bcs LFB74
+
+    lsr a
+    bcs LFB99
+
+    lsr $FF
+    bcs LFB8C
+
+    lsr a
+    bcs LFBC6
+
+    lsr $FF
+    bcs LFBB4
+
+    lsr a
+    bcs LFC2B
+
+    lsr $FF
+    bcs LFC1F
+
+    lsr a
+    bcs LFC41
+
+    lsr $FF
+    bcs LFC3A
+
+    lsr a
+    bcs LFC52
+
+    lsr $FF
+    bcs LFC4B
+
+    lsr a
+    bcs LFC6B
+
+    lsr $FF
+    bcs LFC64
+
+    lsr a
+    bcs LFC8D
+
+    lsr $FF
+    bcs LFC87
+
+    ;default?
+    LFC1C:
+    jmp LFD6B
 
 LFC1F:  ldx     #$04
         lda     #$04
@@ -7289,7 +7990,7 @@ LFC1F:  ldx     #$04
 LFC2B:  dec     $F1
         bne     LFC1C
 LFC2F:  lda     #$90
-LFC31:  sta     $4000
+LFC31:  sta     SQ1
         lda     #$00
         sta     $F0
         beq     LFC1C
@@ -7397,29 +8098,36 @@ LFCF7:  sta     $4007
         bcs     LFD06
         lsr     a
         ora     #$90
-        sta     $4004
+        sta     SQ2
 LFD06:  rts
 
 LFD07:  sta     $06A1
         lda     #$10
-        sta     $400C
+        sta     NOISE
         rts
 
-LFD10:  ldy     $FE
-        lda     $06A1
-        lsr     $FE
-        bcs     LFCA5
-        lsr     a
-        bcs     LFCAC
-        lsr     a
-        bcs     LFCD9
-        lsr     $FE
-        bcs     LFCD2
-        lsr     $FE
-        bcs     LFD2B
-        lsr     a
-        bcs     LFD3F
-        rts
+LFD10:
+    ldy $FE
+    lda $06A1
+    lsr $FE
+    bcs LFCA5
+
+    lsr a
+    bcs LFCAC
+
+    lsr a
+    bcs LFCD9
+
+    lsr $FE
+    bcs LFCD2
+
+    lsr $FE
+    bcs LFD2B
+
+    lsr a
+    bcs LFD3F
+
+    rts
 
 LFD2B:  sty     $06A1
         lda     #$20
@@ -7427,7 +8135,7 @@ LFD2B:  sty     $06A1
         lda     #$04
         sta     $F4
         lda     #$05
-        sta     $400C
+        sta     NOISE
         asl     a
         sta     $400F
 LFD3F:  ldy     #$02
@@ -7439,7 +8147,7 @@ LFD3F:  ldy     #$02
         bcs     LFD62
         bcc     LFD59
 LFD4F:  ldx     #$0F
-        stx     $400C
+        stx     NOISE
         ldx     #$50
         stx     $400F
 LFD59:  ldy     $F4
@@ -7453,12 +8161,15 @@ LFD65:  ldy     #$0E
 LFD67:  sty     $400E
         rts
 
-LFD6B:  ldx     $F9
-        bne     LFDB7
-        lda     $FC
-        bne     LFD79
-        sta     $06B6
-        jmp     LFDB7
+LFD6B:
+    ldx $F9
+    bne LFDB7
+
+    lda $FC
+    bne LFD79
+
+    sta $06B6
+    jmp LFDB7
 
 LFD79:  eor     $06B6
         beq     LFD8E
@@ -7487,12 +8198,16 @@ LFD93:  ldy     $0680
         jsr     LFAF0
         beq     LFDB7
         lda     #$10
-        sta     $4008
-LFDB7:  lda     $FD
-        bne     LFDC3
-        lda     $06A2
-        bne     LFE07
-        jmp     LFD10
+        sta     TRI
+
+LFDB7:
+    lda $FD
+    bne LFDC3
+
+    lda $06A2
+    bne LFE07
+
+    jmp LFD10
 
 LFDC3:  jsr     LFB62
         inc     $06A2
@@ -7542,7 +8257,7 @@ LFE28:  ldy     #$9F
         lda     $F9
         bne     LFE37
         ldy     #$86
-LFE37:  sty     $4000
+LFE37:  sty     SQ1
 LFE3A:  lda     $06F1
         beq     LFE7E
         dec     $0695
@@ -7556,7 +8271,7 @@ LFE51:  lda     #$00
         sta     $FA
         sta     $F9
         sta     $06A2
-        sta     $4008
+        sta     TRI
         rts
 
 LFE5E:  jsr     LFAB1
@@ -7572,7 +8287,7 @@ LFE5E:  jsr     LFAB1
         cmp     #$08
         bcs     LFE7B
         ldy     #$81
-LFE7B:  sty     $4004
+LFE7B:  sty     SQ2
 LFE7E:  ldy     $F9
         beq     LFEA9
         dec     $0698
@@ -7591,7 +8306,7 @@ LFE7E:  ldy     $F9
 LFE9C:  ldy     $06F1
         bne     LFEA3
         lda     #$FF
-LFEA3:  sta     $4008
+LFEA3:  sta     TRI
         jsr     LFAF0
 LFEA9:  rts
 
@@ -7640,11 +8355,12 @@ LFFBA:  .byte   $05,$05,$05,$18,$33,$9F,$99,$95
         .byte   $5E,$9E,$54,$5E,$9E,$54,$5E,$9E
         .byte   $54,$5E,$5C,$5E,$60,$62,$A2,$58
         .byte   $62,$A2,$58,$62,$A2,$58,$62,$60
-        .byte   $62,$64,$00,$06,$06,$06,$06,$08
+        .byte   $62,$64,$00,$06,$06,$06
+        .byte $06,$08
         .byte   $0A,$0C,$0C,$0C,$0C,$0A,$08,$00
-        .byte   $A9,$C4,$1E,$C4,$F0
-        .byte   $FF
 
-; End of "CODE" segment
-.code
 
+.segment "VECTORS": absolute
+    .addr NMI
+    .addr Reset
+    .addr $FFF0 ;IRQ/BRK
